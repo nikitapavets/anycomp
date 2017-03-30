@@ -17,3 +17,6 @@
 # enviroment
 /backend/.env
 /backend/composer.lock
+
+# logs
+*.log
