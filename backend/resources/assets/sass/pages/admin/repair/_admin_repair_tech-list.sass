@@ -1,0 +1,48 @@
+.admin_repair_tech-list
+  table
+    width: 100%
+    color: #666
+    tr:nth-child(2n)
+      background-color: #F0F1F6
+    td
+      padding: 10px 15px
+      text-align: right
+      position: relative
+      a
+        text-decoration: underline
+      .about_repair
+        position: absolute
+        background-color: #FFFFFF
+        right: 0%
+        top: 0px
+        z-index: 999
+        width: 350px
+        padding: 10px 15px 10px 45px
+        text-align: left
+        box-shadow: 2px 2px 5px 0 #666
+        display: none
+        margin-left: 25px
+        div
+          margin: 10px 0
+        svg
+          width: 20px
+          height: 20px
+          position: absolute
+          left: 15px
+        &.active
+          display: block
+        &.statuses
+          label
+            position: relative
+          input
+            position: absolute
+            left: -168px
+            top: 3px
+      &:first-child
+        text-align: left
+
+
+    thead
+      background-color: $flat-green
+      color: #fff
+      font-size: em(18px)

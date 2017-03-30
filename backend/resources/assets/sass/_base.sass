@@ -1,0 +1,136 @@
+@import "bourbon"
+@import "vars"
+
+*::-webkit-input-placeholder
+  color: $main_text
+  opacity: .5
+
+*:-moz-placeholder
+  color: $main_text
+  opacity: .5
+
+*::-moz-placeholder
+  color: $main_text
+  opacity: .5
+
+*:-ms-input-placeholder
+  color: $main_text
+  opacity: .5
+
+body input:focus:required:invalid,
+body textarea:focus:required:invalid
+  color: $main_text
+body input:required:valid,
+body textarea:required:valid
+  color: $main_text
+
+body
+  font-size: 16px
+  min-width: 320px
+  position: relative
+  line-height: em(22px)
+  font-family: "RobotoLight", $helvetica
+  overflow-x: hidden
+  color: $main_text
+
+body, html
+  min-height: 100%
+  width: 100%
+
+.hidden
+  display: none
+
+.invisible
+  opacity: 0
+
+a, a:hover, a:focus, a:active
+  text-decoration: none
+
+a
+  color: $main_blue
+
+ul
+  padding: 0
+  margin: 0
+  li
+    list-style: none
+
+h1,h2,h3,h4,h5,h6
+  font-family: "RobotoLight", $helvetica
+  font-weight: normal
+  line-height: em(16px)
+
+h2
+  font-size: em(45px)
+  @media only screen and (max-width : 480px)
+    font-size: em(30px)
+
+.row-margin
+  margin: 30px 0
+
+.text-center
+  text-align: center
+
+.index-btn
+  background-color: $main_orange
+  border-radius: 10px
+  padding: 15px 20px
+  outline: none
+  border: none
+  color: #FFF
+  font-size: em(24px)
+  font-family: "RobotoLight"
+  display: inline-block
+  &:hover, &:visited, &:active, &:target
+    background-color: $main_orange_hover
+    cursor: pointer
+    color: #FFF
+
+.index-input
+  border-radius: 10px
+  padding: 15px 20px
+  outline: none
+  border: none
+  transition: .25s ease all
+  border: 1px solid #fff
+  &:focus
+    border: 1px solid $main_orange_hover
+
+.admin-button
+  padding: 10px 20px
+  background-color: $flat_blue
+  border: 1px solid #417FB8
+  color: #fff
+  text-transform: uppercase
+  border-radius: 5px
+
+.admin-input
+  padding: 10px
+  border-radius: 5px
+  border: 1px solid #E7E8ED
+  color: #666
+  width: 100%
+  outline: none
+
+.gui_checkbox
+  position: relative
+  input[type="checkbox"]
+    width: 16px
+    height: 16px
+    outline: none
+    border: 1px solid #d2d2d2
+    position: absolute
+    opacity: 0
+    left: 0
+    top: 0
+  .checkbox
+    display: inline-block
+    width: 16px
+    height: 16px
+    border: 1px solid #d2d2d2
+    &.active
+      background: url("/images/admin/ui-icons.png") -65px -146px
+
+@import "/bower_components/owl.carousel/dist/assets/owl.carousel.min.css"
+@import "/bower_components/owl.carousel/dist/assets/owl.theme.default.css"
+

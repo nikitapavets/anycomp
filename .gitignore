@@ -1,0 +1,19 @@
+# IDE folders
+/.idea
+
+# library folders
+/backend/vendor
+/backend/composer.phar
+/backend/node_modules
+/backend/bower_components
+/backend/composer.phar
+/frontend/node_modules
+
+# build folders
+/frontend/public
+/backend/public/images/catalog/*
+/backend/public/images/tmp/*
+
+# enviroment
+/backend/.env
+/backend/composer.lock

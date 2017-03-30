@@ -1,0 +1,171 @@
+.admin-panel__right-side
+  overflow: hidden
+  background: url("/images/admin/bg/left_side.png") repeat-x 0 0
+  min-height: 100vh
+  border-left: none
+  &--top-menu
+    background: url("/images/admin/bg/topnav_bg.png") repeat-x 0 0
+    height: 34px
+    color: $admin_text_light
+    position: fixed
+    width: 100%
+    padding: 0px 50px
+    padding-top: 3px
+    z-index: 99999
+    @media only screen and (max-width : 768px)
+      text-align: center
+    .profile
+      font-size: em(12px)
+      color: $admin_text_light
+      padding-top: 3px
+      position: relative
+      padding-left: 33px
+      display: inline-block
+      @media only screen and (max-width : 768px)
+        display: none
+      img
+        position: absolute
+        left: 0
+        top: 5px
+        width: 18px
+        height: 18px
+    .top_nav
+      float: right
+      border-left: 1px solid #39454f
+      border-right: 1px solid #39454f
+      @media only screen and (max-width : 768px)
+        float: none
+        display: inline-block
+      ul
+        border-left: 1px solid #39454f
+        border-right: 1px solid #39454f
+        margin-right: -1px
+      li
+          float: left
+          border-left: 1px solid #1c262b
+          border-right: 1px solid #1c262b
+          margin-left: -1px
+          a
+            color: $admin_text_light
+            font-size: em(12px)
+            display: inline-block
+            padding: 3px 15px
+            border-left: 1px solid #39454f
+            border-right: 1px solid #39454f
+            position: relative
+            padding-left: 30px
+            @media only screen and (max-width : 480px)
+              padding-left: 15px
+            span
+              @media only screen and (max-width : 480px)
+                display: none
+            &:hover
+              background-color: #293138
+              border-left: 1px solid #293138
+              border-right: 1px solid #293138
+            svg
+              position: absolute
+              width: 10px
+              height: 10px
+              left: 10px
+              top: 9px
+              @media only screen and (max-width : 480px)
+                position: static
+  &--content
+    background: url("/images/admin/bg/bg.jpg")
+    padding: 34px 0 0
+    min-height: 100vh
+    .content-title
+      padding: 15px 15px
+      text-align: center
+      &__main-title
+        font-family: 'RobotoRegular'
+      &__sub-title
+        font-size: em(12px)
+        @media only screen and (max-width : 480px)
+          text-indent: 0
+    .content-inner
+      padding: 15px
+
+  &--responsive
+    display: none
+    background-image: url("/images/admin/bg/bg.jpg")
+    margin-top: 34px
+    @media only screen and (max-width : 480px)
+      display: block
+    .responsive-logo
+      text-align: center
+      background-color: inherit
+      padding: 15px 0
+      transform: translateX(-5px)
+      svg
+        width: 100px
+        height: 100px
+    .responsive-small-menu
+      position: relative
+      .goTo
+        color: $admin_text_light
+        background-image: url("/images/admin/resp-nav-bg.png")
+        background-repeat: repeat-x
+        background-position: 0 0
+        display: block
+        span
+          padding: 8px 0 8px 42px
+          display: block
+          font-size: em(11px)
+          text-transform: uppercase
+          font-family: "RobotoRegular"
+          color: $admin_text_light
+      &__drop-down
+        display: none
+        position: absolute
+        top: 38px
+        width: 100%
+        & > li
+          background-image: url("/images/admin/nav-item-bg.png")
+          border-top: 1px solid #444b52
+          border-bottom: 1px solid #1c252a
+          position: relative
+          & > a
+            display: block
+            border-bottom: 1px solid #1a2227
+            svg
+              position: absolute
+              left: 20px
+              top: 18px
+              width: 16px
+              height: 16px
+              transform: translate3d(-50%, -50%, 0)
+            strong
+              position: absolute
+              right: 10px
+              top: 6px
+              color: $admin_text_light
+              background-color: $admin_black_bg
+              padding: 1px 8px
+              font-size: em(12px)
+              border-radius: 2px
+            span
+              padding: 7px 0 7px 42px
+              display: block
+              font-size: em(11px)
+              color: $admin_text_light
+          ul.sub
+            border-top: none
+            display: none
+            li
+              border-bottom: 1px solid #1a2227
+              border-top: 1px solid #303a43
+              background-image: url("/images/admin/bg/sub-nav-bg.jpg")
+              &:last-child
+                border-bottom: none
+              a
+                background-image: url("/images/admin/arrow.gif")
+                background-repeat: no-repeat
+                background-position: 12px 16px
+                padding: 8px 10px 8px 26px
+                color: #ccc
+                font-size: em(11px)
+                border: none
+                display: block
+

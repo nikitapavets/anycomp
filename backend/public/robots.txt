@@ -1,0 +1,12 @@
+User-agent: *
+Disallow:
+Disallow: /admin
+Disallow: /dev
+Sitemap: http://www.anycomp.by/sitemap.xml
+
+User-agent: Yandex
+Disallow:
+Disallow: /admin
+Disallow: /dev
+Host: www.anycomp.by
+Sitemap: http://www.anycomp.by/sitemap.xml

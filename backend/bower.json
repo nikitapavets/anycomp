@@ -1,0 +1,27 @@
+{
+  "name": "anycomp",
+  "description": "",
+  "main": "",
+  "authors": [
+    "nikitapavets <nikitapavets@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nikitapavets/anycomp",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "parallax.js": "^1.4.2",
+    "device.js": "devicejs#^0.2.7",
+    "waypoints": "^4.0.1",
+    "jquery-ui": "^1.12.1",
+    "jquery.maskedinput": "^1.4.1",
+    "owl.carousel": "^2.2.0",
+    "clamp-js": "*"
+  }
+}

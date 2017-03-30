@@ -1,0 +1,40 @@
+.top-header
+  padding: 30px
+  &__inner
+    position: relative
+    display: block
+    @media only screen and (max-width : 480px)
+      text-align: center
+  &__logo
+    position: relative
+    font-size: em(32px)
+    padding-left: 60px
+    float: left
+    display: inline-block
+    @media only screen and (max-width : 480px)
+      float: none
+    a
+      color: $main_text
+    svg
+      width: 50px
+      height: 50px
+      position: absolute
+      left: 0
+      top: -15px
+    .subdomain
+      @media only screen and (max-width : 480px)
+        display: none
+  &__phone
+    position: absolute
+    right: 30px
+    font-size: em(24px)
+    @media only screen and (max-width : 480px)
+      display: none
+
+  &.brown-header
+    background-color: $main_brown
+    color: #FFF
+    .top-header__logo
+      a
+        color: #FFF
+        
