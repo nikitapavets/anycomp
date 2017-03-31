@@ -29,11 +29,9 @@ class Repair extends Model
 
     protected $guarded = array();
 
-    public function setHashCode()
+    public function setHashCode($hashCode)
     {
-        if (!$this->getHashCode()) {
-            $this->code = substr(md5(time()), -8, 8);;
-        }
+        $this->code = $hashCode;
     }
 
     public function getHashCode()
@@ -56,9 +54,11 @@ class Repair extends Model
         return $this->token;
     }
 
-    public function setCode($code)
+    public function setCode()
     {
-        $this->token = $code;
+        if (!$this->getCode()) {
+            $this->token = substr(md5(time()), -8, 8);;
+        }
     }
 
     public function setTitle($title)

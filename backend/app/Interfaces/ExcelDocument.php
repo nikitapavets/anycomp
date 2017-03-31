@@ -291,7 +291,7 @@ class ExcelDocument implements Document
 
 				$sheet->mergeCells('I15:S15');
 				$sheet->cell('I15', function($cell) use($currentRepair) {
-					$cell->setValue('S/N ' . $currentRepair->getCode());
+					$cell->setValue('S/N ' . $currentRepair->getHashCode());
 					$cell->setAlignment('left');
 					$cell->setFontFamily('Verdana');
 					$cell->setBorder(array(

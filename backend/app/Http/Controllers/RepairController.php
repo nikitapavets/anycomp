@@ -220,7 +220,7 @@ class RepairController extends Controller
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Заводской номер', 'product_code', false);
-        $widget->setValue($repair ? $repair->getCode() : false);
+        $widget->setValue($repair ? $repair->getHashCode() : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('В комплекте', 'product_set', false);

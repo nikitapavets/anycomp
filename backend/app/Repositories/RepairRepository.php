@@ -197,12 +197,12 @@ class RepairRepository
                 $repair->setClient($client);
                 $repair->setAdmin(Admin::getAuthAdmin());
                 $repair->setReceiptNumber(RepairRepository::makeReceiptNumber());
-                $repair->setHashCode();
+                $repair->setCode();
                 $repair->setCategory($request->product_category_id, $request->product_category_new);
                 $repair->setBrand($request->product_brand_id, $request->product_brand_new);
                 $repair->setTitle($request->product_title);
                 $repair->setDefect($request->product_defect);
-                $repair->setCode($request->product_code);
+                $repair->setHashCode($request->product_code);
                 $repair->setSet($request->product_set);
                 $repair->setComment($request->product_comment);
                 $repair->setWorker($request->worker_id);
