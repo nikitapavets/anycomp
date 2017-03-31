@@ -149,6 +149,14 @@ Route::group(
                             '/update_status',
                             ['as' => 'admin.repair.update_status', 'uses' => 'RepairController@updateStatus']
                         );
+                        Route::get(
+                            '/statistics',
+                            ['as' => 'admin.repair.statistics', 'uses' => 'RepairController@statistics']
+                        );
+                        Route::get(
+                            '/statistics/print',
+                            ['as' => 'admin.repair.statistics.print', 'uses' => 'RepairController@statisticsPrint']
+                        );
 
                     }
                 );

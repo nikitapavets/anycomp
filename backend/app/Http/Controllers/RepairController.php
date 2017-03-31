@@ -290,7 +290,6 @@ class RepairController extends Controller
 
     public function printDoc(Request $request)
     {
-
         $currentRepair = RepairRepository::getRepairById($request->input('id'));
         $fileInfo = array(
             'file_name' => 'Квитанция о приеме в ремонт № '.$currentRepair->getReceiptNumber(
@@ -305,5 +304,50 @@ class RepairController extends Controller
 
         $excel = new ExcelDocument();
         $excel->create($fileInfo, $orgInfo, $currentRepair);
+    }
+
+    public function statistics(Request $request)
+    {
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+
+        $widget = new WidgetCollection('Информация о клиенте');
+
+        $page = [
+            'title' => 'AnyComp | Панель управления - Статистика',
+            'css' => '/styles/admin.min.css',
+            'css_header' => '',
+            'sub_title' => 'Статистика',
+            'sub_descr' => 'Статистика добавленных квитанций.',
+            'view_system_name' => 'admin.blocks.block',
+        ];
+
+        return view(
+            $page['view_system_name'],
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'widget' => $widget->toArray(),
+            ]
+        );
+    }
+
+    public function statisticsPrint()
+    {
+        $excel = new ExcelDocument();
+        $excel->repairStatistics(
+            'Статистика',
+            [
+                'В ремонте',
+                'На выдаче',
+                'У клиента'
+            ],
+            [
+                RepairRepository::getRepairsByStatus(Repair::STATUS_REPAIR),
+                RepairRepository::getRepairsByStatus(Repair::STATUS_COMPLETE),
+                RepairRepository::getRepairsByStatus(Repair::STATUS_ISSUED)
+            ]
+        );
     }
 }

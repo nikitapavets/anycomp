@@ -31,6 +31,14 @@ class AdminSubMenuSeeder extends Seeder
         ]);
 
         AdminSubMenu::create([
+            'admin_menu_id' => 1,
+            'title' => 'Статистика',
+            'link' => '/admin/repair/statistics',
+	        'system_name' => 'admin.repair.statistics',
+            'pos' => 3
+        ]);
+
+        AdminSubMenu::create([
             'admin_menu_id' => 2,
             'title' => 'Ремонт',
 	        'link' => '/admin/clients/repair',
