@@ -962,6 +962,15 @@ class ExcelDocument implements Document
                                 'E' => 45,
                             ]);
 
+                            $sheet->setPageMargin(
+                                array(
+                                    1.00,
+                                    0.70,
+                                    0.76,
+                                    0.70,
+                                )
+                            );
+
                             $sheet->cell(
                                 'A1',
                                 function ($cell) {
