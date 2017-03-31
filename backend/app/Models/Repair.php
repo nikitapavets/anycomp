@@ -29,9 +29,9 @@ class Repair extends Model
 
     protected $guarded = array();
 
-    public function setHashCode($hashCode)
+    public function setHashCode($code)
     {
-        $this->code = $hashCode;
+        $this->code = $code;
     }
 
     public function getHashCode()
