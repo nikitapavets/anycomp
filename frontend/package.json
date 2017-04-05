@@ -49,6 +49,8 @@
     "postcss-loader": "^1.2.2",
     "react-cookie": "^1.0.4",
     "react-hot-loader": "^3.0.0-beta.6",
+    "react-slick": "^0.14.7",
+    "slick-carousel": "^1.6.0",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.14.0",

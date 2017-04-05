@@ -7,18 +7,18 @@ const sizes = {
 };
 
 export const media = {
-    tablet: (...args) => css`
-        @media only screen and (min-width: ${sizes.tablet}px) {
-            ${ css(...args) }
-        }
-    `,
     laptop: (...args) => css`
-        @media only screen and (min-width: ${sizes.laptop}px) {
+        @media only screen and (min-width: ${sizes.tablet + 1}px) {
             ${ css(...args) }
         }
     `,
     desktop: (...args) => css`
-        @media only screen and (min-width: ${sizes.desktop}px) {
+        @media only screen and (min-width: ${sizes.laptop + 1}px) {
+            ${ css(...args) }
+        }
+    `,
+    wide: (...args) => css`
+        @media only screen and (min-width: ${sizes.desktop + 1}px) {
             ${ css(...args) }
         }
     `

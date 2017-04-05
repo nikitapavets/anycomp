@@ -56,7 +56,7 @@ module.exports = {
         }),
         new ExtractTextPlugin("./css/[name].css", {
             allChunks: true
-        }),
+        })
         // new CopyWebpackPlugin([
         //     { from: './static/.htaccess'},
         //     { from: './static/index.php'},

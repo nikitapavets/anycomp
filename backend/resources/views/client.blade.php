@@ -9,7 +9,7 @@
     <meta name="msapplication-navbutton-color" content="#cb2d41">
     <meta name="apple-mobile-web-app-status-bar-style" content="#cb2d41">
     <meta name="description" content="AnyComp - продажи и ремонт компьютерной техники, установка и обслуживание спутникового TV и видеонаблюдения.">
-    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto:i|Roboto:b" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
     <title>AnyСomp - Компьютерная техника</title>
 </head>
 <body>

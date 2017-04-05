@@ -69,6 +69,9 @@ module.exports = {
             filename: './client/index.html',
             hash: true,
             chunks: ['core', 'client']
-        })
+        }),
+        // new webpack.ProvidePlugin({
+        //     SlideMenu: "slide-and-swipe-menu"
+        // })
     ]
 };

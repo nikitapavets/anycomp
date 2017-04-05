@@ -7,9 +7,9 @@ import Error503 from './pages/errors/Error503';
 
 export const routes = (
     <div>
-        <Route path='/' component={GeneralLayout}>
-            <IndexRoute component={HomePage} onEnter={HomePage.auth}/>
-            <Route path='503' component={Error503}/>
+        <Route path='/client' component={GeneralLayout} onEnter={GeneralLayout.auth}>
+            <IndexRoute component={HomePage}/>
         </Route>
+        <Route path='/503' component={Error503}/>
     </div>
 );

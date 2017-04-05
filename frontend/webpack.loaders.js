@@ -31,7 +31,7 @@ module.exports = [
 	},
 	{
 		test: /\.gif/,
-		exclude: /(node_modules|bower_components)/,
+		exclude: /(bower_components)/,
 		loader: "url-loader?name=[1]&regExp=static/(.*)&limit=10000&mimetype=images/gif"
 	},
 	{
