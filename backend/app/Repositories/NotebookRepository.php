@@ -26,6 +26,30 @@ class NotebookRepository
     }
 
     /**
+     * @return Notebook[]
+     */
+    public static function getNotebooksForFront()
+    {
+        /**
+         * @var $notebooks Notebook[]
+         */
+        $notebooks = Notebook::orderBy('id', 'desc')->take(10)->get();
+        $resultNotebooks = [];
+        foreach ($notebooks as $notebook) {
+            $resultNotebooks[] = [
+              'id' => $notebook->getId(),
+              'title' => $notebook->getName(),
+              'description' => $notebook->getDescription(),
+              'link' => $notebook->getLink(),
+              'price' => $notebook->getPrice(),
+              'image' => $notebook->getSmallImage(),
+            ];
+        }
+
+        return $resultNotebooks;
+    }
+
+    /**
      * @param Notebook[] $notebooks
      * @return TableRowsCollection
      */

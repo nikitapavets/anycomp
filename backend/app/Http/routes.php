@@ -28,6 +28,18 @@ Route::post('/check', ['as' => 'admin.check', 'uses' => 'AdminController@check']
 
 
 Route::group(
+    [
+        'prefix' => 'api',
+        'middleware' => ['api'],
+    ],
+    function () {
+        Route::resource('notebooks', 'NotebookController');
+        Route::resource('tvs', 'TvController');
+    }
+);
+
+
+Route::group(
     ['prefix' => 'admin'],
     function () {
         Route::group(

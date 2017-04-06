@@ -4,6 +4,8 @@ export const colors = {
     "mainBg": "#F3F3F3",
     "white": "#ffffff",
     "black": "#4D4D4D",
+    "red": "#D8312E",
+    "purple": "#645F7D",
     "minor": "rgba(0, 0, 0, .1)",
 };
 

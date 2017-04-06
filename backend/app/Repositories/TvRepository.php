@@ -26,6 +26,30 @@ class TvRepository
     }
 
     /**
+     * @return Tv[]
+     */
+    public static function getTvsForFront()
+    {
+        /**
+         * @var $tvs Tv[]
+         */
+        $tvs = Tv::orderBy('id', 'desc')->take(10)->get();
+        $resultTvs = [];
+        foreach ($tvs as $tv) {
+            $resultTvs[] = [
+                'id' => $tv->getId(),
+                'title' => $tv->getName(),
+                'description' => $tv->getDescription(),
+                'link' => $tv->getLink(),
+                'price' => $tv->getPrice(),
+                'image' => $tv->getSmallImage(),
+            ];
+        }
+
+        return $resultTvs;
+    }
+
+    /**
      * @param string $stringIds
      * @param string $delimiter
      */

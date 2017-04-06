@@ -196,11 +196,14 @@ class Notebook extends Catalog
     }
 
     /**
-     * @return int
+     * @param bool $details
+     * @return string
      */
-    public function getProcessorClockFrequency()
+    public function getProcessorClockFrequency($details = false)
     {
-        return $this->processor_clock_frequency;
+        if($this->processor_clock_frequency) {
+            return $this->processor_clock_frequency . $details ? ' МГц' : '';
+        }
     }
 
     /**
@@ -956,12 +959,14 @@ class Notebook extends Catalog
         $this->touch_force = $isTouchForce ? 1 : 0;
     }
 
-    /**
-     * @return string
-     */
     public function getName()
     {
         return $this->getBrand()->getName().' '.$this->getModel();
+    }
+
+    public function getFullName()
+    {
+        return self::PRODUCT_TITLE.' '.$this->getName();
     }
 
     public function getLink($systemName = self::SYSTEM_NAME, $customModel = '')
@@ -969,11 +974,49 @@ class Notebook extends Catalog
         return parent::getLink($systemName, $this->getConfig());
     }
 
-    /**
-     * @return string mixed
-     */
     public function getConfig()
     {
         return $this->config;
+    }
+
+    public function getDescription()
+    {
+        $description = '';
+        $screenDescription = $this->getScreenDiagonal()->getName()
+            .' '.$this->getScreenResolution()->getName()
+            .' '.$this->getScreenSurface()->getName();
+        if (trim($screenDescription)) {
+            $description .= trim($screenDescription);
+        }
+        $processorDescription = $this->getProcessor()->getName()
+            .' '.$this->getProcessorModel()
+            .' '.$this->getProcessorClockFrequency(true);
+        if (trim($processorDescription)) {
+            $description .= ', '.trim($processorDescription);
+        }
+        $ramDescription = $this->getRamSize()->getNameWithDetails();
+        if (trim($ramDescription)) {
+            $description .= ', '.trim($ramDescription);
+        }
+        $hddDescription = $this->getHddSize()->getNameWithDetails()
+            .' ('.$this->getHddTypesLikeString().')';
+        if (trim($hddDescription)) {
+            $description .= ', '.trim($hddDescription);
+        }
+        $graphicDescription = $this->getGraphicCard()->getName()
+            .' '.$this->getGraphicCardModel();
+        if (trim($graphicDescription)) {
+            $description .= ', '.trim($graphicDescription);
+        }
+        $colorRoofDescription = $this->getColorRoof()->getNameWithDetails('цвет крышки');
+        if (trim($colorRoofDescription)) {
+            $description .= ', '.trim($colorRoofDescription);
+        }
+        $colorBodyDescription = $this->getColorBody()->getNameWithDetails('цвет корпуса');
+        if (trim($colorBodyDescription)) {
+            $description .= ', '.trim($colorBodyDescription);
+        }
+
+        return $description;
     }
 }

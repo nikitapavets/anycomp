@@ -3,18 +3,31 @@ import {Link} from 'react-router';
 import styled from 'styled-components';
 import {Container} from '../libs/blocks';
 import {colors, fontSizes} from '../libs/variables';
-import {bgi, media} from '../libs/mixins';
+import {bgi, media, sizes} from '../libs/mixins';
 import menu from '../config/menu';
 import Slick from '../components/Slick';
+import Arrow from '../components/Arrow';
 
 const DEV_MODE = false;
 
 const Layout = styled.div`
     background: ${colors.mainBg};
     padding-top: 58px;
-    height: 1800px;
     ${media.laptop`
         padding-top: 0;
+    `}
+    ${media.laptop`
+        &:before {
+            position: absolute;
+            display: inline-block;
+            top: 50%;
+            margin-left: 50%;
+            content: '';
+            width: 400px;
+            height: 200vh;
+            background: ${colors.mainBold};
+            transform: translateX(-50%) translateY(-50%) skewX(-23deg);
+        }
     `}
 `;
 
@@ -158,20 +171,7 @@ const ContactHeader__SocialItem = styled(Link)`
 `;
 
 const Header = styled.div`
-    ${media.laptop`
-        &:before {
-            position: absolute;
-            display: inline-block;
-            top: 15px;
-            left: 50%;
-            margin-left: 319px;
-            content: '';
-            width: 400px;
-            height: 200%;
-            background: ${colors.mainBold};
-            transform: translateX(-50%) translateY(-50%) skewX(-23deg);
-        }
-    `}
+    
 `;
 
 const GeneralHeader = styled(Container)`
@@ -211,6 +211,7 @@ const Menu = styled.div`
 
 const Menu__Container = styled(Container)`
     display: flex;
+    justify-content: space-between;
 `;
 
 const Menu__Items = styled.div`
@@ -246,41 +247,38 @@ const Menu__Item = styled(Link)`
     }
 `;
 
-const Slider = styled(Container)`
-    padding-top: 15px;
-    padding-bottom: 30px;
-`;
-const Slide = styled.div`
-    position: relative;
-    height: 450px!important;
-    background: ${colors.main};
-`;
-const Slide__Header = styled.div`
-    position: absolute;
-    background: ${colors.white};
-    padding: 0 50px;
-    height: 100%;
+const Menu__Basket = styled(Link)`
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 300px;
-`;
-const Slide__HeaderBrand = styled.div`
+    align-items: center;
+    font-size: ${fontSizes.s};
+    text-decoration: none;
     color: ${colors.black};
-    font-size: ${fontSizes.max};
-    font-weight: 300;
+    transition: .5s all ease;
+    &:hover, &.active {
+        color: ${colors.main};
+    }
 `;
-const Slide__HeaderModel = styled.div`
-    color: ${colors.main};
-    font-size: ${fontSizes.xxl};
-    font-weight: 300;
-    font-style: italic;
+const Menu__BasketImageImg = require('../../../static/images/svg/shopping-cart_699AD1.svg');
+const Menu__BasketImage = styled.div`
+    ${bgi(Menu__BasketImageImg, 20)}
+`;
+const Menu__BasketText = styled.div`
+    margin-left: 5px;
+`;
+const Menu__BasketCount = styled.span`
+    font-weight: bold;
 `;
 
-const Catalog = styled.div`
+const Footer = styled.div`
+    background-color: ${colors.black};
+    color: ${colors.white};
     position: relative;
-    background: ${colors.white};
-    height: 400px;
+`;
+const Footer__Container = styled(Container)`
+    padding: 30px 0;
+`;
+const Company = styled(Container)`
+    text-align: center;
 `;
 
 class GeneralLayout extends React.Component {
@@ -367,25 +365,20 @@ class GeneralLayout extends React.Component {
                                 </Menu__Item>
                             )}
                         </Menu__Items>
+                        <Menu__Basket to="/">
+                            <Menu__BasketImage/>
+                            <Menu__BasketText>Корзина (<Menu__BasketCount>0</Menu__BasketCount>)
+                                товаров</Menu__BasketText>
+                        </Menu__Basket>
                     </Menu__Container>
                 </Menu>
             </Header>
-            <Slider>
-                <Slick>
-                    <Slide>
-                        <Slide__Header>
-                            <Slide__HeaderBrand>Asus</Slide__HeaderBrand>
-                            <Slide__HeaderModel>N750</Slide__HeaderModel>
-                        </Slide__Header>
-                    </Slide>
-                    <Slide>1</Slide>
-                    <Slide>1</Slide>
-                    <Slide>1</Slide>
-                </Slick>
-            </Slider>
-            <Catalog>
-
-            </Catalog>
+            {this.props.children}
+            <Footer>
+                <Footer__Container>
+                    <Company>AnyComp @ 2017</Company>
+                </Footer__Container>
+            </Footer>
         </Layout>
 }
 

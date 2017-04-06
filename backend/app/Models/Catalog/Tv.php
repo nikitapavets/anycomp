@@ -126,8 +126,12 @@ class Tv extends Catalog
         $this->dynamic_scenes_quality_index = $dynamicScenesQualityIndex;
     }
 
-    public function isSmartTv()
+    public function isSmartTv($details = false)
     {
+        if ($details && $this->smart_tv) {
+            return 'Smart TV';
+        }
+
         return $this->smart_tv;
     }
 
@@ -236,8 +240,12 @@ class Tv extends Catalog
         $this->bluetooth = $isBluetooth ? 1 : 0;
     }
 
-    public function isWiFi()
+    public function isWiFi($details = false)
     {
+        if ($details && $this->wi_fi) {
+            return 'Wi-Fi';
+        }
+
         return $this->wi_fi;
     }
 
@@ -306,9 +314,15 @@ class Tv extends Catalog
         $this->voice_control = $isVoiceControl ? 1 : 0;
     }
 
-    public function getScreenRefreshRate()
+    public function getScreenRefreshRate($details = false)
     {
-        return $this->screen_refresh_rate;
+        if ($this->screen_refresh_rate) {
+            if ($details) {
+                return 'частота '.$this->screen_refresh_rate.' Гц';
+            }
+
+            return $this->screen_refresh_rate;
+        }
     }
 
     public function setScreenRefreshRate($screenRefreshRate)
@@ -570,5 +584,35 @@ class Tv extends Catalog
     public function getName()
     {
         return $this->getBrand()->getName().' '.$this->getModel();
+    }
+
+    public function getDescription()
+    {
+        $description = '';
+        $screenDescription = $this->getScreenDiagonal()->getName()
+            .' '.$this->getScreenResolution()->getName()
+            .' '.$this->getScreenAspectRatio()->getName()
+            .' '.$this->getScreenType()->getName();
+        if (trim($screenDescription)) {
+            $description .= trim($screenDescription);
+        }
+        $matrixDescription = $this->getMatrixType()->getNameWithDetails();
+        if (trim($matrixDescription)) {
+            $description .= ', '.trim($matrixDescription);
+        }
+        $screenRefreshRateDescription = $this->getScreenRefreshRate(true);
+        if (trim($screenRefreshRateDescription)) {
+            $description .= ', '.trim($screenRefreshRateDescription);
+        }
+        $smartTvRateDescription = $this->isSmartTv(true);
+        if (trim($smartTvRateDescription)) {
+            $description .= ', '.trim($smartTvRateDescription);
+        }
+        $wiFiRateDescription = $this->isWiFi(true);
+        if (trim($wiFiRateDescription)) {
+            $description .= ', '.trim($wiFiRateDescription);
+        }
+
+        return $description;
     }
 }

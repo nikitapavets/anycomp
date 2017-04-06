@@ -32,7 +32,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+            \App\Http\Middleware\ApiMiddleware::class,
         ],
     ];
 
@@ -51,6 +51,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'progress' => \App\Http\Middleware\ProgressMiddleware::class,
-        'unique.user' => \App\Http\Middleware\UniqueUserMiddleware::class
+        'unique.user' => \App\Http\Middleware\UniqueUserMiddleware::class,
+        'api' => \App\Http\Middleware\ApiMiddleware::class
     ];
 }
