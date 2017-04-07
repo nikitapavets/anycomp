@@ -429,7 +429,7 @@ class Notebook extends Catalog
         return $this->is_memory_cards;
     }
 
-    public function setMemoryCards($isMemoryCards)
+    public function setIsMemoryCards($isMemoryCards)
     {
         $this->is_memory_cards = $isMemoryCards ? 1 : 0;
     }

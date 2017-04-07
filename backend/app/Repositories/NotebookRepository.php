@@ -194,7 +194,7 @@ class NotebookRepository
                 $notebook->setFingerprintScanner($request->fingerprint_scanner);
                 $notebook->setEyesControl($request->eyes_control);
                 $notebook->setOod($request->ood);
-                $notebook->setMemoryCards($request->is_memory_cards);
+                $notebook->setIsMemoryCards($request->is_memory_cards);
                 $notebook->setNfc($request->nfc);
                 $notebook->setBluetooth($request->bluetooth);
                 $notebook->setLan($request->lan);
