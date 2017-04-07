@@ -50,6 +50,16 @@ class TvRepository
     }
 
     /**
+     * @return Tv[]
+     */
+    public static function getPopularTvs()
+    {
+        return Tv::where('is_popular', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
+    /**
      * @param string $stringIds
      * @param string $delimiter
      */
@@ -132,7 +142,6 @@ class TvRepository
 
                 $tv->setBrand($request->general_brand_id, $request->general_brand_new);
                 $tv->setModel($request->general_model);
-                $tv->setImages($request->general_images);
                 $tv->setYear($request->general_year_id, $request->general_year_new);
                 $tv->setScreenType($request->general_screen_type_id, $request->general_screen_type_new);
                 $tv->setScreenDiagonal($request->general_screen_diagonal_id, $request->general_screen_diagonal_new);
@@ -154,6 +163,7 @@ class TvRepository
                 $tv->setStandType($request->general_stand_type_id, $request->general_stand_type_new);
                 $tv->setQuantity($request->general_quantity);
                 $tv->setPrice($request->general_price);
+                $tv->setIsPopular($request->general_is_popular);
                 $tv->setMatrixType($request->config_matrix_type_id, $request->config_matrix_type_new);
                 $tv->setLocalDimming($request->config_local_dimming);
                 $tv->setLedBacklight($request->config_led_backlight);
@@ -201,6 +211,7 @@ class TvRepository
 
                 $tv->save();
 
+                $tv->setImages($request->general_images);
                 $tv->setTvTuners($request->signal_tuners);
             }
         );

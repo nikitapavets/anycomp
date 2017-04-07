@@ -60,6 +60,7 @@ class Tv extends Catalog
         'remote_interface_unit' => 'boolean',
         'glasses_3d' => 'boolean',
         'wall_mount' => 'boolean',
+        'is_popular' => 'boolean',
         'dynamic_scenes_quality_index' => 'integer',
         'screen_refresh_rate' => 'integer',
         'max_power_consumption' => 'integer',
@@ -312,6 +313,16 @@ class Tv extends Catalog
     public function setVoiceControl($isVoiceControl)
     {
         $this->voice_control = $isVoiceControl ? 1 : 0;
+    }
+
+    public function isPopular()
+    {
+        return $this->is_popular;
+    }
+
+    public function setIsPopular($isPopular)
+    {
+        $this->is_popular = $isPopular ? 1 : 0;
     }
 
     public function getScreenRefreshRate($details = false)

@@ -10,7 +10,6 @@ import config from '../../core/config/general';
 import {connect} from 'react-redux';
 
 const Slider = styled(Container)`
-    padding-top: 15px;
     padding-bottom: 30px;
 `;
 const Slide = styled.div`
@@ -187,32 +186,50 @@ class HomePage extends React.Component {
         this.state = {
             notebooks: [],
             tvs: [],
+            popular: []
         };
     }
 
     loadLatestNotebooks = () => {
         fetch(`${config.server}/api/notebooks`)
             .then(_ => _.json())
-            .then(_ =>
-                this.setState({
-                    notebooks: _
-                })
+            .then(_ => {
+                    this.props.updateLoadedStatus(3);
+                    this.setState({
+                        notebooks: _
+                    });
+                }
             );
     };
 
     loadLatestTvs = () => {
         fetch(`${config.server}/api/tvs`)
             .then(_ => _.json())
-            .then(_ =>
-                this.setState({
-                    tvs: _
-                })
+            .then(_ => {
+                    this.props.updateLoadedStatus(3);
+                    this.setState({
+                        tvs: _
+                    });
+                }
+            );
+    };
+
+    loadPopularProducts = () => {
+        fetch(`${config.server}/api/catalog/popular`)
+            .then(_ => _.json())
+            .then(_ => {
+                    this.props.updateLoadedStatus(3);
+                    this.setState({
+                        popular: _
+                    });
+                }
             );
     };
 
     componentDidMount = () => {
         this.loadLatestNotebooks();
         this.loadLatestTvs();
+        this.loadPopularProducts();
     };
 
     handleAddToBasket = (e, basketItem) => {
@@ -220,7 +237,11 @@ class HomePage extends React.Component {
         e.preventDefault();
     };
 
-    render = () =>
+    componentWillUnmount = () => {
+        this.props.setLoader();
+    };
+
+    render = () => this.props.isLoaded() ?
         <div>
             <Slider>
                 <Slick settings={{
@@ -233,47 +254,21 @@ class HomePage extends React.Component {
                         {breakpoint: sizes.tablet + 1, settings: {slidesToShow: 1}},
                         {breakpoint: sizes.superHd, settings: {slidesToShow: 2}}
                     ]
-                }}>
-                    <Slide>
-                        <Slide__Core>
-                            <Slide__CoreImage src={Slide__CoreImg} title="text" alt="text"/>
-                        </Slide__Core>
-                        <Slide__Header>
-                            <Slide__HeaderBrand>Asus</Slide__HeaderBrand>
-                            <Slide__HeaderModel>N750</Slide__HeaderModel>
-                            <Slide__HeaderBuyNow to="/">Купить за 850.00 р.</Slide__HeaderBuyNow>
-                        </Slide__Header>
-                    </Slide>
-                    <Slide>
-                        <Slide__Core>
-                            <Slide__CoreImage src={Slide__CoreImgMack} title="text" alt="text"/>
-                        </Slide__Core>
-                        <Slide__Header>
-                            <Slide__HeaderBrand>MacBook Air</Slide__HeaderBrand>
-                            <Slide__HeaderModel>N750</Slide__HeaderModel>
-                            <Slide__HeaderBuyNow to="/">Купить за 850.00 р.</Slide__HeaderBuyNow>
-                        </Slide__Header>
-                    </Slide>
-                    <Slide>
-                        <Slide__Core>
-                            <Slide__CoreImage src={Slide__CoreImgMack} title="text" alt="text"/>
-                        </Slide__Core>
-                        <Slide__Header>
-                            <Slide__HeaderBrand>MacBook Air</Slide__HeaderBrand>
-                            <Slide__HeaderModel>N750</Slide__HeaderModel>
-                            <Slide__HeaderBuyNow to="/">Купить за 850.00 р.</Slide__HeaderBuyNow>
-                        </Slide__Header>
-                    </Slide>
-                    <Slide>
-                        <Slide__Core>
-                            <Slide__CoreImage src={Slide__CoreImgMack} title="text" alt="text"/>
-                        </Slide__Core>
-                        <Slide__Header>
-                            <Slide__HeaderBrand>MacBook Air</Slide__HeaderBrand>
-                            <Slide__HeaderModel>N750</Slide__HeaderModel>
-                            <Slide__HeaderBuyNow to="/">Купить за 850.00 р.</Slide__HeaderBuyNow>
-                        </Slide__Header>
-                    </Slide>
+                }} checkEmpty>
+                    {this.state.popular.map((popular, index) =>
+                        <Slide key={index}>
+                            <Slide__Core>
+                                <Slide__CoreImage src={`${config.server}${popular.image}`}
+                                                  title={popular.title}
+                                                  alt={popular.title}/>
+                            </Slide__Core>
+                            <Slide__Header>
+                                <Slide__HeaderBrand>{popular.brand}</Slide__HeaderBrand>
+                                <Slide__HeaderModel>{popular.model}</Slide__HeaderModel>
+                                <Slide__HeaderBuyNow to={popular.link}>Купить за {popular.price} р.</Slide__HeaderBuyNow>
+                            </Slide__Header>
+                        </Slide>
+                    )}
                 </Slick>
             </Slider>
             <Catalog>
@@ -361,6 +356,7 @@ class HomePage extends React.Component {
                 </Advantage>
             </Advantages>
         </div>
+        : <div></div>
 }
 
 export default connect(

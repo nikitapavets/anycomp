@@ -97,7 +97,7 @@ class AdminCatalogController extends Controller
         $tableAction = new TableAction(
             TableAction::TYPE_DELETE,
             TableAction::FORM_INLINE,
-            '/catalog/tv/delete'
+            '/admin/catalog/tv/delete'
         );
         $tableActions->pushTableAction($tableAction);
 
@@ -241,6 +241,10 @@ class AdminCatalogController extends Controller
 
         $widget = new WidgetInput('Цена', 'general_price', true);
         $widget->setValue($tv ? $tv->getPrice() : false);
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetCheckbox('Популярный', 'general_is_popular', false);
+        $widget->setValue($tv ? $tv->isPopular() : false);
         $widgetCollection->pushWidget($widget);
 
         $widgets[] = $widgetCollection->toArray();
@@ -646,6 +650,10 @@ class AdminCatalogController extends Controller
         $widget->setValue($notebook ? $notebook->getPrice() : false);
         $widgetCollection->pushWidget($widget);
 
+        $widget = new WidgetCheckbox('Популярный', 'general_is_popular', false);
+        $widget->setValue($notebook ? $notebook->isPopular() : false);
+        $widgetCollection->pushWidget($widget);
+
         $widgets[] = $widgetCollection->toArray();
 
         // Section 2 (processor)
@@ -853,7 +861,11 @@ class AdminCatalogController extends Controller
         $widget->setValue($notebook ? $notebook->isOod() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetChosen('Карты памяти', 'memory_cards', false);
+        $widget = new WidgetCheckbox('Карты памяти', 'is_memory_cards', false);
+        $widget->setValue($notebook ? $notebook->isMemoryCards() : false);
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetChosen('Типы карт памяти', 'memory_cards', false);
         $widget->setValue($notebook ? $notebook->getMemoryCards() : false);
         $widget->setChosenItems(MemoryCard::getAll());
         $widgetCollection->pushWidget($widget);

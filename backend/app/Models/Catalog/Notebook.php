@@ -89,8 +89,10 @@ class Notebook extends Catalog
         'wi_fi' => 'boolean',
         'mobile_connect' => 'boolean',
         'second_battery' => 'boolean',
+        'is_popular' => 'boolean',
         'mouse' => 'boolean',
         'bag' => 'boolean',
+        'is_memory_cards' => 'boolean',
         'touch_force' => 'boolean',
         'input_usb20' => 'integer',
         'input_usb30' => 'integer',
@@ -201,8 +203,8 @@ class Notebook extends Catalog
      */
     public function getProcessorClockFrequency($details = false)
     {
-        if($this->processor_clock_frequency) {
-            return $this->processor_clock_frequency . $details ? ' МГц' : '';
+        if ($this->processor_clock_frequency) {
+            return $this->processor_clock_frequency.$details ? ' МГц' : '';
         }
     }
 
@@ -420,6 +422,16 @@ class Notebook extends Catalog
     public function setOod($IsOod)
     {
         $this->ood = $IsOod ? 1 : 0;
+    }
+
+    public function isMemoryCards()
+    {
+        return $this->is_memory_cards;
+    }
+
+    public function setMemoryCards($isMemoryCards)
+    {
+        $this->is_memory_cards = $isMemoryCards ? 1 : 0;
     }
 
     /**
@@ -672,6 +684,16 @@ class Notebook extends Catalog
     {
         return $this->mobile_connect;
 
+    }
+
+    public function isPopular()
+    {
+        return $this->is_popular;
+    }
+
+    public function setIsPopular($isPopular)
+    {
+        $this->is_popular = $isPopular ? 1 : 0;
     }
 
     /**

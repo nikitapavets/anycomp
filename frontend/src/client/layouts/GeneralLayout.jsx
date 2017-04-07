@@ -9,11 +9,12 @@ import Dom from '../../core/scripts/dom';
 import {connect} from 'react-redux';
 import config from '../../core/config/general';
 
-const DEV_MODE = false;
+const DEV_MODE = true;
 
 const Layout = styled.div`
     background: ${colors.mainBg};
     padding-top: 58px;
+    overflow: hidden;
     ${media.laptop`
         padding-top: 0;
     `}
@@ -30,6 +31,7 @@ const Layout = styled.div`
             transform: translateX(-50%) translateY(-50%) skewX(-23deg);
         }
     `}
+    min-height: 100%;
 `;
 
 const MobileMenu__Wrap = styled(Container)`
@@ -362,14 +364,32 @@ const Company = styled(Container)`
     text-align: center;
 `;
 
+const Content = styled.div`
+    position: relative;
+    margin-top: 30px;
+`;
+
+const LoaderImg = require('../../../static/images/loading/facebook.gif');
+const Loader = styled.div`
+    ${bgi(LoaderImg, 64)}
+    width: 100%;
+    padding: 50px;
+    background-color: ${colors.white};
+`;
+
 class GeneralLayout extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             isMobileMenuActive: false,
-            isBasketActive: false
+            isBasketActive: false,
+            isLoaded: false,
+            numberOfLoadedComponents: 0
         };
+
+        this.updateLoadedStatus = this.updateLoadedStatus.bind(this);
+        this.isLoaded = this.isLoaded.bind(this);
 
         Dom.outerClick('basket', (e) => {
             if (this.state.isBasketActive) {
@@ -406,102 +426,45 @@ class GeneralLayout extends React.Component {
         e.preventDefault();
     };
 
-    render = () =>
-        <Layout>
-            <MobileMenu__Wrap>
-                <MobileMenu>
-                    <MobileMenu__LogoMenu>
-                        <MobileMenu__Menu to="#" onClick={this.toggleMobileMenu}/>
-                        <MobileMenu__Logo>AnyComp</MobileMenu__Logo>
-                    </MobileMenu__LogoMenu>
-                    <MobileMenu__BasketSet to="#" onClick={this.toggleBasket} className="basket">
-                        <MobileMenu__Basket/>
-                        <MobileMenu__BasketCount>{this.props.basket.length}</MobileMenu__BasketCount>
-                    </MobileMenu__BasketSet>
-                    {this.state.isBasketActive &&
-                    <Menu__BasketBox className="basket">
-                        <BasketBox__Title>Корзина</BasketBox__Title>
-                        {this.props.basket.length
-                            ?
-                            <div>
-                                {this.props.basket.map((basketItem, basketIndex) =>
-                                    <BasketBox__Item key={basketIndex} to={basketItem.link}>
-                                        <BasketBox__ItemImage src={`${config.server}${basketItem.image}`}/>
-                                        <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
-                                        <BasketBox__ItemPriceBox>
-                                            <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
-                                            <BasketBox__ItemPrice>{basketItem.price}<span> р.</span></BasketBox__ItemPrice>
-                                        </BasketBox__ItemPriceBox>
-                                        <BasketBox__ItemClose to="#"
-                                                              onClick={_ => this.handleRemoveFromBasket(_, basketItem.index)}/>
-                                    </BasketBox__Item>
-                                )}
-                                <BasketBox__Sum>
-                                    <span>Итого: </span>
-                                    {this.props.basket.reduce(((sum, basketItem) =>
-                                    sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
-                                    <span> р.</span>
-                                </BasketBox__Sum>
-                                <BasketBox__Button to="#">Оформить заказ</BasketBox__Button>
-                            </div>
-                            :
-                            <BasketBox__Empty>Корзина пуста</BasketBox__Empty>
-                        }
-                    </Menu__BasketBox>
-                    }
-                    <ToggleMenu className={this.state.isMobileMenuActive ? 'active' : ''}>
-                        <ToggleMenu__Header>
-                            <ToggleMenu__HeaderText>Меню</ToggleMenu__HeaderText>
-                            <ToggleMenu__HeaderClose to="#" onClick={this.toggleMobileMenu}/>
-                        </ToggleMenu__Header>
-                        <ToggleMenu__Nav>
-                            {menu.map((menuItem, menuIndex) =>
-                                <ToggleMenu__NavItem key={menuIndex}>
-                                    <ToggleMenu__NavLink to={menuItem.link}
-                                                         activeClassName="active"
-                                                         onClick={_ => this.toggleMobileMenu(_, true)}>
-                                        {menuItem.name}
-                                    </ToggleMenu__NavLink>
-                                </ToggleMenu__NavItem>
-                            )}
-                        </ToggleMenu__Nav>
-                    </ToggleMenu>
-                </MobileMenu>
-            </MobileMenu__Wrap>
-            <Header>
-                <ContactHeader>
-                    <ContactHeader__Container>
-                        <ContactHeader__Phone href="tel:+375297175804">+375(29)717-58-04</ContactHeader__Phone>
-                        <ContactHeader__Social>
-                            <ContactHeader__SocialItem className="vk" href="https://vk.com/anycompby" target="_blank"/>
-                            <ContactHeader__SocialItem className="instagram" href="https://www.instagram.com/anycompby"
-                                                       target="_blank"/>
-                        </ContactHeader__Social>
-                    </ContactHeader__Container>
-                </ContactHeader>
-                <GeneralHeader>
-                    <GeneralHeader__Logo to="/">
-                        <GeneralHeader__LogoImage/>
-                        <GeneralHeader__LogoText>nyComp</GeneralHeader__LogoText>
-                    </GeneralHeader__Logo>
-                </GeneralHeader>
-                <Menu>
-                    <Menu__Container>
-                        <Menu__Items>
-                            {menu.map((menuItem, menuIndex) =>
-                                <Menu__Item to={menuItem.link}
-                                            activeClassName="active"
-                                            onClick={_ => this.toggleMobileMenu(_, true)}
-                                            key={menuIndex}>
-                                    {menuItem.name}
-                                </Menu__Item>
-                            )}
-                        </Menu__Items>
-                        <Menu__Basket to="/" onClick={this.toggleBasket} className="basket">
-                            <Menu__BasketImage/>
-                            <Menu__BasketText>Корзина (<Menu__BasketCount>{this.props.basket.length}</Menu__BasketCount>)
-                                товаров</Menu__BasketText>
-                        </Menu__Basket>
+    updateLoadedStatus = (numberOfComponents) => {
+        this.setState(_ => ({
+            isLoaded: _.numberOfLoadedComponents + 1 == numberOfComponents,
+            numberOfLoadedComponents: _.numberOfLoadedComponents + 1
+        }));
+    };
+
+    isLoaded = () => this.state.isLoaded;
+
+    setLoader = () => {
+        this.setState(_ => ({
+            isLoaded: false,
+            numberOfLoadedComponents: 0
+        }));
+        this.state.isLoaded = false;
+    };
+
+
+    render = () => {
+        const childrenWithProps = React.Children.map(this.props.children,
+            (child) => React.cloneElement(child, {
+                updateLoadedStatus: this.updateLoadedStatus,
+                isLoaded: this.isLoaded,
+                setLoader: this.setLoader
+            })
+        );
+
+        return (
+            <Layout>
+                <MobileMenu__Wrap>
+                    <MobileMenu>
+                        <MobileMenu__LogoMenu>
+                            <MobileMenu__Menu to="#" onClick={this.toggleMobileMenu}/>
+                            <MobileMenu__Logo>AnyComp</MobileMenu__Logo>
+                        </MobileMenu__LogoMenu>
+                        <MobileMenu__BasketSet to="#" onClick={this.toggleBasket} className="basket">
+                            <MobileMenu__Basket/>
+                            <MobileMenu__BasketCount>{this.props.basket.length}</MobileMenu__BasketCount>
+                        </MobileMenu__BasketSet>
                         {this.state.isBasketActive &&
                         <Menu__BasketBox className="basket">
                             <BasketBox__Title>Корзина</BasketBox__Title>
@@ -533,16 +496,113 @@ class GeneralLayout extends React.Component {
                             }
                         </Menu__BasketBox>
                         }
-                    </Menu__Container>
-                </Menu>
-            </Header>
-            {this.props.children}
-            <Footer>
-                <Footer__Container>
-                    <Company>AnyComp @ 2017</Company>
-                </Footer__Container>
-            </Footer>
-        </Layout>
+                        <ToggleMenu className={this.state.isMobileMenuActive ? 'active' : ''}>
+                            <ToggleMenu__Header>
+                                <ToggleMenu__HeaderText>Меню</ToggleMenu__HeaderText>
+                                <ToggleMenu__HeaderClose to="#" onClick={this.toggleMobileMenu}/>
+                            </ToggleMenu__Header>
+                            <ToggleMenu__Nav>
+                                {menu.map((menuItem, menuIndex) =>
+                                    <ToggleMenu__NavItem key={menuIndex}>
+                                        <ToggleMenu__NavLink to={menuItem.link}
+                                                             activeClassName="active"
+                                                             onClick={_ => this.toggleMobileMenu(_, true)}>
+                                            {menuItem.name}
+                                        </ToggleMenu__NavLink>
+                                    </ToggleMenu__NavItem>
+                                )}
+                            </ToggleMenu__Nav>
+                        </ToggleMenu>
+                    </MobileMenu>
+                </MobileMenu__Wrap>
+                <Header>
+                    <ContactHeader>
+                        <ContactHeader__Container>
+                            <ContactHeader__Phone href="tel:+375297175804">+375(29)717-58-04</ContactHeader__Phone>
+                            <ContactHeader__Social>
+                                <ContactHeader__SocialItem className="vk" href="https://vk.com/anycompby"
+                                                           target="_blank"/>
+                                <ContactHeader__SocialItem className="instagram"
+                                                           href="https://www.instagram.com/anycompby"
+                                                           target="_blank"/>
+                            </ContactHeader__Social>
+                        </ContactHeader__Container>
+                    </ContactHeader>
+                    <GeneralHeader>
+                        <GeneralHeader__Logo to="/">
+                            <GeneralHeader__LogoImage/>
+                            <GeneralHeader__LogoText>nyComp</GeneralHeader__LogoText>
+                        </GeneralHeader__Logo>
+                    </GeneralHeader>
+                    <Menu>
+                        <Menu__Container>
+                            <Menu__Items>
+                                {menu.map((menuItem, menuIndex) =>
+                                    <Menu__Item to={menuItem.link}
+                                                activeClassName="active"
+                                                onClick={_ => this.toggleMobileMenu(_, true)}
+                                                key={menuIndex}>
+                                        {menuItem.name}
+                                    </Menu__Item>
+                                )}
+                            </Menu__Items>
+                            <Menu__Basket to="/" onClick={this.toggleBasket} className="basket">
+                                <Menu__BasketImage/>
+                                <Menu__BasketText>Корзина
+                                    (<Menu__BasketCount>{this.props.basket.length}</Menu__BasketCount>)
+                                    товаров</Menu__BasketText>
+                            </Menu__Basket>
+                            {this.state.isBasketActive &&
+                            <Menu__BasketBox className="basket">
+                                <BasketBox__Title>Корзина</BasketBox__Title>
+                                {this.props.basket.length
+                                    ?
+                                    <div>
+                                        {this.props.basket.map((basketItem, basketIndex) =>
+                                            <BasketBox__Item key={basketIndex} to={basketItem.link}>
+                                                <BasketBox__ItemImage src={`${config.server}${basketItem.image}`}/>
+                                                <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
+                                                <BasketBox__ItemPriceBox>
+                                                    <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
+                                                    <BasketBox__ItemPrice>{basketItem.price}<span> р.</span></BasketBox__ItemPrice>
+                                                </BasketBox__ItemPriceBox>
+                                                <BasketBox__ItemClose to="#"
+                                                                      onClick={_ => this.handleRemoveFromBasket(_, basketItem.index)}/>
+                                            </BasketBox__Item>
+                                        )}
+                                        <BasketBox__Sum>
+                                            <span>Итого: </span>
+                                            {this.props.basket.reduce(((sum, basketItem) =>
+                                            sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
+                                            <span> р.</span>
+                                        </BasketBox__Sum>
+                                        <BasketBox__Button to="#">Оформить заказ</BasketBox__Button>
+                                    </div>
+                                    :
+                                    <BasketBox__Empty>Корзина пуста</BasketBox__Empty>
+                                }
+                            </Menu__BasketBox>
+                            }
+                        </Menu__Container>
+                    </Menu>
+                </Header>
+                <Content>
+                    {!this.state.isLoaded &&
+                    <Loader/>
+                    }
+                    {childrenWithProps}
+                </Content>
+                {this.state.isLoaded &&
+                <Footer>
+                    <Footer__Container>
+                        <Company>AnyComp @ 2017</Company>
+                    </Footer__Container>
+                </Footer>
+                }
+            </Layout>
+        )
+    }
+
 }
 
 export default connect(

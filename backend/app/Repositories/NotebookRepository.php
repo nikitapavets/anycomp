@@ -50,6 +50,16 @@ class NotebookRepository
     }
 
     /**
+     * @return Notebook[]
+     */
+    public static function getPopularNotebooks()
+    {
+        return Notebook::where('is_popular', '=', '1')
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
+    /**
      * @param Notebook[] $notebooks
      * @return TableRowsCollection
      */
@@ -132,12 +142,12 @@ class NotebookRepository
                 $notebook->setBrand($request->general_brand_id, $request->general_brand_new);
                 $notebook->setModel($request->general_model);
                 $notebook->setConfig($request->general_config);
-                $notebook->setImages($request->general_images);
                 $notebook->setComputerType($request->general_computer_type_id, $request->general_computer_type_new);
                 $notebook->setTransformer($request->general_transformer);
                 $notebook->setYear($request->general_year_id, $request->general_year_new);
                 $notebook->setQuantity($request->general_quantity);
                 $notebook->setPrice($request->general_price);
+                $notebook->setIsPopular($request->general_is_popular);
                 $notebook->setProcessorStage($request->processor_stage_id, $request->processor_stage_new);
                 $notebook->setProcessor($request->processor_id, $request->processor_new);
                 $notebook->setProcessorModel($request->processor_model);
@@ -184,6 +194,7 @@ class NotebookRepository
                 $notebook->setFingerprintScanner($request->fingerprint_scanner);
                 $notebook->setEyesControl($request->eyes_control);
                 $notebook->setOod($request->ood);
+                $notebook->setMemoryCards($request->is_memory_cards);
                 $notebook->setNfc($request->nfc);
                 $notebook->setBluetooth($request->bluetooth);
                 $notebook->setLan($request->lan);
@@ -211,6 +222,7 @@ class NotebookRepository
 
                 $notebook->save();
 
+                $notebook->setImages($request->general_images);
                 $notebook->setHddTypes($request->hdd_types);
                 $notebook->setMemoryCards($request->memory_cards);
                 $notebook->setTvTuners($request->tv_tuner);

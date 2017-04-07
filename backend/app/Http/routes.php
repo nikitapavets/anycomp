@@ -35,6 +35,7 @@ Route::group(
     function () {
         Route::resource('notebooks', 'NotebookController');
         Route::resource('tvs', 'TvController');
+        Route::get('/catalog/popular', ['uses' => 'CatalogController@popular']);
     }
 );
 
