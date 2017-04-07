@@ -7,6 +7,7 @@ import {bgi, media, sizes} from '../libs/mixins';
 import Slick from '../components/Slick';
 import Arrow from '../components/Arrow';
 import config from '../../core/config/general';
+import {connect} from 'react-redux';
 
 const Slider = styled(Container)`
     padding-top: 15px;
@@ -214,6 +215,11 @@ class HomePage extends React.Component {
         this.loadLatestTvs();
     };
 
+    handleAddToBasket = (e, basketItem) => {
+        this.props.addToBasket(basketItem);
+        e.preventDefault();
+    };
+
     render = () =>
         <div>
             <Slider>
@@ -295,7 +301,9 @@ class HomePage extends React.Component {
                                     <Catalog__GoodDescription>{notebook.description}</Catalog__GoodDescription>
                                     <Catalog__GoodPrice>{notebook.price} р.</Catalog__GoodPrice>
                                     <Catalog__GoodDetails>
-                                        <Catalog__GoodDetail className="basket" to="/basket"/>
+                                        <Catalog__GoodDetail className="basket"
+                                                             to="/basket"
+                                                             onClick={_ => this.handleAddToBasket(_, notebook)}/>
                                     </Catalog__GoodDetails>
                                 </Catalog__Good>
                             )}
@@ -328,7 +336,9 @@ class HomePage extends React.Component {
                                     <Catalog__GoodDescription>{tv.description}</Catalog__GoodDescription>
                                     <Catalog__GoodPrice>{tv.price} р.</Catalog__GoodPrice>
                                     <Catalog__GoodDetails>
-                                        <Catalog__GoodDetail className="basket" to="/basket"/>
+                                        <Catalog__GoodDetail className="basket"
+                                                             to="/basket"
+                                                             onClick={_ => this.handleAddToBasket(_, tv)}/>
                                     </Catalog__GoodDetails>
                                 </Catalog__Good>
                             )}
@@ -353,4 +363,11 @@ class HomePage extends React.Component {
         </div>
 }
 
-export default HomePage;
+export default connect(
+    state => ({
+        basket: state.basket
+    }),
+    dispatch => ({
+        addToBasket: (basketItem) => dispatch({type: 'ADD_TO_BASKET', payload: basketItem})
+    })
+)(HomePage);

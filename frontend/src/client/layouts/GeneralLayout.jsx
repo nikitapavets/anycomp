@@ -5,8 +5,9 @@ import {Container} from '../libs/blocks';
 import {colors, fontSizes} from '../libs/variables';
 import {bgi, media, sizes} from '../libs/mixins';
 import menu from '../config/menu';
-import Slick from '../components/Slick';
-import Arrow from '../components/Arrow';
+import Dom from '../../core/scripts/dom';
+import {connect} from 'react-redux';
+import config from '../../core/config/general';
 
 const DEV_MODE = false;
 
@@ -24,7 +25,7 @@ const Layout = styled.div`
             margin-left: 50%;
             content: '';
             width: 400px;
-            height: 200vh;
+            height: 100%;
             background: ${colors.mainBold};
             transform: translateX(-50%) translateY(-50%) skewX(-23deg);
         }
@@ -67,9 +68,10 @@ const MobileMenu__Logo = styled(Link)`
     text-transform: uppercase;
 `;
 
-const MobileMenu__BasketSet = styled.div`
+const MobileMenu__BasketSet = styled(Link)`
     display: flex;
     align-items: center;
+    text-decoration: none;
 `;
 
 const MobileMenu__BasketImg = require('../../../static/images/svg/shopping-cart_699AD1.svg');
@@ -145,7 +147,7 @@ const ContactHeader__Container = styled(Container)`
     align-items: center;
 `;
 
-const ContactHeader__Phone = styled.a`
+const ContactHeader__Phone = styled(Link)`
      color: ${colors.white};
      text-decoration: none;
 `;
@@ -212,6 +214,7 @@ const Menu = styled.div`
 const Menu__Container = styled(Container)`
     display: flex;
     justify-content: space-between;
+    position: relative;
 `;
 
 const Menu__Items = styled.div`
@@ -268,6 +271,84 @@ const Menu__BasketText = styled.div`
 const Menu__BasketCount = styled.span`
     font-weight: bold;
 `;
+const Menu__BasketBox = styled.div`
+    position: absolute;
+    right: 0;
+    top: 58px;
+    width: 100%;
+    background: ${colors.white};
+    box-shadow: 0 2px 2px rgba(0,0,0,0.25);
+    ${media.laptop`
+        top: 56px;
+    `}
+    ${media.tablet`
+        width: 425px;
+    `}
+`;
+const BasketBox__Title = styled.div`
+    font-size: ${fontSizes.xl};
+    padding: 15px;
+`;
+const BasketBox__Empty = styled.div`
+    font-size: ${fontSizes.s};
+    padding: 0 15px 15px 15px;
+`;
+const BasketBox__Sum = styled.div`
+    span {
+        color: ${colors.black};
+    }
+    font-size: ${fontSizes.m};
+    padding: 15px;
+    color: ${colors.red};
+`;
+const BasketBox__Button = styled(Link)`
+    display: inline-block;
+    background: ${colors.main};
+    padding: 10px 15px;
+    color: ${colors.white};
+    font-size: ${fontSizes.xs};
+    font-weight: 800;
+    margin: 0 15px 15px 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+`;
+const BasketBox__Item = styled(Link)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid ${colors.minor};
+    padding: 10px 15px;
+    position: relative;
+    text-decoration: none;
+`;
+const BasketBox__ItemImage = styled.img`
+    height: 75px;
+    min-width: 75px;
+`;
+const BasketBox__ItemTitle = styled.div`
+    font-size: ${fontSizes.s};
+`;
+const BasketBox__ItemPriceBox = styled.div`
+    font-size: ${fontSizes.s};
+    text-align: right;
+    width: 91px;
+`;
+const BasketBox__ItemPrice = styled.div`
+    color: ${colors.red};
+    span {
+       color: ${colors.black}; 
+    }
+`;
+const BasketBox__ItemCount = styled.div`
+    font-style: italic;
+`;
+const BasketBox__ItemCloseImg = require('../../../static/images/svg/cancel_699AD1.svg');
+const BasketBox__ItemClose = styled(Link)`
+    ${bgi(BasketBox__ItemCloseImg, 12)}
+    position: absolute;
+    right: 10px;
+    top: 10px;
+`;
 
 const Footer = styled.div`
     background-color: ${colors.black};
@@ -286,8 +367,15 @@ class GeneralLayout extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isMobileMenuActive: false
-        }
+            isMobileMenuActive: false,
+            isBasketActive: false
+        };
+
+        Dom.outerClick('basket', (e) => {
+            if (this.state.isBasketActive) {
+                this.toggleBasket(e);
+            }
+        });
     }
 
     static auth = (nextState, replace) => {
@@ -306,6 +394,18 @@ class GeneralLayout extends React.Component {
         }
     };
 
+    toggleBasket = (e) => {
+        this.setState(_ => ({
+            isBasketActive: !_.isBasketActive
+        }));
+        e.preventDefault();
+    };
+
+    handleRemoveFromBasket = (e, removeIndex) => {
+        this.props.removeFromBasket(removeIndex);
+        e.preventDefault();
+    };
+
     render = () =>
         <Layout>
             <MobileMenu__Wrap>
@@ -314,10 +414,41 @@ class GeneralLayout extends React.Component {
                         <MobileMenu__Menu to="#" onClick={this.toggleMobileMenu}/>
                         <MobileMenu__Logo>AnyComp</MobileMenu__Logo>
                     </MobileMenu__LogoMenu>
-                    <MobileMenu__BasketSet>
+                    <MobileMenu__BasketSet to="#" onClick={this.toggleBasket} className="basket">
                         <MobileMenu__Basket/>
-                        <MobileMenu__BasketCount>0</MobileMenu__BasketCount>
+                        <MobileMenu__BasketCount>{this.props.basket.length}</MobileMenu__BasketCount>
                     </MobileMenu__BasketSet>
+                    {this.state.isBasketActive &&
+                    <Menu__BasketBox className="basket">
+                        <BasketBox__Title>Корзина</BasketBox__Title>
+                        {this.props.basket.length
+                            ?
+                            <div>
+                                {this.props.basket.map((basketItem, basketIndex) =>
+                                    <BasketBox__Item key={basketIndex} to={basketItem.link}>
+                                        <BasketBox__ItemImage src={`${config.server}${basketItem.image}`}/>
+                                        <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
+                                        <BasketBox__ItemPriceBox>
+                                            <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
+                                            <BasketBox__ItemPrice>{basketItem.price}<span> р.</span></BasketBox__ItemPrice>
+                                        </BasketBox__ItemPriceBox>
+                                        <BasketBox__ItemClose to="#"
+                                                              onClick={_ => this.handleRemoveFromBasket(_, basketItem.index)}/>
+                                    </BasketBox__Item>
+                                )}
+                                <BasketBox__Sum>
+                                    <span>Итого: </span>
+                                    {this.props.basket.reduce(((sum, basketItem) =>
+                                    sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
+                                    <span> р.</span>
+                                </BasketBox__Sum>
+                                <BasketBox__Button to="#">Оформить заказ</BasketBox__Button>
+                            </div>
+                            :
+                            <BasketBox__Empty>Корзина пуста</BasketBox__Empty>
+                        }
+                    </Menu__BasketBox>
+                    }
                     <ToggleMenu className={this.state.isMobileMenuActive ? 'active' : ''}>
                         <ToggleMenu__Header>
                             <ToggleMenu__HeaderText>Меню</ToggleMenu__HeaderText>
@@ -342,8 +473,9 @@ class GeneralLayout extends React.Component {
                     <ContactHeader__Container>
                         <ContactHeader__Phone href="tel:+375297175804">+375(29)717-58-04</ContactHeader__Phone>
                         <ContactHeader__Social>
-                            <ContactHeader__SocialItem className="vk" to="/"/>
-                            <ContactHeader__SocialItem className="instagram" to="/"/>
+                            <ContactHeader__SocialItem className="vk" href="https://vk.com/anycompby" target="_blank"/>
+                            <ContactHeader__SocialItem className="instagram" href="https://www.instagram.com/anycompby"
+                                                       target="_blank"/>
                         </ContactHeader__Social>
                     </ContactHeader__Container>
                 </ContactHeader>
@@ -365,11 +497,42 @@ class GeneralLayout extends React.Component {
                                 </Menu__Item>
                             )}
                         </Menu__Items>
-                        <Menu__Basket to="/">
+                        <Menu__Basket to="/" onClick={this.toggleBasket} className="basket">
                             <Menu__BasketImage/>
-                            <Menu__BasketText>Корзина (<Menu__BasketCount>0</Menu__BasketCount>)
+                            <Menu__BasketText>Корзина (<Menu__BasketCount>{this.props.basket.length}</Menu__BasketCount>)
                                 товаров</Menu__BasketText>
                         </Menu__Basket>
+                        {this.state.isBasketActive &&
+                        <Menu__BasketBox className="basket">
+                            <BasketBox__Title>Корзина</BasketBox__Title>
+                            {this.props.basket.length
+                                ?
+                                <div>
+                                    {this.props.basket.map((basketItem, basketIndex) =>
+                                        <BasketBox__Item key={basketIndex} to={basketItem.link}>
+                                            <BasketBox__ItemImage src={`${config.server}${basketItem.image}`}/>
+                                            <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
+                                            <BasketBox__ItemPriceBox>
+                                                <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
+                                                <BasketBox__ItemPrice>{basketItem.price}<span> р.</span></BasketBox__ItemPrice>
+                                            </BasketBox__ItemPriceBox>
+                                            <BasketBox__ItemClose to="#"
+                                                                  onClick={_ => this.handleRemoveFromBasket(_, basketItem.index)}/>
+                                        </BasketBox__Item>
+                                    )}
+                                    <BasketBox__Sum>
+                                        <span>Итого: </span>
+                                        {this.props.basket.reduce(((sum, basketItem) =>
+                                        sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
+                                        <span> р.</span>
+                                    </BasketBox__Sum>
+                                    <BasketBox__Button to="#">Оформить заказ</BasketBox__Button>
+                                </div>
+                                :
+                                <BasketBox__Empty>Корзина пуста</BasketBox__Empty>
+                            }
+                        </Menu__BasketBox>
+                        }
                     </Menu__Container>
                 </Menu>
             </Header>
@@ -382,4 +545,12 @@ class GeneralLayout extends React.Component {
         </Layout>
 }
 
-export default GeneralLayout;
+export default connect(
+    state => ({
+        basket: state.basket
+    }),
+    dispatch => ({
+        addToBasket: (basketItem) => dispatch({type: 'ADD_TO_BASKET', payload: basketItem}),
+        removeFromBasket: (removeIndex) => dispatch({type: 'REMOVE_FROM_BASKET', payload: removeIndex})
+    })
+)(GeneralLayout);

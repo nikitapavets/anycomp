@@ -70,8 +70,9 @@ module.exports = {
             hash: true,
             chunks: ['core', 'client']
         }),
-        // new webpack.ProvidePlugin({
-        //     SlideMenu: "slide-and-swipe-menu"
-        // })
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
     ]
 };
