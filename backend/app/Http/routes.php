@@ -2,8 +2,6 @@
 
 Route::pattern('id', '[0-9]+');
 
-Route::get('/', ['as' => 'index', 'uses' => 'MainController@index']);
-
 Route::group(
     ['prefix' => 'dev'],
     function () {
@@ -25,20 +23,6 @@ Route::group(
 Route::get('/login', ['as' => 'admin.login', 'uses' => 'AdminController@login']);
 Route::get('/logout', ['as' => 'admin.logout', 'uses' => 'AdminController@logout']);
 Route::post('/check', ['as' => 'admin.check', 'uses' => 'AdminController@check']);
-
-
-Route::group(
-    [
-        'prefix' => 'api',
-        'middleware' => ['api'],
-    ],
-    function () {
-        Route::resource('notebooks', 'NotebookController');
-        Route::resource('tvs', 'TvController');
-        Route::get('/catalog/popular', ['uses' => 'CatalogController@popular']);
-    }
-);
-
 
 Route::group(
     ['prefix' => 'admin'],
@@ -424,3 +408,27 @@ Route::group(
 
     }
 );
+
+/**
+ * API
+ */
+
+Route::group(
+    [
+        'prefix' => 'api',
+        'middleware' => ['api'],
+        'namespace' => 'Api',
+    ],
+    function () {
+        Route::resource('notebooks', 'NotebookController');
+        Route::resource('tvs', 'TvController');
+        Route::get('/catalog/popular', ['uses' => 'CatalogController@popular']);
+    }
+);
+
+/**
+ * WEB
+ */
+
+Route::get('{slug}', ['as' => 'index', 'uses' => 'MainController@index'])
+    ->where('slug', '(?!api)([A-z\d-\/_.]+)?');

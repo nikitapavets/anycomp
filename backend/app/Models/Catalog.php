@@ -66,40 +66,48 @@ class Catalog extends Model
 
     public function getBigImage($productType)
     {
-        if (!count($this->getImages($productType))) {
+        $generalImages = $this->getImages($productType, true);
+        if (!count($generalImages)) {
             return '';
         }
 
-        return config('image.catalog_big_img').$this->getImages($productType)[0]->getLink();
+        return config('image.catalog_big_img').$generalImages[0]->getLink();
     }
 
     /**
      * @param int $productType
+     * @param bool $isGeneralImage
      * @return Image[]
      */
-    public function getImages($productType)
+    public function getImages($productType, $isGeneralImage = false)
     {
-        return ImageRepository::getImagesByProductId($this->getId(), $productType);
+        return ImageRepository::getImagesByProductId($this->getId(), $productType, $isGeneralImage);
     }
 
     public function getSmallImage($productType)
     {
-        if (!count($this->getImages($productType))) {
+        $generalImages = $this->getImages($productType, true);
+        if (!count($generalImages)) {
             return '';
         }
 
-        return config('image.catalog_small_img').$this->getImages($productType)[0]->getLink();
+        return config('image.catalog_small_img').$generalImages[0]->getLink();
     }
 
-    public function setImages($images, $productType)
+    public function setImages($images, $isGeneral = false, $productType = false)
     {
-        ImageRepository::flushDb($this->getId(), $productType);
+        ImageRepository::flushDb($this->getId(), $isGeneral, $productType);
         if ($images) {
             $images = explode(',', $images);
             $photo_num = 0;
             foreach ($images as $image) {
                 if (strpos($image, '/tmp/') === false) {
-                    Image::storeDb($this->getId(), $productType, substr($image, strripos($image, '/') + 1));
+                    ImageRepository::saveImage(
+                        $this->getId(),
+                        $productType,
+                        substr($image, strripos($image, '/') + 1),
+                        $isGeneral
+                    );
                 } else {
                     // small image
                     $img = ImageManager::make($_SERVER['DOCUMENT_ROOT'].$image);
@@ -124,11 +132,10 @@ class Catalog extends Model
                     );
                     $img_path = $_SERVER['DOCUMENT_ROOT'].config('image.catalog_big_img');
                     $img->save($img_path.$img_name, 100);
-                    Image::storeDb($this->getId(), $productType, $img_name);
+                    ImageRepository::saveImage($this->getId(), $productType, $img_name, $isGeneral);
                 }
                 $photo_num++;
             }
         }
     }
-
 }

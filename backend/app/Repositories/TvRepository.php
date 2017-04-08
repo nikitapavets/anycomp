@@ -212,6 +212,7 @@ class TvRepository
                 $tv->save();
 
                 $tv->setImages($request->general_images);
+                $tv->setImages($request->general_general_images, true);
                 $tv->setTvTuners($request->signal_tuners);
             }
         );

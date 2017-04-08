@@ -69,8 +69,48 @@
                                                name="{{ isset($row['add_new_name']) ? $row['add_new_name'] : '' }}"
                                                class="hidden">
                                     @endif
+                                @elseif($row['item'] == 'simpleFile')
+                                    <div class="uploader uploaderSingleImage">
+                                        <input type="input"
+                                               id="{{ isset($row['name']) ? $row['name'] : '' }}"
+                                               name="{{ isset($row['name']) ? $row['name'] : '' }}"
+                                               class="inp_img"
+                                               value="{{ isset($row['value']) ? implode(',', $row['value']) : '' }}">
+                                        <span class="filename">{{ isset($row['value']) && $row['value'] ? 'Выбрано файлов: ' . count($row['value']) : 'Файлы не выбраны' }}</span>
+                                        <span class="action">Choose File</span>
+                                        <div class="upload-files single hidden">
+                                            <div class="upload-files__area">
+                                                <div class="items">
+                                                    @if(isset($row['value']))
+                                                        @foreach($row['value'] as $img)
+                                                            <div class="item">
+                                                                <img src="{{ $img }}" data-link="{{ $img }}">
+                                                                <a href="javascript:;" class="cross">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                        <use xlink:href='#cross_ff491f'></use>
+                                                                    </svg>
+                                                                </a>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                                <input type="hidden" class="inp_img">
+                                                <div class="admin-panel__buttons">
+                                                    <button class="admin-panel__button green" id="UploadSingleImage">
+                                                        Выбрать файлы
+                                                        <div class="loader hidden">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                <use xlink:href='#loader_balls'></use>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="error"></div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @elseif($row['item'] == 'file')
-                                    <div class="uploader">
+                                    <div class="uploader uploaderMultiImage">
                                         <input type="input"
                                                id="{{ isset($row['name']) ? $row['name'] : '' }}"
                                                name="{{ isset($row['name']) ? $row['name'] : '' }}"

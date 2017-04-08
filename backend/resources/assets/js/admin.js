@@ -1,25 +1,24 @@
-$('document').ready(function(){
+$('document').ready(function () {
 
     var Forms = {
 
         'uploader': function () {
 
-          $('.uploader input').focus(function (e) {
+            $('.uploader input').focus(function (e) {
+                $(this).parent().find('.upload-files').removeClass('hidden');
 
-              $('.upload-files').removeClass('hidden');
+            });
 
-          });
-
-          $('.uploader input').on('change', function (event, files, label) {
-              var file_name = this.value.replace(/\\/g, '/').replace(/.*\//, '');
-              $(this).next('.filename').text(file_name);
-          });
+            $('.uploader input').on('change', function (event, files, label) {
+                var file_name = this.value.replace(/\\/g, '/').replace(/.*\//, '');
+                $(this).next('.filename').text(file_name);
+            });
 
         },
 
-        'fileUploader': function() {
+        'fileUploader': function () {
 
-            $(document).click(function(event){
+            $(document).click(function (event) {
                 if ($(event.target).closest('.upload-files__area').length) return;
                 if ($(event.target).closest('input').length) return;
                 if ($(event.target).closest('.upload-files__area .admin-panel__buttons').length) return;
@@ -28,71 +27,120 @@ $('document').ready(function(){
 
         },
 
-        'ajaxUploader': function() {
+        'ajaxUploadSingleImage': function () {
 
-            var btnUpload = $('#UploadFiles');
-            var loader = btnUpload.find('.loader');
-            var error = btnUpload.find('.error');
+            $('.uploaderSingleImage').each(function (i, item) {
+                var uploader = $(item);
+                var btnUpload = uploader.find('#UploadSingleImage');
+                var loader = uploader.find('.loader');
+                var error = uploader.find('.error');
 
-            if(btnUpload.length) {
-                new AjaxUpload(btnUpload, {
-                    action: '/upload/files',
-                    name: 'uploadfile',
-                    onSubmit: function(file, ext){
-                        error.text('');
-                        if(!(ext && /^(jpg|png|jpeg|gif)$/.test(ext))) {
-                            error.text('Поддерживаемые форматы: jpg, png, gif.');
-                            return false;
-                        } else if($('.upload-files .item').length >= 12 ) {
-                            error.text('Превышено максимальное колличество файлов.');
-                            return false;
-                        }
-                        loader.removeClass("hidden");
-                    },
-                    onComplete: function(file, response) {
-                        var item = '' +
-                            '<div class="item">' +
+                if (btnUpload.length) {
+                    new AjaxUpload(btnUpload, {
+                        action: '/upload/files',
+                        name: 'uploadfile',
+                        onSubmit: function (file, ext) {
+                            error.text('');
+                            if (!(ext && /^(jpg|png|jpeg|gif)$/.test(ext))) {
+                                error.text('Поддерживаемые форматы: jpg, png, gif.');
+                                return false;
+                            } else if (uploader.find('.item').length >= 1) {
+                                error.text('Превышено максимальное колличество файлов.');
+                                return false;
+                            }
+                            loader.removeClass("hidden");
+                        },
+                        onComplete: function (file, response) {
+                            var item = '' +
+                                '<div class="item">' +
                                 '<img src="' + response + '" data-link="' + response + '">' +
                                 ' <a href="javascript:;" class="cross">' +
-                                    '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
-                                        '<use xlink:href="#cross_ff491f"></use>' +
-                                    '</svg>' +
+                                '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
+                                '<use xlink:href="#cross_ff491f"></use>' +
+                                '</svg>' +
                                 '</a>' +
-                            '</div>';
-                        $('.upload-files .items').append(item);
-                        loader.addClass("hidden");
-                        Forms.updateUploadFiles();
-                        Forms.deleteUploadFiles();
-                    }
-                });
-            }
+                                '</div>';
+                            uploader.find('.items').append(item);
+                            loader.addClass("hidden");
+                            Forms.updateUploadFiles(uploader);
+                            Forms.deleteUploadFiles(uploader);
+                        }
+                    });
+
+                    Forms.deleteUploadFiles(uploader);
+                }
+            });
         },
 
-        'updateUploadFiles': function () {
+        'ajaxUploader': function () {
+
+            $('.uploaderMultiImage').each(function (i, item) {
+                var uploader = $(item);
+                var btnUpload = uploader.find('#UploadFiles');
+                var loader = btnUpload.find('.loader');
+                var error = btnUpload.find('.error');
+
+                if (btnUpload.length) {
+                    new AjaxUpload(btnUpload, {
+                        action: '/upload/files',
+                        name: 'uploadfile',
+                        onSubmit: function (file, ext) {
+                            error.text('');
+                            if (!(ext && /^(jpg|png|jpeg|gif)$/.test(ext))) {
+                                error.text('Поддерживаемые форматы: jpg, png, gif.');
+                                return false;
+                            } else if (uploader.find('.item').length >= 12) {
+                                error.text('Превышено максимальное колличество файлов.');
+                                return false;
+                            }
+                            loader.removeClass("hidden");
+                        },
+                        onComplete: function (file, response) {
+                            var item = '' +
+                                '<div class="item">' +
+                                '<img src="' + response + '" data-link="' + response + '">' +
+                                ' <a href="javascript:;" class="cross">' +
+                                '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
+                                '<use xlink:href="#cross_ff491f"></use>' +
+                                '</svg>' +
+                                '</a>' +
+                                '</div>';
+                            uploader.find('.items').append(item);
+                            loader.addClass("hidden");
+                            Forms.updateUploadFiles(uploader);
+                            Forms.deleteUploadFiles(uploader);
+                        }
+                    });
+                    Forms.deleteUploadFiles(uploader);
+                }
+            });
+        },
+
+        'updateUploadFiles': function (item) {
 
             var links = [];
-            $('.upload-files .item').each(function (i) {
-                links.push($('.upload-files .item img').eq(i).data('link'));
+            item.find('.item').each(function (i) {
+                links.push(item.find('.item img').eq(i).data('link'));
             });
-            $('.uploader .inp_img').val(links.join(','));
-            if($('.upload-files .item').length == 0) {
-                $('.uploader .filename').text('Файлы не выбраны');
+            item.find('.inp_img').val(links.join(','));
+            if (item.find('.item').length == 0) {
+                item.find('.filename').text('Файлы не выбраны');
             } else {
-                $('.uploader .filename').text('Выбрано файлов: ' + $('.upload-files .item').length);
+                item.find('.filename').text('Выбрано файлов: ' + item.find('.item').length);
             }
         },
 
-        'deleteUploadFiles': function () {
+        'deleteUploadFiles': function (item) {
 
-            $('.upload-files .cross').click(function (e) {
+            item.find('.cross').click(function (e) {
                 $(this).parent().remove();
-                Forms.updateUploadFiles();
+                Forms.updateUploadFiles(item);
                 e.preventDefault();
                 return false;
             });
         },
 
-        'adminChosen': function() {
+        'adminChosen': function () {
 
             var base = [];
             var area = [];
@@ -109,22 +157,22 @@ $('document').ready(function(){
                 area[index].click(function () {
                     var hiddenItems = 0;
                     dropItem[index].each(function (i) {
-                        if(dropItem[index].eq(i).hasClass('hidden')){
+                        if (dropItem[index].eq(i).hasClass('hidden')) {
                             hiddenItems++;
                         }
                     });
-                    if(hiddenItems != dropItem[index].length) {
+                    if (hiddenItems != dropItem[index].length) {
                         dropArea[index].removeClass('hidden');
                     }
                 });
 
-                var closeHandle = function (){
+                var closeHandle = function () {
                     var closeNode = base[index].find('.close');
                     closeNode.click(function () {
                         $(this).parent().remove();
                         var nodeText = $(this).parent().find('span').text();
                         dropItem[index].each(function (i) {
-                            if(dropItem[index].eq(i).text() == nodeText) {
+                            if (dropItem[index].eq(i).text() == nodeText) {
                                 dropItem[index].eq(i).removeClass('hidden');
                             }
                         });
@@ -133,10 +181,10 @@ $('document').ready(function(){
                 };
                 closeHandle();
 
-                var updateChosen  = function () {
+                var updateChosen = function () {
                     var chosenItems = [];
                     dropItem[index].each(function (i) {
-                        if(dropItem[index].eq(i).hasClass('hidden')){
+                        if (dropItem[index].eq(i).hasClass('hidden')) {
                             chosenItems.push(dropItem[index].eq(i).data('id'));
                         }
                     });
@@ -158,7 +206,7 @@ $('document').ready(function(){
                     updateChosen();
                 });
 
-                $(document).click(function(event){
+                $(document).click(function (event) {
                     if ($(event.target).closest('.admin-chosen__drop').length) return;
                     if ($(event.target).closest('.admin-chosen__area').length) return;
                     dropArea[index].addClass('hidden');
@@ -170,7 +218,7 @@ $('document').ready(function(){
     Forms.fileUploader();
     Forms.uploader();
     Forms.ajaxUploader();
-    Forms.deleteUploadFiles();
+    Forms.ajaxUploadSingleImage();
     Forms.adminChosen();
 
     $('.admin-panel__left-side--menu .menu-item').click(function (e) {
@@ -179,23 +227,23 @@ $('document').ready(function(){
     });
 
     $('.admin-panel__left-side--menu .menu-item-sub').click(function (e) {
-        $('.admin-panel__left-side--menu .menu-item-sub').each(function(i){
+        $('.admin-panel__left-side--menu .menu-item-sub').each(function (i) {
             $(this).parent().removeClass('active');
         });
         $(this).parent().addClass('active');
     });
 
     var Validator = {};
-    Validator.onlyRussian = function(data){
+    Validator.onlyRussian = function (data) {
         var regex = /^[А-Я|ё| ]+$/i;
-        if(data.search(regex) != -1){
+        if (data.search(regex) != -1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    Validator.isEmpty = function(data){
-        if(isNaN(data)){
+    Validator.isEmpty = function (data) {
+        if (isNaN(data)) {
             return data.trim() == '';
         }
         return data == 0;
@@ -206,7 +254,7 @@ $('document').ready(function(){
         $(this).prev('span').text($(this).find('option:selected').text());
     });
 
-    $('.admin-panel__checker input').click(function(e){
+    $('.admin-panel__checker input').click(function (e) {
         $(this).parent("span").toggleClass('checked');
     });
 
@@ -215,7 +263,7 @@ $('document').ready(function(){
         $(this).addClass('hidden');
     })
 
-    function saveStatuses(){
+    function saveStatuses() {
         var statuses = '';
         $('.dual_selects__second option').each(function (i) {
             statuses += $('.dual_selects__second option').eq(i).val() + ',';
@@ -261,7 +309,7 @@ $('document').ready(function(){
 
     $('.formNextBtn').click(function (e) {
 
-        if($(this).hasClass('disabled')) {
+        if ($(this).hasClass('disabled')) {
             e.preventDefault();
             return false;
         }
@@ -276,10 +324,10 @@ $('document').ready(function(){
             var field_name = $(widget).find('.fieldForValidate').eq(i).text();
             var field_valid_type = $(widget).find('.fieldForValidate').eq(i).data('type');
             var field_input = $(widget).find('.fieldForValidate').eq(i).parent().next('.widget-row__right').find('input').val();
-            var field_select =  parseInt($(widget).find('.fieldForValidate').eq(i).parent().next('.widget-row__right').find('select').val());
-            var field_value =  field_input || field_select || '';
+            var field_select = parseInt($(widget).find('.fieldForValidate').eq(i).parent().next('.widget-row__right').find('select').val());
+            var field_value = field_input || field_select || '';
             if (Validator.isEmpty(field_value)) {
-                if($(field).data('require') == 'require') {
+                if ($(field).data('require') == 'require') {
                     error.push("Необходимо заполнить поле '" + field_name + "'.");
                     $(widget).find('.required').eq(i).parent().next('.widget-row__right').find('input').val('');
                 }
@@ -313,7 +361,7 @@ $('document').ready(function(){
             return false;
         } else {
 
-            if(pos == $('.formNextBtn.top').length - 1){
+            if (pos == $('.formNextBtn.top').length - 1) {
                 $('.formNextBtn.top').eq(pos).addClass('disabled');
                 return true;
             } else {
@@ -323,7 +371,7 @@ $('document').ready(function(){
                 $('.formNextBtn.top').eq(pos + 1).parent().removeClass('hidden');
             }
 
-            if(pos == $('.formNextBtn.bottom').length - 1){
+            if (pos == $('.formNextBtn.bottom').length - 1) {
                 $('.formNextBtn.bottom').eq(pos).addClass('disabled');
                 return true;
             } else {
@@ -361,7 +409,7 @@ $('document').ready(function(){
     var techInfo = $('#techInfo');
     var statusesInfo = $('#statusesInfo');
 
-    $('#addTechNextClientBtn').click(function(e) {
+    $('#addTechNextClientBtn').click(function (e) {
 
         var error = [];
 
@@ -431,16 +479,16 @@ $('document').ready(function(){
         var techTitle = $('#techTitle').val();
         var techWorker = $('#techWorker').val();
 
-        if(techCategory == 0 && techCategoryNew == ''){
+        if (techCategory == 0 && techCategoryNew == '') {
             error.push("Необходимо выбрать категорию из поля 'Категория'.");
         }
-        if(techBrand == 0 && techBrandNew == ''){
+        if (techBrand == 0 && techBrandNew == '') {
             error.push("Необходимо выбрать бренд из поля 'Бренд'.");
         }
-        if(techTitle == ''){
+        if (techTitle == '') {
             error.push("Необходимо заполнить поле 'Название'.");
         }
-        if(techWorker == ''){
+        if (techWorker == '') {
             error.push("Необходимо выбрать принимающего из поля 'Принял в ремонт'.");
         }
 
@@ -482,41 +530,40 @@ $('document').ready(function(){
         e.preventDefault();
     });
 
-    $('.mainChecker input').change(function(e) {
+    $('.mainChecker input').change(function (e) {
 
-        if($(this).parent('span').hasClass('checked')) {
-            $('.subChecker').each(function(i) {
+        if ($(this).parent('span').hasClass('checked')) {
+            $('.subChecker').each(function (i) {
                 $('.subChecker').eq(i).addClass('checked');
             });
         } else {
-            $('.subChecker').each(function(i) {
+            $('.subChecker').each(function (i) {
                 $('.subChecker').eq(i).removeClass('checked');
             });
         }
     });
 
-    $('.subChecker input').change(function(e) {
+    $('.subChecker input').change(function (e) {
 
-        if($('.subChecker.checked').length == $('.subChecker').length) {
+        if ($('.subChecker.checked').length == $('.subChecker').length) {
             $('.mainChecker').addClass('checked');
         } else {
             $('.mainChecker').removeClass('checked');
         }
     });
 
-    $('.DBDeleteBtn').click(function(e) {
+    $('.DBDeleteBtn').click(function (e) {
 
         var deleteItems = '';
-        $('.subChecker.checked').each(function(e) {
+        $('.subChecker.checked').each(function (e) {
             deleteItems += ',' + $(this).data('id');
         });
-        if(deleteItems.length) {
+        if (deleteItems.length) {
             deleteItems = deleteItems.slice(1);
         }
 
         $('#deleteItems').val(deleteItems);
     });
-
 
 
     // close popUp
@@ -527,7 +574,7 @@ $('document').ready(function(){
     $('.DBDeleteBtn').click(function (e) {
 
         var deleteItemsCount = $('.subChecker.checked').length;
-        if(deleteItemsCount > 0) {
+        if (deleteItemsCount > 0) {
 
             var popupTitle = 'Удаление элемента';
             var popupContent = 'Вы уверены, что хотите удалить элементы из списка? (' + deleteItemsCount + 'шт.)';
@@ -586,8 +633,8 @@ $('document').ready(function(){
         $(popup).find('.title').text(title);
         $(popup).find('.content .text').text(content);
 
-        if(type == 'create') {
-            if(types != ''){
+        if (type == 'create') {
+            if (types != '') {
                 $(popup).find('.create.' + types).removeClass('hidden');
                 $(popup).find('.create').addClass('hidden');
             }
@@ -596,19 +643,19 @@ $('document').ready(function(){
             $(popup).find('.delete').addClass('hidden');
             $(popup).find('.edit').addClass('hidden');
             $(popup).find('.select').addClass('hidden');
-        } else if(type == 'delete') {
+        } else if (type == 'delete') {
             $(popup).find('.create').addClass('hidden');
             $(popup).find('.delete').removeClass('hidden');
             $(popup).find('.delete form').attr('action', link);
             $(popup).find('.edit').addClass('hidden');
             $(popup).find('.select').addClass('hidden');
-        } else if(type == 'edit') {
+        } else if (type == 'edit') {
             $(popup).find('.create').addClass('hidden');
             $(popup).find('.delete').addClass('hidden');
             $(popup).find('.edit').removeClass('hidden');
             $(popup).find('.edit form').attr('action', link);
             $(popup).find('.select').addClass('hidden');
-        } else if(type == 'select') {
+        } else if (type == 'select') {
             $(popup).find('.create').addClass('hidden');
             $(popup).find('.delete').addClass('hidden');
             $(popup).find('.edit').addClass('hidden');
@@ -616,10 +663,10 @@ $('document').ready(function(){
             $(popup).find('.select form').attr('action', link);
             $(popup).find('.select form option').each(function (i) {
 
-            if($(popup).find('.select form option').eq(i).val() == selected) {
-                if($(popup).find('.select form option').eq(i).attr('selected', 'selected'));
-                $(popup).find('.select form .selector span').text($(popup).find('.select form option').eq(i).text());
-            }
+                if ($(popup).find('.select form option').eq(i).val() == selected) {
+                    if ($(popup).find('.select form option').eq(i).attr('selected', 'selected'));
+                    $(popup).find('.select form .selector span').text($(popup).find('.select form option').eq(i).text());
+                }
             });
         }
 
@@ -628,12 +675,12 @@ $('document').ready(function(){
 
     function showError(error) {
 
-        if(!error) {
+        if (!error) {
             $('#addError').html('');
             return;
         }
 
-        if(is_array(error)) {
+        if (is_array(error)) {
 
             if (error.length > 0) {
                 for (var i = 0; i < error.length; i++) {
@@ -661,7 +708,7 @@ $('document').ready(function(){
 
     }
 
-    function is_array (a) {
+    function is_array(a) {
         return (typeof a == "object") && (a instanceof Array);
     }
 
@@ -670,14 +717,14 @@ $('document').ready(function(){
         tableTabs(this);
     });
 
-    function tableTabs (el) {
+    function tableTabs(el) {
 
         var self = this;
         self.pos = -1;
 
         $('ul.tabs a').each(function (i) {
 
-            if(this == el){
+            if (this == el) {
                 self.pos = i;
             }
         });
@@ -693,7 +740,7 @@ $('document').ready(function(){
 
     var Popup = {
 
-        shopPopupWithDetailedDescription : function () {
+        shopPopupWithDetailedDescription: function () {
 
             $('.shopPopupWithDetailedDescription').click(function (e) {
 
@@ -704,7 +751,7 @@ $('document').ready(function(){
                 return false;
             });
 
-            $(document).click(function(event){
+            $(document).click(function (event) {
                 if ($(event.target).closest('.additional-info').length) return;
                 $('.shopPopupWithDetailedDescription').next('.additional-info').addClass('hidden');
             });

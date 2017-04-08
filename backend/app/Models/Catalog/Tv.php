@@ -553,11 +553,12 @@ class Tv extends Catalog
 
     /**
      * @param int $productType
+     * @param bool $isGeneralImage
      * @return Image[]
      */
-    public function getImages($productType = Image::PRODUCT_TYPE_TV)
+    public function getImages($productType = Image::PRODUCT_TYPE_TV, $isGeneralImage = false)
     {
-        return parent::getImages($productType);
+        return parent::getImages($productType, $isGeneralImage);
     }
 
     /**
@@ -578,13 +579,9 @@ class Tv extends Catalog
         return parent::getSmallImage($productType);
     }
 
-    /**
-     * @param string $images
-     * @param int $productType
-     */
-    public function setImages($images, $productType = Image::PRODUCT_TYPE_TV)
+    public function setImages($images, $isGeneral = false, $productType = Image::PRODUCT_TYPE_TV)
     {
-        parent::setImages($images, $productType);
+        parent::setImages($images, $isGeneral, $productType);
     }
 
     public function getLink($systemName = self::SYSTEM_NAME, $customModel = '')

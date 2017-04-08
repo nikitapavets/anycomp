@@ -9,8 +9,6 @@ import Dom from '../../core/scripts/dom';
 import {connect} from 'react-redux';
 import config from '../../core/config/general';
 
-const DEV_MODE = true;
-
 const Layout = styled.div`
     background: ${colors.mainBg};
     padding-top: 58px;
@@ -399,7 +397,7 @@ class GeneralLayout extends React.Component {
     }
 
     static auth = (nextState, replace) => {
-        if (DEV_MODE) {
+        if (config.enableDevMode) {
             replace('503');
         }
     };

@@ -11,6 +11,7 @@ use App\Classes\Widget\WidgetChosen;
 use App\Classes\Widget\WidgetFile;
 use App\Classes\Widget\WidgetInput;
 use App\Classes\Widget\WidgetSelect;
+use App\Classes\Widget\WidgetSimpleFile;
 use App\Collections\TableActionCollection;
 use App\Collections\TableFieldCollection;
 use App\Collections\TableTabCollection;
@@ -161,7 +162,11 @@ class AdminCatalogController extends Controller
         $widget->setValue($tv ? $tv->getModel() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetFile('Изоображения', 'general_images', false);
+        $widget = new WidgetSimpleFile('Главное изоображение', 'general_general_images');
+        $widget->setValue($tv, Image::PRODUCT_TYPE_TV);
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetFile('Изоображения', 'general_images');
         $widget->setValue($tv, Image::PRODUCT_TYPE_TV);
         $widgetCollection->pushWidget($widget);
 
@@ -622,7 +627,11 @@ class AdminCatalogController extends Controller
         $widget->setValue($notebook ? $notebook->getConfig() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetFile('Изоображения', 'general_images', false);
+        $widget = new WidgetSimpleFile('Главное изоображение', 'general_general_images');
+        $widget->setValue($notebook, Image::PRODUCT_TYPE_NOTEBOOK);
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetFile('Изоображения', 'general_images');
         $widget->setValue($notebook, Image::PRODUCT_TYPE_NOTEBOOK);
         $widgetCollection->pushWidget($widget);
 

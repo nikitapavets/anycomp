@@ -131,11 +131,12 @@ class Notebook extends Catalog
 
     /**
      * @param int $productType
+     * @param bool $isGeneralImage
      * @return Image[]
      */
-    public function getImages($productType = Image::PRODUCT_TYPE_NOTEBOOK)
+    public function getImages($productType = Image::PRODUCT_TYPE_NOTEBOOK, $isGeneralImage = false)
     {
-        return parent::getImages($productType);
+        return parent::getImages($productType, $isGeneralImage);
     }
 
     /**
@@ -156,13 +157,9 @@ class Notebook extends Catalog
         return parent::getSmallImage($productType);
     }
 
-    /**
-     * @param string $images
-     * @param int $productType
-     */
-    public function setImages($images, $productType = Image::PRODUCT_TYPE_NOTEBOOK)
+    public function setImages($images, $isGeneral = false, $productType = Image::PRODUCT_TYPE_NOTEBOOK)
     {
-        parent::setImages($images, $productType);
+        parent::setImages($images, $isGeneral, $productType);
     }
 
     /**

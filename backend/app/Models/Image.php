@@ -9,59 +9,45 @@ class Image extends Model
     const PRODUCT_TYPE_TV = 1;
     const PRODUCT_TYPE_NOTEBOOK = 2;
 
-    public static function storeDb($productId, $productType, $link, $id = null)
-    {
-        $item = $id ? self::getById($id) : new self;
-        $item->setProductId($productId);
-        $item->setProductType($productType);
-        $item->setLink($link);
-        $id ? $item->update() : $item->save();
-    }
+    const IMAGE_SIZE_SMALL = 1;
+    const IMAGE_SIZE_BIG = 2;
 
-    /**
-     * @param $id
-     * @return self
-     */
-    public static function getById($id)
-    {
-        return self::find($id);
-    }
+    protected $guarded = [];
 
-    /**
-     * @param int $id
-     */
     public function setProductId($id)
     {
         $this->product_id = $id;
     }
 
-    /**
-     * @param int $type
-     */
     public function setProductType($type)
     {
         $this->product_type = $type;
     }
 
-    /**
-     * @param string $link
-     */
     public function setLink($link)
     {
         $this->path = $link;
     }
 
-    /**
-     * @return string
-     */
     public function getLink()
     {
         return $this->path;
     }
 
-    public function scopeOfProduct($query, $productId, $productType)
+    public function isGeneral()
+    {
+        $this->is_general;
+    }
+
+    public function setIsGeneral($isGeneral)
+    {
+        $this->is_general = $isGeneral ? 1 : 0;
+    }
+
+    public function scopeOfProduct($query, $productId, $productType, $isGeneralImage)
     {
         return $query->where('product_id', $productId)
-            ->where('product_type', $productType);
+            ->where('product_type', $productType)
+            ->where('is_general', $isGeneralImage ? 1 : 0);
     }
 }

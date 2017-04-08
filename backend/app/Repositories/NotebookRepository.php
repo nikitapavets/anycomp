@@ -223,6 +223,7 @@ class NotebookRepository
                 $notebook->save();
 
                 $notebook->setImages($request->general_images);
+                $notebook->setImages($request->general_general_images, true);
                 $notebook->setHddTypes($request->hdd_types);
                 $notebook->setMemoryCards($request->memory_cards);
                 $notebook->setTvTuners($request->tv_tuner);
