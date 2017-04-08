@@ -7,7 +7,7 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const HOST = process.env.HOST || "127.0.0.1";
-const PORT = process.env.PORT || "3005";
+const PORT = process.env.PORT || "3000";
 
 module.exports = {
     entry: {
@@ -27,7 +27,7 @@ module.exports = {
     devtool: process.env.WEBPACK_DEVTOOL || 'eval-source-map',
     output: {
         publicPath: '/',
-        path: path.join(__dirname, 'public'),
+        path: path.join(__dirname, '/public'),
         filename: './[name]/index.js',
         library: '[name]'
     },
@@ -36,7 +36,20 @@ module.exports = {
         modulesDirectories: ['node_modules']
     },
     module: {
-        loaders
+        preLoaders: [
+            {
+                test: /\.jsx$/,
+                loader: 'eslint',
+                include: [
+                    path.resolve(__dirname, "src"),
+                ],
+            },
+            // {
+            //     test: /\.jsx$/,
+            //     loader: 'stylelint'
+            // }
+        ],
+        loaders: loaders
     },
     devServer: {
         contentBase: "./public",
@@ -66,7 +79,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: './src/client/index.html',
-            filename: './client/index.html',
+            filename: './index.html',
             hash: true,
             chunks: ['core', 'client']
         }),

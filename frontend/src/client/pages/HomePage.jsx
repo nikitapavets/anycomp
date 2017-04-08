@@ -34,8 +34,6 @@ const Slide__HeaderModel = styled.div`
     font-style: italic;
 `;
 
-const Slide__CoreImg = require('../../../static/images/tmp/asus-n750jv-gallery-a2.png');
-const Slide__CoreImgMack = require('../../../static/images/tmp/macbook_air_11.png');
 const Slide__Core = styled.div`
     padding: 110px 15px 0 15px;
 `;
@@ -277,8 +275,8 @@ class HomePage extends React.Component {
                     <Catalog__Goods>
                         <Slick settings={{
                             arrows: true,
-                            nextArrow: <Arrow orientation="right"/>,
-                            prevArrow: <Arrow orientation="left"/>,
+                            nextArrow: <Arrow orientation='right'/>,
+                            prevArrow: <Arrow orientation='left'/>,
                             infinite: true,
                             autoplaySpeed: 2000,
                             responsive: [
@@ -296,8 +294,8 @@ class HomePage extends React.Component {
                                     <Catalog__GoodDescription>{notebook.description}</Catalog__GoodDescription>
                                     <Catalog__GoodPrice>{notebook.price} р.</Catalog__GoodPrice>
                                     <Catalog__GoodDetails>
-                                        <Catalog__GoodDetail className="basket"
-                                                             to="/basket"
+                                        <Catalog__GoodDetail className='basket'
+                                                             to='/basket'
                                                              onClick={_ => this.handleAddToBasket(_, notebook)}/>
                                     </Catalog__GoodDetails>
                                 </Catalog__Good>
@@ -312,8 +310,8 @@ class HomePage extends React.Component {
                     <Catalog__Goods>
                         <Slick settings={{
                             arrows: true,
-                            nextArrow: <Arrow orientation="right"/>,
-                            prevArrow: <Arrow orientation="left"/>,
+                            nextArrow: <Arrow orientation='right'/>,
+                            prevArrow: <Arrow orientation='left'/>,
                             infinite: true,
                             autoplaySpeed: 2000,
                             responsive: [
@@ -331,8 +329,8 @@ class HomePage extends React.Component {
                                     <Catalog__GoodDescription>{tv.description}</Catalog__GoodDescription>
                                     <Catalog__GoodPrice>{tv.price} р.</Catalog__GoodPrice>
                                     <Catalog__GoodDetails>
-                                        <Catalog__GoodDetail className="basket"
-                                                             to="/basket"
+                                        <Catalog__GoodDetail className='basket'
+                                                             to='/basket'
                                                              onClick={_ => this.handleAddToBasket(_, tv)}/>
                                     </Catalog__GoodDetails>
                                 </Catalog__Good>
@@ -342,17 +340,17 @@ class HomePage extends React.Component {
                 </Catalog__Container>
             </Catalog>
             <Advantages>
-                <Advantage className="chose">
+                <Advantage className='chose'>
                     <AdvantageText>Большой выбор товаров</AdvantageText>
-                    <AdvantageImage className="chose"/>
+                    <AdvantageImage className='chose'/>
                 </Advantage>
-                <Advantage className="delivery">
+                <Advantage className='delivery'>
                     <AdvantageText>Доставка по всей Беларуси</AdvantageText>
-                    <AdvantageImage className="delivery"/>
+                    <AdvantageImage className='delivery'/>
                 </Advantage>
-                <Advantage className="consult">
+                <Advantage className='consult'>
                     <AdvantageText>Консультация специалиста</AdvantageText>
-                    <AdvantageImage className="consult"/>
+                    <AdvantageImage className='consult'/>
                 </Advantage>
             </Advantages>
         </div>

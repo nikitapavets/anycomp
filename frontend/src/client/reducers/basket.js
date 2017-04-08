@@ -1,30 +1,65 @@
-export default function basket(state = [], action) {
+import * as actionTypes from '../actions-types/basket';
+
+const initialState = {
+    data: [],
+    isLoading: false,
+    error: false
+};
+
+export default function basket(state = initialState, action) {
     switch (action.type) {
-        case 'INIT_BASKET': {
-            return action.payload;
-        }
-        case 'ADD_TO_BASKET': {
+        case actionTypes.FETCH_BASKET_REQUEST:
+            return {
+                ...state,
+                isLoading: true
+            };
+
+        case actionTypes.FETCH_BASKET_SUCCESS:
+            return {
+                ...state,
+                data: action.payload,
+                isLoading: false
+            };
+
+        case actionTypes.FETCH_BASKET_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            };
+
+        case actionTypes.BASKET_ADD_ITEM: {
             let newBasketItem = action.payload;
-            newBasketItem.index = state.length + 1;
+            newBasketItem.index = state.data.length + 1;
             newBasketItem.quantity = 1;
-            if (state.some(_ => _.title === newBasketItem.title)) {
-                return state.map(_ => {
-                    if (_.title === newBasketItem.title) {
-                        _.quantity = parseInt(_.quantity) + 1;
-                    }
-                    return _;
-                });
-            } else {
-                return [
+            if (state.data.some(_ => _.title === newBasketItem.title)) {
+                return {
                     ...state,
-                    newBasketItem
-                ];
+                    data: state.data.map(_ => {
+                        if (_.title === newBasketItem.title) {
+                            _.quantity = parseInt(_.quantity) + 1;
+                        }
+                        return _;
+                    })
+                };
+            } else {
+                return {
+                    ...state,
+                    data: [
+                        ...state.data,
+                        newBasketItem
+                    ]
+                };
             }
         }
-        case 'REMOVE_FROM_BASKET': {
+
+        case actionTypes.BASKET_REMOVE_ITEM: {
             let removeIndex = action.payload;
-            return state.filter(_ => _.index != removeIndex);
+            return {
+                ...state,
+                data: state.data.filter(_ => _.index != removeIndex)
+            };
         }
+
         default: {
             return state
         }

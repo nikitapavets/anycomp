@@ -23,7 +23,7 @@ module.exports = {
     },
     output: {
         publicPath: '/',
-        path: path.join(__dirname, '../backend/public_new'),
+        path: path.resolve('../backend/public_new'),
         filename: './js/[name].js',
         library: '[name]'
     },

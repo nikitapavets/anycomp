@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {bgi, media} from '../libs/mixins';
+import {bgi} from '../libs/mixins';
 
 const ArrowItemImg = require('../../../static/images/svg/play-button.svg');
 const ArrowItem = styled.div`
