@@ -175,7 +175,7 @@ const AdvantageImage = styled.div`
     `}
 `;
 
-export default class Index extends React.Component {
+export default class IndexPage extends React.Component {
 
     handleAddToBasket = (e, basketItem) => {
         this.props.basketAddItem(basketItem);

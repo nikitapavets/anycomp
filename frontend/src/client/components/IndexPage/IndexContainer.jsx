@@ -4,7 +4,7 @@ import {handleLoadingNotebooks} from '../../actions/notebooks';
 import {handleLoadingTvs} from '../../actions/tvs';
 import {handleLoadingPopularProducts} from '../../actions/popularProducts';
 import {basketAddItem} from '../../actions/basket';
-import Index from './Index';
+import IndexPage from './IndexPage';
 
 const mapStateToProps = (state) => {
     return {
@@ -23,4 +23,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default connect(mapStateToProps, mapDispatchToProps)(IndexPage);

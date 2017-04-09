@@ -506,6 +506,7 @@ export default class GeneralLayout extends React.Component {
                                 {menu.map((menuItem, menuIndex) =>
                                     <Menu__Item to={menuItem.link}
                                                 activeClassName='active'
+                                                onlyActiveOnIndex={true}
                                                 onClick={_ => this.handleToggleMobileMenu(_, true)}
                                                 key={menuIndex}>
                                         {menuItem.name}
