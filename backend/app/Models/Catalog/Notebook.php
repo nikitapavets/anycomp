@@ -68,7 +68,7 @@ class Notebook extends Catalog
     use ProcessorCoreTrait;
 
     const PRODUCT_TITLE = "Ноутбук";
-    const SYSTEM_NAME = 'notebook';
+    const SYSTEM_NAME = 'notebooks';
 
     protected $casts = [
         'transformer' => 'boolean',

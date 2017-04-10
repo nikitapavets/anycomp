@@ -15,6 +15,7 @@ const Menu__ItemHomeActive = require('../../../static/images/svg/home_699AD1.svg
 const BreadcrumbsLink = styled(Link)`
     font-size: ${fontSizes.s};
     text-decoration: none;
+    margin-right: 10px;
     &:hover {
         color: ${colors.main};
     }
@@ -29,7 +30,6 @@ const BreadcrumbsLink = styled(Link)`
         ${bgi(Menu__ItemHome, 14)}
         background-position: center;
         padding: 0;
-        margin-right: 10px;
         &:hover, &.active {
             ${bgi(Menu__ItemHomeActive, 14)}
         }

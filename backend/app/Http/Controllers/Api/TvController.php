@@ -16,4 +16,26 @@ class TvController extends Controller
 
         return response()->json($notebooks);
     }
+
+    public function show(Request $request)
+    {
+        $notebook = TvRepository::getTvsByBrandAndModel(
+            $request->brand,
+            $request->model,
+            $request->config
+        );
+
+        return response()->json($notebook);
+    }
+
+    public function search(Request $request)
+    {
+        $notebooks = TvRepository::transformTvsForFront(
+            TvRepository::getTvsByParams([
+                'text' => $request->text
+            ])
+        );
+
+        return response()->json($notebooks);
+    }
 }

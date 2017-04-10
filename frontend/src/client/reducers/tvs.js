@@ -14,6 +14,12 @@ export default function tvs(state = initialState, action) {
                 isLoading: true
             };
 
+        case actionTypes.FETCH_TVS_SEARCH:
+            return {
+                ...state,
+                isLoading: true
+            };
+
         case actionTypes.FETCH_TVS_SUCCESS:
             return {
                 ...state,

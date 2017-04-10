@@ -12,7 +12,7 @@ export default function basket(state = initialState, action) {
         case actionTypes.SET_BREADCRUMBS:
             return [
                 ...initialState,
-                action.payload
+                ...action.payload
             ];
 
         default: {

@@ -36,12 +36,27 @@ class Catalog extends Model
     public function getLink($systemName, $customModel = '')
     {
         $model = str_replace(
-            ' ',
-            '-',
-            str_replace('/', 'chr47', strtolower($customModel ? $customModel : $this->getModel()))
+            [' ', '-'],
+            ['-', '~'],
+            str_replace(
+                '/',
+                'chr47',
+                strtolower($this->getModel())
+            )
         );
+        if ($customModel) {
+            $customModel = '?config='.str_replace(
+                    [' ', '-'],
+                    ['-', '~'],
+                    str_replace(
+                        '/',
+                        'chr47',
+                        strtolower($customModel)
+                    )
+                );
+        }
 
-        return '/catalog/'.$systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$model;
+        return $systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$model.$customModel;
     }
 
     public function getPrice()

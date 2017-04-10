@@ -14,6 +14,18 @@ export default function notebooks(state = initialState, action) {
                 isLoading: true
             };
 
+        case actionTypes.FETCH_NOTEBOOKS_SEARCH:
+            return {
+                ...state,
+                isLoading: true
+            };
+
+        case actionTypes.FETCH_NOTEBOOK_GET:
+            return {
+                ...state,
+                isLoading: true
+            };
+
         case actionTypes.FETCH_NOTEBOOKS_SUCCESS:
             return {
                 ...state,

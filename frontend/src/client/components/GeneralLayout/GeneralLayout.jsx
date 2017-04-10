@@ -12,23 +12,11 @@ const Layout = styled.div`
     background: ${colors.mainBg};
     padding-top: 58px;
     overflow: hidden;
+    position: relative;
     ${media.laptop`
         padding-top: 0;
     `}
-    ${media.laptop`
-        &:before {
-            position: absolute;
-            display: inline-block;
-            top: 50%;
-            margin-left: 50%;
-            content: '';
-            width: 400px;
-            height: 100%;
-            background: ${colors.mainBold};
-            transform: translateX(-50%) translateY(-50%) skewX(-23deg);
-        }
-    `}
-    min-height: 100%;
+    min-height: 100vh;
 `;
 
 const MobileMenu__Wrap = styled(Container)`
@@ -172,7 +160,8 @@ const ContactHeader__SocialItem = styled(Link)`
 `;
 
 const Header = styled.div`
-    
+    background: ${colors.mainBg};
+    padding-bottom: 30px;
 `;
 
 const GeneralHeader = styled(Container)`
@@ -350,7 +339,7 @@ const BasketBox__ItemClose = styled(Link)`
 `;
 
 const Footer = styled.div`
-    background-color: ${colors.black};
+    background-color: ${colors.mainBold};
     color: ${colors.white};
     position: relative;
 `;
@@ -363,16 +352,7 @@ const Company = styled(Container)`
 
 const Content = styled.div`
     position: relative;
-    margin-top: 30px;
 `;
-
-// const LoaderImg = require('../../../../static/images/loading/facebook.gif');
-// const Loader = styled.div`
-//     ${bgi(LoaderImg, 64)}
-//     width: 100%;
-//     padding: 50px;
-//     background-color: ${colors.white};
-// `;
 
 export default class GeneralLayout extends React.Component {
 
@@ -420,7 +400,7 @@ export default class GeneralLayout extends React.Component {
 
     render() {
         return (
-            <Layout>
+            <Layout className='la'>
                 <MobileMenu__Wrap>
                     <MobileMenu>
                         <MobileMenu__LogoMenu>
@@ -472,8 +452,9 @@ export default class GeneralLayout extends React.Component {
                                     <ToggleMenu__NavItem key={menuIndex}>
                                         <ToggleMenu__NavLink to={menuItem.link}
                                                              activeClassName='active'
+                                                             onlyActiveOnIndex={true}
                                                              onClick={_ => this.handleToggleMobileMenu(_, true)}>
-                                            {menuItem.name}
+                                            {menuItem.name ? menuItem.name : 'Главная'}
                                         </ToggleMenu__NavLink>
                                     </ToggleMenu__NavItem>
                                 )}

@@ -1,24 +1,24 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {handleLoadingNotebooks, handleSearchNotebooks} from '../../actions/notebooks';
+import {handleLoadingTvs, handleSearchTvs} from '../../actions/tvs';
 import {basketAddItem} from '../../actions/basket';
 import {setBreadcrumbs} from '../../actions/breadcrumbs';
-import NotebooksPage from './NotebooksPage';
+import TvsPage from './TvsPage';
 
 const mapStateToProps = (state) => {
     return {
-        notebooks: state.notebooks,
+        tvs: state.tvs,
         breadcrumbs: state.breadcrumbs,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleLoadingNotebooks: bindActionCreators(handleLoadingNotebooks, dispatch),
-        handleSearchNotebooks: bindActionCreators(handleSearchNotebooks, dispatch),
+        handleLoadingTvs: bindActionCreators(handleLoadingTvs, dispatch),
+        handleSearchTvs: bindActionCreators(handleSearchTvs, dispatch),
         basketAddItem: bindActionCreators(basketAddItem, dispatch),
         setBreadcrumbs: bindActionCreators(setBreadcrumbs, dispatch)
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotebooksPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TvsPage);

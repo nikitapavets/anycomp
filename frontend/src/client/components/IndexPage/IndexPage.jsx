@@ -7,8 +7,11 @@ import {bgi, media, sizes} from '../../libs/mixins';
 import Slick from '../../components/Slick';
 import Arrow from '../../components/Arrow';
 import config from '../../../core/config/general';
+import Loader from '../Loader';
 
-const Slider = styled(Container)`
+const Slider = styled.div`
+`;
+const SliderContainer = styled(Container)`
     padding-bottom: 30px;
 `;
 const Slide = styled.div`
@@ -77,13 +80,23 @@ const Catalog__Good = styled(Link)`
     padding: 30px;
     text-decoration: none;
 `;
+const Catalog__GoodImageWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 250px;
+`;
 const Catalog__GoodImage = styled.img`
-    width: 100%;
+    width: 300px;
+    ${media.wide`
+        width: 100%;
+    `}
 `;
 const Catalog__GoodTitle = styled.div`
     text-align: center;
     font-size: ${fontSizes.xl};
     margin: 30px 15px 15px; 
+    height: 50px;
 `;
 const Catalog__GoodDescription = styled.div`
     text-align: center;
@@ -117,7 +130,10 @@ const Catalog__GoodDetail = styled(Link)`
     border-radius: 10em;
 `;
 
-const Advantages = styled(Container)`
+const Advantages = styled.div`
+`;
+
+const AdvantagesContainer = styled(Container)`
     padding: 30px 0;
     position: relative;
      ${media.tablet`
@@ -191,118 +207,140 @@ export default class IndexPage extends React.Component {
     render() {
         return (
             <div>
-                <Slider>
-                    <Slick settings={{
-                        dots: true,
-                        arrows: false,
-                        infinite: true,
-                        autoplaySpeed: 2000,
-                        autoplay: true,
-                        responsive: [
-                            {breakpoint: sizes.tablet + 1, settings: {slidesToShow: 1}},
-                            {breakpoint: sizes.superHd, settings: {slidesToShow: 2}}
-                        ]
-                    }} checkEmpty>
-                        {this.props.popularProducts.data.map((popular, index) =>
-                            <Slide key={index}>
-                                <Slide__Core>
-                                    <Slide__CoreImage src={`${config.server}${popular.image}`}
-                                                      title={popular.title}
-                                                      alt={popular.title}/>
-                                </Slide__Core>
-                                <Slide__Header>
-                                    <Slide__HeaderBrand>{popular.brand}</Slide__HeaderBrand>
-                                    <Slide__HeaderModel>{popular.model}</Slide__HeaderModel>
-                                    <Slide__HeaderBuyNow to={popular.link}>Купить за {popular.price}
-                                        р.</Slide__HeaderBuyNow>
-                                </Slide__Header>
-                            </Slide>
-                        )}
-                    </Slick>
-                </Slider>
+                {!this.props.popularProducts.isLoading
+                    ?
+                    <Slider>
+                        <SliderContainer>
+                            <Slick settings={{
+                                dots: true,
+                                arrows: false,
+                                infinite: true,
+                                autoplaySpeed: 2000,
+                                autoplay: true,
+                                responsive: [
+                                    {breakpoint: sizes.tablet + 1, settings: {slidesToShow: 1}},
+                                    {breakpoint: sizes.superHd, settings: {slidesToShow: 2}}
+                                ]
+                            }} checkEmpty>
+                                {this.props.popularProducts.data.map((popular, index) =>
+                                    <Slide key={index}>
+                                        <Slide__Core>
+                                            <Slide__CoreImage src={`${config.server}${popular.image}`}
+                                                              title={popular.title}
+                                                              alt={popular.title}/>
+                                        </Slide__Core>
+                                        <Slide__Header>
+                                            <Slide__HeaderBrand>{popular.brand}</Slide__HeaderBrand>
+                                            <Slide__HeaderModel>{popular.model}</Slide__HeaderModel>
+                                            <Slide__HeaderBuyNow to={popular.link}>Купить за {popular.price}
+                                                р.</Slide__HeaderBuyNow>
+                                        </Slide__Header>
+                                    </Slide>
+                                )}
+                            </Slick>
+                        </SliderContainer>
+                    </Slider>
+                    :
+                    <Loader/>
+                }
                 <Catalog>
                     <Catalog__Container>
                         <Catalog__Title>Новые ноутбуки</Catalog__Title>
-                        <Catalog__Goods>
-                            <Slick settings={{
-                                arrows: true,
-                                nextArrow: <Arrow orientation='right'/>,
-                                prevArrow: <Arrow orientation='left'/>,
-                                infinite: true,
-                                autoplaySpeed: 2000,
-                                responsive: [
-                                    {breakpoint: sizes.mobile + 1, settings: {slidesToShow: 1}},
-                                    {breakpoint: sizes.tablet + 1, settings: {slidesToShow: 2}},
-                                    {breakpoint: sizes.desktop + 1, settings: {slidesToShow: 3}},
-                                    {breakpoint: sizes.superHd, settings: {slidesToShow: 4}}
-                                ]
-                            }} checkEmpty>
-                                {this.props.notebooks.data.map((notebook, index) =>
-                                    <Catalog__Good to={notebook.link} key={index}>
-                                        <Catalog__GoodImage src={`${config.server}${notebook.image}`}
-                                                            title={notebook.title} alt={notebook.title}/>
-                                        <Catalog__GoodTitle>{notebook.title}</Catalog__GoodTitle>
-                                        <Catalog__GoodDescription>{notebook.description}</Catalog__GoodDescription>
-                                        <Catalog__GoodPrice>{notebook.price} р.</Catalog__GoodPrice>
-                                        <Catalog__GoodDetails>
-                                            <Catalog__GoodDetail className='basket'
-                                                                 to='/basket'
-                                                                 onClick={_ => this.handleAddToBasket(_, notebook)}/>
-                                        </Catalog__GoodDetails>
-                                    </Catalog__Good>
-                                )}
-                            </Slick>
-                        </Catalog__Goods>
+                        {!this.props.notebooks.isLoading
+                            ?
+                            <Catalog__Goods>
+                                <Slick settings={{
+                                    arrows: true,
+                                    nextArrow: <Arrow orientation='right'/>,
+                                    prevArrow: <Arrow orientation='left'/>,
+                                    infinite: true,
+                                    autoplaySpeed: 2000,
+                                    responsive: [
+                                        {breakpoint: sizes.mobile + 1, settings: {slidesToShow: 1}},
+                                        {breakpoint: sizes.tablet + 1, settings: {slidesToShow: 2}},
+                                        {breakpoint: sizes.desktop + 1, settings: {slidesToShow: 3}},
+                                        {breakpoint: sizes.superHd, settings: {slidesToShow: 4}}
+                                    ]
+                                }} checkEmpty>
+                                    {this.props.notebooks.data.map((notebook, index) =>
+                                        <Catalog__Good to={notebook.link} key={index}>
+                                            <Catalog__GoodImageWrap>
+                                                <Catalog__GoodImage src={`${config.server}${notebook.image}`}
+                                                                    title={notebook.title} alt={notebook.title}/>
+                                            </Catalog__GoodImageWrap>
+                                            <Catalog__GoodTitle>{notebook.title}</Catalog__GoodTitle>
+                                            <Catalog__GoodDescription>{notebook.description}</Catalog__GoodDescription>
+                                            <Catalog__GoodPrice>{notebook.price} р.</Catalog__GoodPrice>
+                                            <Catalog__GoodDetails>
+                                                <Catalog__GoodDetail className='basket'
+                                                                     to='/basket'
+                                                                     onClick={_ => this.handleAddToBasket(_, notebook)}/>
+                                            </Catalog__GoodDetails>
+                                        </Catalog__Good>
+                                    )}
+                                </Slick>
+                            </Catalog__Goods>
+                            :
+                            <Loader/>
+                        }
+
                     </Catalog__Container>
                 </Catalog>
                 <Catalog>
                     <Catalog__Container>
                         <Catalog__Title>Новые телевизоры</Catalog__Title>
-                        <Catalog__Goods>
-                            <Slick settings={{
-                                arrows: true,
-                                nextArrow: <Arrow orientation='right'/>,
-                                prevArrow: <Arrow orientation='left'/>,
-                                infinite: true,
-                                autoplaySpeed: 2000,
-                                responsive: [
-                                    {breakpoint: sizes.mobile + 1, settings: {slidesToShow: 1}},
-                                    {breakpoint: sizes.tablet + 1, settings: {slidesToShow: 2}},
-                                    {breakpoint: sizes.desktop + 1, settings: {slidesToShow: 3}},
-                                    {breakpoint: sizes.superHd, settings: {slidesToShow: 4}}
-                                ]
-                            }} checkEmpty>
-                                {this.props.tvs.data.map((tv, index) =>
-                                    <Catalog__Good to={tv.link} key={index}>
-                                        <Catalog__GoodImage src={`${config.server}${tv.image}`}
-                                                            title={tv.title} alt={tv.title}/>
-                                        <Catalog__GoodTitle>{tv.title}</Catalog__GoodTitle>
-                                        <Catalog__GoodDescription>{tv.description}</Catalog__GoodDescription>
-                                        <Catalog__GoodPrice>{tv.price} р.</Catalog__GoodPrice>
-                                        <Catalog__GoodDetails>
-                                            <Catalog__GoodDetail className='basket'
-                                                                 to='/basket'
-                                                                 onClick={_ => this.handleAddToBasket(_, tv)}/>
-                                        </Catalog__GoodDetails>
-                                    </Catalog__Good>
-                                )}
-                            </Slick>
-                        </Catalog__Goods>
+                        {!this.props.tvs.isLoading
+                            ?
+                            <Catalog__Goods>
+                                <Slick settings={{
+                                    arrows: true,
+                                    nextArrow: <Arrow orientation='right'/>,
+                                    prevArrow: <Arrow orientation='left'/>,
+                                    infinite: true,
+                                    autoplaySpeed: 2000,
+                                    responsive: [
+                                        {breakpoint: sizes.mobile + 1, settings: {slidesToShow: 1}},
+                                        {breakpoint: sizes.tablet + 1, settings: {slidesToShow: 2}},
+                                        {breakpoint: sizes.desktop + 1, settings: {slidesToShow: 3}},
+                                        {breakpoint: sizes.superHd, settings: {slidesToShow: 4}}
+                                    ]
+                                }} checkEmpty>
+                                    {this.props.tvs.data.map((tv, index) =>
+                                        <Catalog__Good to={tv.link} key={index}>
+                                            <Catalog__GoodImage src={`${config.server}${tv.image}`}
+                                                                title={tv.title} alt={tv.title}/>
+                                            <Catalog__GoodTitle>{tv.title}</Catalog__GoodTitle>
+                                            <Catalog__GoodDescription>{tv.description}</Catalog__GoodDescription>
+                                            <Catalog__GoodPrice>{tv.price} р.</Catalog__GoodPrice>
+                                            <Catalog__GoodDetails>
+                                                <Catalog__GoodDetail className='basket'
+                                                                     to='/basket'
+                                                                     onClick={_ => this.handleAddToBasket(_, tv)}/>
+                                            </Catalog__GoodDetails>
+                                        </Catalog__Good>
+                                    )}
+                                </Slick>
+                            </Catalog__Goods>
+                            :
+                            <Loader/>
+                        }
                     </Catalog__Container>
                 </Catalog>
                 <Advantages>
-                    <Advantage className='chose'>
-                        <AdvantageText>Большой выбор товаров</AdvantageText>
-                        <AdvantageImage className='chose'/>
-                    </Advantage>
-                    <Advantage className='delivery'>
-                        <AdvantageText>Доставка по всей Беларуси</AdvantageText>
-                        <AdvantageImage className='delivery'/>
-                    </Advantage>
-                    <Advantage className='consult'>
-                        <AdvantageText>Консультация специалиста</AdvantageText>
-                        <AdvantageImage className='consult'/>
-                    </Advantage>
+                    <AdvantagesContainer>
+                        <Advantage className='chose'>
+                            <AdvantageText>Большой выбор товаров</AdvantageText>
+                            <AdvantageImage className='chose'/>
+                        </Advantage>
+                        <Advantage className='delivery'>
+                            <AdvantageText>Доставка по всей Беларуси</AdvantageText>
+                            <AdvantageImage className='delivery'/>
+                        </Advantage>
+                        <Advantage className='consult'>
+                            <AdvantageText>Консультация специалиста</AdvantageText>
+                            <AdvantageImage className='consult'/>
+                        </Advantage>
+                    </AdvantagesContainer>
                 </Advantages>
             </div>
         )

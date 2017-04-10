@@ -18,22 +18,28 @@ use Illuminate\Support\Facades\DB;
 class TvRepository
 {
     /**
+     * @param [] $params
      * @return Tv[]
      */
-    public static function getTvs()
+    public static function getTvsByParams($params)
     {
-        return Tv::orderBy('id', 'desc')->get();
+        return Tv::where('model', 'like', '%'.$params['text'].'%')
+            ->orWhereHas(
+                'brand',
+                function ($query) use ($params) {
+                    $query->where('name', 'like', '%'.$params['text'].'%');
+                }
+            )
+            ->orderBy('id', 'desc')
+            ->get();
     }
 
     /**
+     * @param Tv[] $tvs
      * @return Tv[]
      */
-    public static function getTvsForFront()
+    public static function transformTvsForFront($tvs)
     {
-        /**
-         * @var $tvs Tv[]
-         */
-        $tvs = Tv::orderBy('id', 'desc')->take(10)->get();
         $resultTvs = [];
         foreach ($tvs as $tv) {
             $resultTvs[] = [
@@ -43,10 +49,67 @@ class TvRepository
                 'link' => $tv->getLink(),
                 'price' => $tv->getPrice(),
                 'image' => $tv->getSmallImage(),
+                'imageBig' => $tv->getBigImage(),
             ];
         }
 
         return $resultTvs;
+    }
+
+    /**
+     * @return Tv[]
+     */
+    public static function getTvs()
+    {
+        return Tv::orderBy('id', 'desc')->get();
+    }
+
+    /**
+     * @param $brand
+     * @param $model
+     * @param $config
+     * @return Tv
+     */
+    public static function getTvsByBrandAndModel($brand, $model, $config)
+    {
+        $model = str_replace(
+            ['-', '~'],
+            [' ', '-'],
+            str_replace(
+                'chr47',
+                '/',
+                strtolower($model)
+            )
+        );
+        $config = str_replace(
+            ['-', '~'],
+            [' ', '-'],
+            str_replace(
+                'chr47',
+                '/',
+                strtolower($config)
+            )
+        );
+
+        return Tv::where('model', '=', $model)
+            ->whereIn('config', ['', $config])
+            ->whereHas(
+                'brand',
+                function ($query) use ($brand) {
+                    $query->where('name', '=', $brand);
+                }
+            )
+            ->first();
+    }
+
+    /**
+     * @return Tv[]
+     */
+    public static function getTvsForFront()
+    {
+        $tvs = Tv::orderBy('id', 'desc')->take(10)->get();
+
+        return self::transformTvsForFront($tvs);
     }
 
     /**

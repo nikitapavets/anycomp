@@ -4,16 +4,21 @@ import CatalogLayout from '../CatalogLayout';
 export default class NotebooksPage extends React.Component {
 
     componentWillMount() {
-        this.props.setBreadcrumbs({
-            title: 'Ноутбуки',
-            link: '/notebooks'
-        });
+        this.props.setBreadcrumbs([
+            {
+                title: 'Ноутбуки',
+                link: '/notebooks'
+            }
+        ]);
+
+        this.props.handleLoadingNotebooks();
     }
 
     render() {
         return (
             <div>
-                <CatalogLayout breadcrumbs={this.props.breadcrumbs} title='Ноутбуки'/>
+                <CatalogLayout {...this.props} title='Ноутбуки' items={this.props.notebooks}
+                               handleFilter={this.props.handleSearchNotebooks}/>
             </div>
         )
     }

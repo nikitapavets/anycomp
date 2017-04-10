@@ -38,7 +38,7 @@ class Tv extends Catalog
     use ProcessorCoreTrait;
 
     const PRODUCT_TITLE = "Телевизор";
-    const SYSTEM_NAME = 'tv';
+    const SYSTEM_NAME = 'tvs';
 
     protected $casts = [
         'screen_curved' => 'boolean',

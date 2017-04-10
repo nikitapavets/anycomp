@@ -18,6 +18,61 @@ use Illuminate\Support\Facades\DB;
 class NotebookRepository
 {
     /**
+     * @param [] $params
+     * @return Notebook[]
+     */
+    public static function getNotebooksByParams($params)
+    {
+        return Notebook::where('model', 'like', '%'.$params['text'].'%')
+            ->orWhereHas(
+                'brand',
+                function ($query) use ($params) {
+                    $query->where('name', 'like', '%'.$params['text'].'%');
+                }
+            )
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
+    /**
+     * @param $brand
+     * @param $model
+     * @param $config
+     * @return Notebook
+     */
+    public static function getNotebooksByBrandAndModel($brand, $model, $config)
+    {
+        $model = str_replace(
+            ['-', '~'],
+            [' ', '-'],
+            str_replace(
+                'chr47',
+                '/',
+                strtolower($model)
+            )
+        );
+        $config = str_replace(
+            ['-', '~'],
+            [' ', '-'],
+            str_replace(
+                'chr47',
+                '/',
+                strtolower($config)
+            )
+        );
+
+        return Notebook::where('model', '=', $model)
+            ->whereIn('config', ['', $config])
+            ->whereHas(
+                'brand',
+                function ($query) use ($brand) {
+                    $query->where('name', '=', $brand);
+                }
+            )
+            ->first();
+    }
+
+    /**
      * @return Notebook[]
      */
     public static function getNotebooks()
@@ -30,19 +85,27 @@ class NotebookRepository
      */
     public static function getNotebooksForFront()
     {
-        /**
-         * @var $notebooks Notebook[]
-         */
         $notebooks = Notebook::orderBy('id', 'desc')->take(10)->get();
+
+        return self::transformNotebooksForFront($notebooks);
+    }
+
+    /**
+     * @param Notebook[] $notebooks
+     * @return Notebook[]
+     */
+    public static function transformNotebooksForFront($notebooks)
+    {
         $resultNotebooks = [];
         foreach ($notebooks as $notebook) {
             $resultNotebooks[] = [
-              'id' => $notebook->getId(),
-              'title' => $notebook->getName(),
-              'description' => $notebook->getDescription(),
-              'link' => $notebook->getLink(),
-              'price' => $notebook->getPrice(),
-              'image' => $notebook->getSmallImage(),
+                'id' => $notebook->getId(),
+                'title' => $notebook->getName(),
+                'description' => $notebook->getDescription(),
+                'link' => $notebook->getLink(),
+                'price' => $notebook->getPrice(),
+                'image' => $notebook->getSmallImage(),
+                'imageBig' => $notebook->getBigImage(),
             ];
         }
 
