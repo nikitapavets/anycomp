@@ -148,6 +148,11 @@ class Notebook extends Catalog
         return parent::getBigImage($productType);
     }
 
+    public function getBigImages($productType = Image::PRODUCT_TYPE_NOTEBOOK)
+    {
+        return parent::getBigImages($productType);
+    }
+
     /**
      * @param int $productType
      * @return string

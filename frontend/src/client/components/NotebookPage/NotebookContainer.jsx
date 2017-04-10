@@ -7,7 +7,7 @@ import NotebookPage from './NotebookPage';
 
 const mapStateToProps = (state) => {
     return {
-        notebook: state.notebooks,
+        notebooks: state.notebooks,
         breadcrumbs: state.breadcrumbs
     }
 };

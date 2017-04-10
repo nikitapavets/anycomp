@@ -400,7 +400,7 @@ export default class GeneralLayout extends React.Component {
 
     render() {
         return (
-            <Layout className='la'>
+            <Layout>
                 <MobileMenu__Wrap>
                     <MobileMenu>
                         <MobileMenu__LogoMenu>

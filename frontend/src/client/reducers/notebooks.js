@@ -2,6 +2,7 @@ import * as actionTypes from '../actions-types/notebooks';
 
 const initialState = {
     data: [],
+    review: {},
     isLoading: false,
     error: false
 };
@@ -30,6 +31,13 @@ export default function notebooks(state = initialState, action) {
             return {
                 ...state,
                 data: action.payload,
+                isLoading: false
+            };
+
+        case actionTypes.FETCH_NOTEBOOK_SUCCESS:
+            return {
+                ...state,
+                review: action.payload,
                 isLoading: false
             };
 

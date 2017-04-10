@@ -570,6 +570,11 @@ class Tv extends Catalog
         return parent::getBigImage($productType);
     }
 
+    public function getBigImages($productType = Image::PRODUCT_TYPE_TV)
+    {
+        return parent::getBigImages($productType);
+    }
+
     /**
      * @param int $productType
      * @return string

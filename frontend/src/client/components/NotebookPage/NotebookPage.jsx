@@ -8,24 +8,20 @@ export default class NotebooksPage extends React.Component {
             {
                 title: 'Ноутбуки',
                 link: '/notebooks'
-            },
-            {
-                title: this.props.params.brand,
-                link: this.props.location.pathname
             }
         ]);
 
         this.props.handleNotebookGet({
-           brand: this.props.params.brand,
-           model: this.props.params.model,
-           config: this.props.location.query.config
+            brand: this.props.params.brand,
+            model: this.props.params.model,
+            config: this.props.location.query.config
         });
     }
 
     render() {
         return (
             <div>
-                <CatalogItemLayout {...this.props}/>
+                <CatalogItemLayout {...this.props} item={this.props.notebooks}/>
             </div>
         )
     }

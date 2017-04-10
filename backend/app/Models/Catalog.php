@@ -89,6 +89,17 @@ class Catalog extends Model
         return config('image.catalog_big_img').$generalImages[0]->getLink();
     }
 
+    public function getBigImages($productType)
+    {
+        $images = self::getImages($productType);
+        $imagesPath = [];
+        foreach ($images as $image) {
+            $imagesPath[] = config('image.catalog_big_img').$image->getLink();
+        }
+
+        return $imagesPath;
+    }
+
     /**
      * @param int $productType
      * @param bool $isGeneralImage

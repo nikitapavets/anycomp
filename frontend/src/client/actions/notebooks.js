@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch';
 import {
     FETCH_NOTEBOOKS_REQUEST,
     FETCH_NOTEBOOKS_SUCCESS,
+    FETCH_NOTEBOOK_SUCCESS,
     FETCH_NOTEBOOKS_FAILURE,
     FETCH_NOTEBOOKS_SEARCH,
     FETCH_NOTEBOOK_GET
@@ -29,6 +30,13 @@ function fetchNotebookGet() {
 function fetchNotebooksSuccess(payload) {
     return {
         type: FETCH_NOTEBOOKS_SUCCESS,
+        payload
+    }
+}
+
+function fetchNotebookSuccess(payload) {
+    return {
+        type: FETCH_NOTEBOOK_SUCCESS,
         payload
     }
 }
@@ -71,7 +79,10 @@ export function handleNotebookGet(getParams) {
                 model=${getParams.model}&
                 config=${getParams.config}`)
             .then(res => res.json())
-            .then(json => dispatch(fetchNotebooksSuccess([json])))
+            .then(json => {
+                dispatch(fetchNotebookSuccess(json));
+                dispatch(fetchNotebookSuccess(json));
+            })
             .catch(err => dispatch(fetchNotebooksFailure(err)));
     }
 }

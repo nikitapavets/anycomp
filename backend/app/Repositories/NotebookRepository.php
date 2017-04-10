@@ -113,6 +113,19 @@ class NotebookRepository
     }
 
     /**
+     * @param Notebook $notebook
+     * @return array
+     */
+    public static function transformNotebookToFront($notebook)
+    {
+        return [
+            'id' => $notebook->getId(),
+            'title' => $notebook->getName(),
+            'images' => $notebook->getBigImages()
+        ];
+    }
+
+    /**
      * @return Notebook[]
      */
     public static function getPopularNotebooks()

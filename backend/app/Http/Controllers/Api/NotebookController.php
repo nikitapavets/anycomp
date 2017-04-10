@@ -19,10 +19,12 @@ class NotebookController extends Controller
 
     public function show(Request $request)
     {
-        $notebook = NotebookRepository::getNotebooksByBrandAndModel(
-            $request->brand,
-            $request->model,
-            $request->config
+        $notebook = NotebookRepository::transformNotebookToFront(
+            NotebookRepository::getNotebooksByBrandAndModel(
+                $request->brand,
+                $request->model,
+                $request->config
+            )
         );
 
         return response()->json($notebook);
@@ -31,9 +33,11 @@ class NotebookController extends Controller
     public function search(Request $request)
     {
         $notebooks = NotebookRepository::transformNotebooksForFront(
-            NotebookRepository::getNotebooksByParams([
-                'text' => $request->text
-            ])
+            NotebookRepository::getNotebooksByParams(
+                [
+                    'text' => $request->text,
+                ]
+            )
         );
 
         return response()->json($notebooks);
