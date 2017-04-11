@@ -120,8 +120,11 @@ class NotebookRepository
     {
         return [
             'id' => $notebook->getId(),
-            'title' => $notebook->getName(),
-            'images' => $notebook->getBigImages()
+            'title' => $notebook->getFullName(),
+            'images' => $notebook->getBigImages(),
+            'description' => $notebook->getDescription(),
+            'quantity' => $notebook->getQuantity(),
+            'price' => $notebook->getPrice()
         ];
     }
 
