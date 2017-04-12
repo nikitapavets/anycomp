@@ -19,21 +19,24 @@ class TvController extends Controller
 
     public function show(Request $request)
     {
-        $notebook = TvRepository::getTvsByBrandAndModel(
-            $request->brand,
-            $request->model,
-            $request->config
+        $tv = TvRepository::transformTvToFront(
+            TvRepository::getTvsByBrandAndModel(
+                $request->brand,
+                $request->model
+            )
         );
 
-        return response()->json($notebook);
+        return response()->json($tv);
     }
 
     public function search(Request $request)
     {
         $notebooks = TvRepository::transformTvsForFront(
-            TvRepository::getTvsByParams([
-                'text' => $request->text
-            ])
+            TvRepository::getTvsByParams(
+                [
+                    'text' => $request->text,
+                ]
+            )
         );
 
         return response()->json($notebooks);

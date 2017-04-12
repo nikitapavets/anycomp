@@ -38,7 +38,7 @@ const Product__Header = styled.div`
     `};
 `;
 const Product__Images = styled.div`
-    padding-bottom: 45px;
+    padding: 0 30px 45px 30px;
     width: 100%;
     
     ${media.laptop`
@@ -118,33 +118,67 @@ const Product__Price = styled(NumberFormat)`
     flex: 1 1;
 `;
 const Product__Characteristics = styled.section`
+    font-size: ${fontSizes.s};
 `;
 const Characteristics__Title = styled.header`
     font-size: ${fontSizes.xxl};
     font-weight: bold;
     padding: 15px;
 `;
-const Characteristic = styled.div`
-    
-`;
 const Characteristics__Section = styled.div`
-    
+    padding-bottom: 5px;
 `;
 const Section__Title = styled.div`
     background-color: ${colors.minor}
     padding: 10px 15px;
     border-bottom: 3px solid #ccc;
     font-weight: bold;
+    margin-bottom: 5px;
+`;
+const Characteristic = styled.div`
+    border-bottom: 1px solid ${colors.minor};
+    padding: 5px 0;
+    &:last-child {
+        border-bottom: none;
+    }
+
+    ${media.tablet`
+        display: flex;
+        align-items: center;
+    `}
 `;
 const Characteristic__Param = styled.div`
     padding: 5px 15px;
+    ${media.tablet`
+        flex: 1 1;
+    `}
 `;
 const Characteristic__Value = styled.div`
     padding: 5px 15px;
     font-weight: bold;
+    &.withBool {
+        display: flex;
+        align-items: center;
+    }
+    ${media.tablet`
+        flex: 2 1;
+    `}
+`;
+const Characteristic__ValueOkImg = require('../../../static/images/svg/check-symbol.svg');
+const Characteristic__ValueOk = styled.div`
+    ${bgi(Characteristic__ValueOkImg, 16)}
+`;
+const Characteristic__ValueBadImg = require('../../../static/images/svg/multiply.svg');
+const Characteristic__ValueBad = styled.div`
+    ${bgi(Characteristic__ValueBadImg, 16)}
 `;
 
 export default class CatalogItemLayout extends React.Component {
+
+    handleAddToBasket = (e, basketItem) => {
+        this.props.basketAddItem(basketItem);
+        e.preventDefault();
+    };
 
     render() {
         const item = this.props.item.review;
@@ -191,19 +225,42 @@ export default class CatalogItemLayout extends React.Component {
                                     <Product__Buttons>
                                         <Product__Price value={item.price} displayType={'text'} thousandSeparator={' '}
                                                         suffix={' р.'}/>
-                                        <Product__ToBasket to='#'>В корзину</Product__ToBasket>
+                                        <Product__ToBasket to='#'
+                                                           onClick={_ => this.handleAddToBasket(_, item)}>
+                                            В корзину
+                                        </Product__ToBasket>
                                     </Product__Buttons>
                                 </Product__Options>
                             </Product__Header>
                             <Product__Characteristics>
                                 <Characteristics__Title>Описание</Characteristics__Title>
-                                <Characteristics__Section>
-                                    <Section__Title>Общее</Section__Title>
-                                    <Characteristic>
-                                        <Characteristic__Param>Дата выхода на рынок</Characteristic__Param>
-                                        <Characteristic__Value>2017</Characteristic__Value>
-                                    </Characteristic>
-                                </Characteristics__Section>
+                                {item.sections.map((section, sectionIndex) =>
+                                    <Characteristics__Section key={sectionIndex}>
+                                        <Section__Title>{section.title}</Section__Title>
+                                        {section.items.map((sectionItem, sectionItemIndex) =>
+                                            sectionItem.type == 'simple' && sectionItem.value ?
+                                                <Characteristic key={sectionItemIndex}>
+                                                    <Characteristic__Param>{sectionItem.title}</Characteristic__Param>
+                                                    <Characteristic__Value>{sectionItem.value}</Characteristic__Value>
+                                                </Characteristic>
+                                                : sectionItem.type == 'checker' ?
+                                                    <Characteristic key={sectionItemIndex}>
+                                                        <Characteristic__Param>{sectionItem.title}</Characteristic__Param>
+                                                        <Characteristic__Value className="withBool">
+                                                            {sectionItem.checker_value ?
+                                                                <Characteristic__ValueOk/>
+                                                                :
+                                                                <Characteristic__ValueBad/>
+                                                            }
+                                                            {sectionItem.value != 0 &&
+                                                            <Characteristic__Value>{sectionItem.value}</Characteristic__Value>
+                                                            }
+                                                        </Characteristic__Value>
+                                                    </Characteristic>
+                                                    : ''
+                                        )}
+                                    </Characteristics__Section>
+                                )}
                             </Product__Characteristics>
                         </Product>
                         }

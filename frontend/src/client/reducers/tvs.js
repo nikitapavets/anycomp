@@ -2,6 +2,7 @@ import * as actionTypes from '../actions-types/tvs';
 
 const initialState = {
     data: [],
+    review: {},
     isLoading: false,
     error: false
 };
@@ -20,10 +21,23 @@ export default function tvs(state = initialState, action) {
                 isLoading: true
             };
 
+        case actionTypes.FETCH_TV_GET:
+            return {
+                ...state,
+                isLoading: true
+            };
+
         case actionTypes.FETCH_TVS_SUCCESS:
             return {
                 ...state,
                 data: action.payload,
+                isLoading: false
+            };
+
+        case actionTypes.FETCH_TV_SUCCESS:
+            return {
+                ...state,
+                review: action.payload,
                 isLoading: false
             };
 

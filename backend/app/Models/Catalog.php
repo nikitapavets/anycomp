@@ -56,7 +56,7 @@ class Catalog extends Model
                 );
         }
 
-        return $systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$model.$customModel;
+        return '/'.$systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$model.$customModel;
     }
 
     public function getPrice()
@@ -91,8 +91,12 @@ class Catalog extends Model
 
     public function getBigImages($productType)
     {
+        $generalImages = self::getImages($productType, true);
         $images = self::getImages($productType);
         $imagesPath = [];
+        foreach ($generalImages as $generalImage) {
+            $imagesPath[] = config('image.catalog_big_img').$generalImage->getLink();
+        }
         foreach ($images as $image) {
             $imagesPath[] = config('image.catalog_big_img').$image->getLink();
         }

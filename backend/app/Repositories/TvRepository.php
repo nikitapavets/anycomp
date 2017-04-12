@@ -2,12 +2,17 @@
 
 namespace App\Repositories;
 
+use App\Classes\Front\Section;
+use App\Classes\Front\SectionCheckerItem;
+use App\Classes\Front\SectionItem;
 use App\Classes\Table\TableCell;
 use App\Classes\Table\TableLinkCell;
 use App\Classes\Table\TablePopupCell;
 use App\Classes\Table\TablePopupItem;
 use App\Classes\Table\TablePopupLinkItem;
 use App\Classes\Table\TableRow;
+use App\Collections\Front\SectionItemsCollection;
+use App\Collections\Front\SectionsCollection;
 use App\Collections\TableCellsCollection;
 use App\Collections\TablePopupItemCollection;
 use App\Collections\TableRowsCollection;
@@ -67,10 +72,9 @@ class TvRepository
     /**
      * @param $brand
      * @param $model
-     * @param $config
      * @return Tv
      */
-    public static function getTvsByBrandAndModel($brand, $model, $config)
+    public static function getTvsByBrandAndModel($brand, $model)
     {
         $model = str_replace(
             ['-', '~'],
@@ -81,18 +85,8 @@ class TvRepository
                 strtolower($model)
             )
         );
-        $config = str_replace(
-            ['-', '~'],
-            [' ', '-'],
-            str_replace(
-                'chr47',
-                '/',
-                strtolower($config)
-            )
-        );
 
         return Tv::where('model', '=', $model)
-            ->whereIn('config', ['', $config])
             ->whereHas(
                 'brand',
                 function ($query) use ($brand) {
@@ -100,6 +94,39 @@ class TvRepository
                 }
             )
             ->first();
+    }
+
+    /**
+     * @param Tv $tv
+     * @return array
+     */
+    public static function transformTvToFront($tv)
+    {
+        $sections = new SectionsCollection();
+
+        $section = new Section('Общая информация');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Дата выхода на рынок', $tv->getYear()->getNameWithDetails());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $sectionArray = $sections->toArray();
+
+        return [
+            'id' => $tv->getId(),
+            'title' => $tv->getFullName(),
+            'images' => $tv->getBigImages(),
+            'image' => $tv->getSmallImage(),
+            'imageBig' => $tv->getBigImage(),
+            'description' => $tv->getDescription(),
+            'quantity' => $tv->getQuantity(),
+            'price' => $tv->getPrice(),
+            'link' => $tv->getLink(),
+            'sections' => $sectionArray
+        ];
     }
 
     /**

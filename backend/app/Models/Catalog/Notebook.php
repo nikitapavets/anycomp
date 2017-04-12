@@ -206,7 +206,7 @@ class Notebook extends Catalog
     public function getProcessorClockFrequency($details = false)
     {
         if ($this->processor_clock_frequency) {
-            return $this->processor_clock_frequency.$details ? ' МГц' : '';
+            return $this->processor_clock_frequency.($details ? ' МГц' : '');
         }
     }
 
@@ -218,12 +218,11 @@ class Notebook extends Catalog
         $this->processor_clock_frequency = $processorClockFrequency;
     }
 
-    /**
-     * @return int
-     */
-    public function getProcessorTurboClockFrequency()
+    public function getProcessorTurboClockFrequency($details = false)
     {
-        return $this->processor_turbo_clock_frequency;
+        if ($this->processor_turbo_clock_frequency) {
+            return $this->processor_turbo_clock_frequency.($details ? ' МГц' : '');
+        }
     }
 
     /**
@@ -234,12 +233,11 @@ class Notebook extends Catalog
         $this->processor_turbo_clock_frequency = $processorTurboClockFrequency;
     }
 
-    /**
-     * @return int
-     */
-    public function getProcessorTdp()
+    public function getProcessorTdp($details = false)
     {
-        return $this->processor_tdp;
+        if ($this->processor_tdp) {
+            return $this->processor_tdp.($details ? ' TDP' : '');
+        }
     }
 
     /**
@@ -282,12 +280,11 @@ class Notebook extends Catalog
         $this->shockproof = $isShockproof ? 1 : 0;
     }
 
-    /**
-     * @return double
-     */
-    public function getWidth()
+    public function getWidth($details = false)
     {
-        return $this->width;
+        if ($this->width) {
+            return $this->width.($details ? ' мм' : '');
+        }
     }
 
     /**
@@ -298,12 +295,11 @@ class Notebook extends Catalog
         $this->width = $width;
     }
 
-    /**
-     * @return double
-     */
-    public function getDepth()
+    public function getDepth($details = false)
     {
-        return $this->depth;
+        if ($this->depth) {
+            return $this->depth.($details ? ' мм' : '');
+        }
     }
 
     /**
@@ -314,12 +310,11 @@ class Notebook extends Catalog
         $this->depth = $depth;
     }
 
-    /**
-     * @return double
-     */
-    public function getThickness()
+    public function getThickness($details = false)
     {
-        return $this->thickness;
+        if ($this->thickness) {
+            return $this->thickness.($details ? ' мм' : '');
+        }
     }
 
     /**
@@ -330,12 +325,11 @@ class Notebook extends Catalog
         $this->thickness = $thickness;
     }
 
-    /**
-     * @return double
-     */
-    public function getWeight()
+    public function getWeight($details = false)
     {
-        return $this->weight;
+        if ($this->weight) {
+            return $this->weight.($details ? ' г' : '');
+        }
     }
 
     /**
@@ -394,12 +388,11 @@ class Notebook extends Catalog
         $this->screen_3d = $isScreen3d ? 1 : 0;
     }
 
-    /**
-     * @return int
-     */
-    public function getHddRotationalSpeed()
+    public function getHddRotationalSpeed($details = false)
     {
-        return $this->hdd_rotational_speed;
+        if ($this->hdd_rotational_speed) {
+            return $this->hdd_rotational_speed.($details ? ' об/мин' : '');
+        }
     }
 
     /**
@@ -887,12 +880,11 @@ class Notebook extends Catalog
         $this->battery_cells = $batteryCells;
     }
 
-    /**
-     * @return int
-     */
-    public function getEnergyReserve()
+    public function getEnergyReserve($details = false)
     {
-        return $this->energy_reserve;
+        if ($this->energy_reserve) {
+            return $this->energy_reserve.($details ? ' Вт*ч' : '');
+        }
     }
 
     /**
@@ -903,12 +895,11 @@ class Notebook extends Catalog
         $this->energy_reserve = $energyReserve;
     }
 
-    /**
-     * @return int
-     */
-    public function getWorkingHours()
+    public function getWorkingHours($details = false)
     {
-        return $this->working_hours;
+        if ($this->working_hours) {
+            return $this->working_hours.($details ? ' ч' : '');
+        }
     }
 
     /**

@@ -594,6 +594,11 @@ class Tv extends Catalog
         return parent::getLink($systemName);
     }
 
+    public function getFullName()
+    {
+        return self::PRODUCT_TITLE.' '.$this->getName();
+    }
+
     public function getName()
     {
         return $this->getBrand()->getName().' '.$this->getModel();

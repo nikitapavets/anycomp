@@ -74,15 +74,9 @@ export function handleNotebookGet(getParams) {
     return function (dispatch) {
         dispatch(fetchNotebookGet());
 
-        return fetch(`${config.server}/api/notebooks/show?
-                brand=${getParams.brand}&
-                model=${getParams.model}&
-                config=${getParams.config}`)
+        return fetch(`${config.server}/api/notebooks/show?brand=${getParams.brand}&model=${getParams.model}&config=${getParams.config}`)
             .then(res => res.json())
-            .then(json => {
-                dispatch(fetchNotebookSuccess(json));
-                dispatch(fetchNotebookSuccess(json));
-            })
+            .then(json => dispatch(fetchNotebookSuccess(json)))
             .catch(err => dispatch(fetchNotebooksFailure(err)));
     }
 }

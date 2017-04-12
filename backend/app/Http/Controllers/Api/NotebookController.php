@@ -32,7 +32,7 @@ class NotebookController extends Controller
 
     public function search(Request $request)
     {
-        $notebooks = NotebookRepository::transformNotebooksForFront(
+        $notebooks = NotebookRepository::transformNotebooksToFront(
             NotebookRepository::getNotebooksByParams(
                 [
                     'text' => $request->text,

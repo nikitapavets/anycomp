@@ -2,12 +2,17 @@
 
 namespace App\Repositories;
 
+use App\Classes\Front\Section;
+use App\Classes\Front\SectionCheckerItem;
+use App\Classes\Front\SectionItem;
 use App\Classes\Table\TableCell;
 use App\Classes\Table\TableLinkCell;
 use App\Classes\Table\TablePopupCell;
 use App\Classes\Table\TablePopupItem;
 use App\Classes\Table\TablePopupLinkItem;
 use App\Classes\Table\TableRow;
+use App\Collections\Front\SectionItemsCollection;
+use App\Collections\Front\SectionsCollection;
 use App\Collections\TableCellsCollection;
 use App\Collections\TablePopupItemCollection;
 use App\Collections\TableRowsCollection;
@@ -87,14 +92,14 @@ class NotebookRepository
     {
         $notebooks = Notebook::orderBy('id', 'desc')->take(10)->get();
 
-        return self::transformNotebooksForFront($notebooks);
+        return self::transformNotebooksToFront($notebooks);
     }
 
     /**
      * @param Notebook[] $notebooks
      * @return Notebook[]
      */
-    public static function transformNotebooksForFront($notebooks)
+    public static function transformNotebooksToFront($notebooks)
     {
         $resultNotebooks = [];
         foreach ($notebooks as $notebook) {
@@ -118,13 +123,369 @@ class NotebookRepository
      */
     public static function transformNotebookToFront($notebook)
     {
+        $sections = new SectionsCollection();
+
+        $section = new Section('Общая информация');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Дата выхода на рынок', $notebook->getYear()->getNameWithDetails());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Тип', $notebook->getComputerType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Трансформер');
+        $sectionItem->setCheckerValue($notebook->isTransformer());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Процессор');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Платформа', $notebook->getProcessorStage()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Процессор', $notebook->getProcessor()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Модель процессора', $notebook->getProcessorModel());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Количество ядер', $notebook->getProcessorCore()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Тактовая частота', $notebook->getProcessorClockFrequency(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Turbo-частота ', $notebook->getProcessorTurboClockFrequency(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Энергопотребление процессора  ', $notebook->getProcessorTdp(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Конструкция');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Цвет корпуса', $notebook->getColorBody()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Цвет крышки', $notebook->getColorRoof()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Материал корпуса', $notebook->getMaterialBody()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Материал крышки', $notebook->getMaterialRoof()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Подсветка корпуса');
+        $sectionItem->setCheckerValue($notebook->isBodyBacklight());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Пыле-, влаго-, ударопрочность');
+        $sectionItem->setCheckerValue($notebook->isShockproof());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Размеры и вес');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Ширина', $notebook->getWidth(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Глубина', $notebook->getDepth(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Толщина', $notebook->getThickness(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Вес', $notebook->getWeight(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Экран');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Диагональ экрана', $notebook->getScreenDiagonal()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Разрешение экрана', $notebook->getScreenResolution()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Технология экрана', $notebook->getScreenType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Поверхность экрана', $notebook->getScreenSurface()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Сенсорный экран');
+        $sectionItem->setCheckerValue($notebook->isTouchScreen());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Поддержка ввода пером');
+        $sectionItem->setCheckerValue($notebook->isPenInputSupport());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('3D-экран');
+        $sectionItem->setCheckerValue($notebook->isScreen3d());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Оперативная память');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Тип оперативной памяти', $notebook->getRamType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Объём памяти', $notebook->getRamSize()->getNameWithDetails());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Максимальный объём памяти', $notebook->getRamMaxSize()->getNameWithDetails());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Функции');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('Регистрация силы нажатий');
+        $sectionItem->setCheckerValue($notebook->isTouchForce());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Хранение данных');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Тип жесткого диска (дисков)', $notebook->getHddTypesLikeString());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Ёмкость жесткого диска', $notebook->getHddSize()->getNameWithDetails());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Скорость вращения', $notebook->getHddRotationalSpeed(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Оптический привод');
+        $sectionItem->setCheckerValue($notebook->isOod());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Карты памяти', $notebook->getMemoryCardsLikeString());
+        $sectionItem->setCheckerValue($notebook->isMemoryCards());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Графика');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem(
+            'Графический адаптер',
+            $notebook->getGraphicCard()->getName().$notebook->getGraphicCardModel()
+        );
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Тип графического адаптера', $notebook->getGraphicCardType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Локальная видеопамять', $notebook->getGraphicMemorySize()->getNameWithDetails());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Камера и звук');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('Встроенная камера', $notebook->getBuildInCamera());
+        $sectionItem->setCheckerValue($notebook->getBuildInCamera());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Количество пикселей камеры', $notebook->getBuildInCameraPixels());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Встроенный микрофон', $notebook->getBuildInMicrophone());
+        $sectionItem->setCheckerValue($notebook->getBuildInMicrophone());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Встроенные динамики', $notebook->getBuildInSpeakers());
+        $sectionItem->setCheckerValue($notebook->getBuildInSpeakers());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Клавиатура и тачпад');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('Цифровое поле (Numpad)');
+        $sectionItem->setCheckerValue($notebook->isNumpad());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Подсветка клавиатуры');
+        $sectionItem->setCheckerValue($notebook->isKeyboardBacklight());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Заводская «кириллица» на клавишах');
+        $sectionItem->setCheckerValue($notebook->isKeyboardKirill());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Мультимедийная сенсорная панель');
+        $sectionItem->setCheckerValue($notebook->isMultiTouchPanel());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Управление курсором', $notebook->getCursorControlType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Функциональность');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('Сканер отпечатков пальцев');
+        $sectionItem->setCheckerValue($notebook->isFingerprintScanner());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Система управления взглядом');
+        $sectionItem->setCheckerValue($notebook->isEyesControl());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('TV-тюнер', $notebook->getTvTunersLikeString());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Интерфейсы');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('NFC');
+        $sectionItem->setCheckerValue($notebook->isNfc());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Bluetooth');
+        $sectionItem->setCheckerValue($notebook->isBluetooth());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('LAN', $notebook->getLan());
+        $sectionItem->setCheckerValue($notebook->getLan());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Wi-Fi');
+        $sectionItem->setCheckerValue($notebook->isWiFi());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Сотовая связь');
+        $sectionItem->setCheckerValue($notebook->isMobileConnect());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('USB 2.0', $notebook->getInputUsb20());
+        $sectionItem->setCheckerValue($notebook->getInputUsb20());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('USB 3.0', $notebook->getInputUsb30());
+        $sectionItem->setCheckerValue($notebook->getInputUsb30());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('USB 3.1A', $notebook->getInputUsb31A());
+        $sectionItem->setCheckerValue($notebook->getInputUsb31A());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('USB 3.1B', $notebook->getInputUsb31B());
+        $sectionItem->setCheckerValue($notebook->getInputUsb31B());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('USB 3.1C', $notebook->getInputUsb31C());
+        $sectionItem->setCheckerValue($notebook->getInputUsb31C());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('VGA (RGB)', $notebook->getInputVga());
+        $sectionItem->setCheckerValue($notebook->getInputVga());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('HDMI', $notebook->getInputHdmi());
+        $sectionItem->setCheckerValue($notebook->getInputHdmi());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('DisplayPort', $notebook->getInputDisplayPort());
+        $sectionItem->setCheckerValue($notebook->getInputDisplayPort());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Thunderbolt', $notebook->getInputThunderbolt());
+        $sectionItem->setCheckerValue($notebook->getInputThunderbolt());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Аудио выходы', $notebook->getInputAudio());
+        $sectionItem->setCheckerValue($notebook->getInputAudio());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Аккумулятор');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Количество ячеек аккумулятора', $notebook->getBatteryCells());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Запас энергии', $notebook->getEnergyReserve(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Время работы', $notebook->getWorkingHours(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Комплектация');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Комплект поставки', $notebook->getComplectsLikeString());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Вторая батарея');
+        $sectionItem->setCheckerValue($notebook->isSecondBattery());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Мышь');
+        $sectionItem->setCheckerValue($notebook->isMouse());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Сумка или чехол');
+        $sectionItem->setCheckerValue($notebook->isBag());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $sectionArray = $sections->toArray();
+
         return [
             'id' => $notebook->getId(),
             'title' => $notebook->getFullName(),
             'images' => $notebook->getBigImages(),
+            'image' => $notebook->getSmallImage(),
+            'imageBig' => $notebook->getBigImage(),
             'description' => $notebook->getDescription(),
             'quantity' => $notebook->getQuantity(),
-            'price' => $notebook->getPrice()
+            'price' => $notebook->getPrice(),
+            'link' => $notebook->getLink(),
+            'sections' => $sectionArray
         ];
     }
 

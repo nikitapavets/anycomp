@@ -3,8 +3,10 @@ import fetch from 'isomorphic-fetch';
 import {
     FETCH_TVS_REQUEST,
     FETCH_TVS_SUCCESS,
+    FETCH_TV_SUCCESS,
     FETCH_TVS_FAILURE,
-    FETCH_TVS_SEARCH
+    FETCH_TVS_SEARCH,
+    FETCH_TV_GET
 } from '../actions-types/tvs';
 
 function fetchTvsRequest() {
@@ -19,9 +21,22 @@ function fetchTvsSearch() {
     }
 }
 
+function fetchTvsGet() {
+    return {
+        type: FETCH_TV_GET
+    }
+}
+
 function fetchTvsSuccess(payload) {
     return {
         type: FETCH_TVS_SUCCESS,
+        payload
+    }
+}
+
+function fetchTvSuccess(payload) {
+    return {
+        type: FETCH_TV_SUCCESS,
         payload
     }
 }
@@ -51,6 +66,17 @@ export function handleSearchTvs(searchForm) {
         return fetch(`${config.server}/api/tvs/search?text=${searchForm.text}`)
             .then(res => res.json())
             .then(json => dispatch(fetchTvsSuccess(json)))
+            .catch(err => dispatch(fetchTvsFailure(err)));
+    }
+}
+
+export function handleTvGet(getParams) {
+    return function (dispatch) {
+        dispatch(fetchTvsGet());
+
+        return fetch(`${config.server}/api/tvs/show?brand=${getParams.brand}&model=${getParams.model}`)
+            .then(res => res.json())
+            .then(json => dispatch(fetchTvSuccess(json)))
             .catch(err => dispatch(fetchTvsFailure(err)));
     }
 }
