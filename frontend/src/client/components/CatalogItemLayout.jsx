@@ -38,11 +38,12 @@ const Product__Header = styled.div`
     `};
 `;
 const Product__Images = styled.div`
-    padding: 0 30px 45px 30px;
+    padding: 0 0 45px 0;
     width: 100%;
     
     ${media.laptop`
          flex: 2 1;
+         padding: 0 30px 45px 30px;
     `}
 `;
 const Product__ImageWrap = styled.div`
@@ -246,7 +247,7 @@ export default class CatalogItemLayout extends React.Component {
                                                 : sectionItem.type == 'checker' ?
                                                     <Characteristic key={sectionItemIndex}>
                                                         <Characteristic__Param>{sectionItem.title}</Characteristic__Param>
-                                                        <Characteristic__Value className="withBool">
+                                                        <Characteristic__Value className='withBool'>
                                                             {sectionItem.checker_value ?
                                                                 <Characteristic__ValueOk/>
                                                                 :

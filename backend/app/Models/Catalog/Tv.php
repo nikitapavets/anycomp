@@ -328,11 +328,7 @@ class Tv extends Catalog
     public function getScreenRefreshRate($details = false)
     {
         if ($this->screen_refresh_rate) {
-            if ($details) {
-                return 'частота '.$this->screen_refresh_rate.' Гц';
-            }
-
-            return $this->screen_refresh_rate;
+            return $this->screen_refresh_rate.($details ? ' Гц' : '');
         }
     }
 
@@ -341,9 +337,11 @@ class Tv extends Catalog
         $this->screen_refresh_rate = $screenRefreshRate;
     }
 
-    public function getMaxPowerConsumption()
+    public function getMaxPowerConsumption($details = false)
     {
-        return $this->max_power_consumption;
+        if ($this->max_power_consumption) {
+            return $this->max_power_consumption.($details ? ' Вт' : '');
+        }
     }
 
     public function setMaxPowerConsumption($maxPowerConsumption)
@@ -351,9 +349,11 @@ class Tv extends Catalog
         $this->max_power_consumption = $maxPowerConsumption;
     }
 
-    public function getBuildInSpeakersPower()
+    public function getBuildInSpeakersPower($details = false)
     {
-        return $this->build_in_speakers_power;
+        if ($this->build_in_speakers_power) {
+            return $this->build_in_speakers_power.($details ? ' Вт' : '');
+        }
     }
 
     public function setBuildInSpeakersPower($buildInSpeakersPower)
@@ -501,9 +501,11 @@ class Tv extends Catalog
         $this->input_ethernet = $inputEthernet;
     }
 
-    public function getWidth()
+    public function getWidth($details = false)
     {
-        return $this->width;
+        if ($this->width) {
+            return $this->width.($details ? ' мм' : '');
+        }
     }
 
     public function setWidth($width)
@@ -511,9 +513,11 @@ class Tv extends Catalog
         $this->width = $width;
     }
 
-    public function getHeightWithStand()
+    public function getHeightWithStand($details = false)
     {
-        return $this->height_with_stand;
+        if ($this->height_with_stand) {
+            return $this->height_with_stand.($details ? ' мм' : '');
+        }
     }
 
     public function setHeightWithStand($heightWithStand)
@@ -521,9 +525,11 @@ class Tv extends Catalog
         $this->height_with_stand = $heightWithStand;
     }
 
-    public function getThickness()
+    public function getThickness($details = false)
     {
-        return $this->thickness;
+        if ($this->thickness) {
+            return $this->thickness.($details ? ' мм' : '');
+        }
     }
 
     public function setThickness($thickness)
@@ -531,9 +537,11 @@ class Tv extends Catalog
         $this->thickness = $thickness;
     }
 
-    public function getDepthWithStand()
+    public function getDepthWithStand($details = false)
     {
-        return $this->depth_with_stand;
+        if ($this->depth_with_stand) {
+            return $this->depth_with_stand.($details ? ' мм' : '');
+        }
     }
 
     public function setDepthWithStand($depthWithStand)
@@ -541,9 +549,11 @@ class Tv extends Catalog
         $this->depth_with_stand = $depthWithStand;
     }
 
-    public function getWeight()
+    public function getWeight($details = false)
     {
-        return $this->weight;
+        if ($this->depth_with_stand) {
+            return $this->depth_with_stand.($details ? ' г' : '');
+        }
     }
 
     public function setWeight($weight)
@@ -620,7 +630,7 @@ class Tv extends Catalog
         }
         $screenRefreshRateDescription = $this->getScreenRefreshRate(true);
         if (trim($screenRefreshRateDescription)) {
-            $description .= ', '.trim($screenRefreshRateDescription);
+            $description .= ', частота '.trim($screenRefreshRateDescription);
         }
         $smartTvRateDescription = $this->isSmartTv(true);
         if (trim($smartTvRateDescription)) {

@@ -113,6 +113,253 @@ class TvRepository
         $section->setItems($sectionItems);
         $sections->pushSection($section);
 
+        $section = new Section('Основное характеристики');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Тип экрана', $tv->getScreenType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Диагональ экрана', $tv->getScreenDiagonal()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Разрешение экрана', $tv->getScreenResolution()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Соотношение сторон', $tv->getScreenAspectRatio()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Изогнутый экран');
+        $sectionItem->setCheckerValue($tv->isScreenCurved());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Поддержка 3D');
+        $sectionItem->setCheckerValue($tv->is3dSupport());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Индекс качества динамичных сцен', $tv->getDynamicScenesQualityIndex());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Smart TV');
+        $sectionItem->setCheckerValue($tv->isSmartTv());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Цвет корпуса', $tv->getColorBody()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Цвет рамки', $tv->getColorBorder()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Цвет подставки', $tv->getColorStand()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Подставка', $tv->getStandType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Технические характеристики');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Тип матрицы', $tv->getMatrixType()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Локальное затемнение');
+        $sectionItem->setCheckerValue($tv->isLocalDimming());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Ковровая LED-подсветка');
+        $sectionItem->setCheckerValue($tv->isLedBacklight());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Расширенный дин. диапазон');
+        $sectionItem->setCheckerValue($tv->isHdr());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Ядра процессора', $tv->getProcessorCore()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Частота обновления экрана', $tv->getScreenRefreshRate(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Макс. потребляемая мощность', $tv->getMaxPowerConsumption(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Функции');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('Беспроводная передача видео');
+        $sectionItem->setCheckerValue($tv->isWirelessVideoTransmission());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Видеокамера');
+        $sectionItem->setCheckerValue($tv->isVideoCamera());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Фоновая подсветка');
+        $sectionItem->setCheckerValue($tv->isBacklight());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Управление голосом');
+        $sectionItem->setCheckerValue($tv->isVoiceControl());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Прием сигнала');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('TV-тюнер', $tv->getTvTunersLikeString());
+        $sectionItem->setCheckerValue($tv->getTvTunersLikeString());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Два тюнера');
+        $sectionItem->setCheckerValue($tv->isTwoTuners());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Аудиосистема');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('Сабвуфер');
+        $sectionItem->setCheckerValue($tv->isSubwoofer());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Мощность динамиков', $tv->getBuildInSpeakersPower(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Колличество динамиков', $tv->getBuildInSpeakersCount());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Поддержка кодека DTS');
+        $sectionItem->setCheckerValue($tv->isDts());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Интерфейсы');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('Bluetooth');
+        $sectionItem->setCheckerValue($tv->isBluetooth());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Wi-Fi');
+        $sectionItem->setCheckerValue($tv->isWiFi());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Wi-Fi Direct');
+        $sectionItem->setCheckerValue($tv->isWiFiDirect());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('DisplayPort', $tv->getInputDisplayPort());
+        $sectionItem->setCheckerValue($tv->getInputDisplayPort());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Аудиовход', $tv->getInputAudio());
+        $sectionItem->setCheckerValue($tv->getInputAudio());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('MHL', $tv->getInputMhl());
+        $sectionItem->setCheckerValue($tv->getInputMhl());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Компонентный вход', $tv->getInputComponent());
+        $sectionItem->setCheckerValue($tv->getInputComponent());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Композитный вход', $tv->getInputComposite());
+        $sectionItem->setCheckerValue($tv->getInputComposite());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('SCART', $tv->getInputScart());
+        $sectionItem->setCheckerValue($tv->getInputScart());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('VGA', $tv->getInputVga());
+        $sectionItem->setCheckerValue($tv->getInputVga());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('HDMI', $tv->getInputHdmi());
+        $sectionItem->setCheckerValue($tv->getInputHdmi());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Цифровой выход S/PDIF', $tv->getInputSpdif());
+        $sectionItem->setCheckerValue($tv->getInputSpdif());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Выход на наушники', $tv->getInputHeadphones());
+        $sectionItem->setCheckerValue($tv->getInputHeadphones());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('USB 2.0', $tv->getInputUsb20());
+        $sectionItem->setCheckerValue($tv->getInputUsb20());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('USB 3.0', $tv->getInputUsb30());
+        $sectionItem->setCheckerValue($tv->getInputUsb30());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Ethernet', $tv->getInputEthernet());
+        $sectionItem->setCheckerValue($tv->getInputEthernet());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Выносной блок интерфейсов');
+        $sectionItem->setCheckerValue($tv->isRemoteInterfaceUnit());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Комплектация');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionCheckerItem('3D-очки');
+        $sectionItem->setCheckerValue($tv->isGlasses3d());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Smart-пульт');
+        $sectionItem->setCheckerValue($tv->isSmartConsole());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionCheckerItem('Настенное крепление');
+        $sectionItem->setCheckerValue($tv->isWallMount());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
+        $section = new Section('Размеры и вес');
+        $sectionItems = new SectionItemsCollection();
+
+        $sectionItem = new SectionItem('Крепление VESA', $tv->getVesaWallMount()->getName());
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Ширина', $tv->getWidth(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Высота с учетом подставки', $tv->getHeightWithStand(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Глубина с учетом подставки', $tv->getDepthWithStand(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Толщина панели', $tv->getThickness(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $sectionItem = new SectionItem('Вес с подставкой', $tv->getWeight(true));
+        $sectionItems->pushSectionItem($sectionItem);
+
+        $section->setItems($sectionItems);
+        $sections->pushSection($section);
+
         $sectionArray = $sections->toArray();
 
         return [
@@ -125,7 +372,7 @@ class TvRepository
             'quantity' => $tv->getQuantity(),
             'price' => $tv->getPrice(),
             'link' => $tv->getLink(),
-            'sections' => $sectionArray
+            'sections' => $sectionArray,
         ];
     }
 

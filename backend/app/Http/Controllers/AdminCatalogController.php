@@ -263,7 +263,7 @@ class AdminCatalogController extends Controller
         $widget->setAllowAddName('config_matrix_type_new');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetCheckbox('Smart TV', 'config_local_dimming', false);
+        $widget = new WidgetCheckbox('Локальное затемнение', 'config_local_dimming', false);
         $widget->setValue($tv ? $tv->isLocalDimming() : false);
         $widgetCollection->pushWidget($widget);
 
@@ -308,10 +308,6 @@ class AdminCatalogController extends Controller
 
         $widget = new WidgetCheckbox('Управление голосом', 'function_voice_control', false);
         $widget->setValue($tv ? $tv->isVoiceControl() : false);
-        $widgetCollection->pushWidget($widget);
-
-        $widget = new WidgetInput('Частота обновления экрана (Гц)', 'config_screen_refresh_rate', false);
-        $widget->setValue($tv ? $tv->getScreenRefreshRate() : false);
         $widgetCollection->pushWidget($widget);
 
         $widgets[] = $widgetCollection->toArray();
@@ -466,7 +462,7 @@ class AdminCatalogController extends Controller
         $widget->setValue($tv ? $tv->getThickness() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Вес с подставкой (мм)', 'sizes_weight', false);
+        $widget = new WidgetInput('Вес с подставкой (г)', 'sizes_weight', false);
         $widget->setValue($tv ? $tv->getWeight() : false);
         $widgetCollection->pushWidget($widget);
 
