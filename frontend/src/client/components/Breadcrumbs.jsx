@@ -6,7 +6,7 @@ import {fontSizes, colors} from '../libs/variables';
 
 const BreadcrumbsStyled = styled.div`
     display: flex;
-    padding: 15px 0
+    padding: 30px 0
     align-items: center;
 `;
 

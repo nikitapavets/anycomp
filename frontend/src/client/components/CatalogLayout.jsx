@@ -11,7 +11,6 @@ import Loader from './Loader';
 
 const Catalog = styled.div`
     background-color: ${colors.white};
-    padding: 0 15px;
     
 `;
 const Catalog__Container = styled(Container)`

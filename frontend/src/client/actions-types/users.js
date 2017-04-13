@@ -1,0 +1,6 @@
+export const FETCH_USER_GET = 'FETCH_USER_GET';
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
+export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
+export const CHECK_AUTH_USER = 'CHECK_AUTH_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';

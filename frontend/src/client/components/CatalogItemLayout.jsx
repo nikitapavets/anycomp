@@ -13,12 +13,10 @@ import NumberFormat from 'react-number-format';
 
 const Catalog = styled.div`
     background-color: ${colors.white};
-    padding: 0 15px;
     
 `;
 const Catalog__Container = styled(Container)`
     background-color: ${colors.white};
-    padding: 15px 0;
 `;
 const Product = styled.div`
 `;

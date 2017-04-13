@@ -43,6 +43,16 @@ const MobileMenu__LogoMenu = styled.div`
     align-items: center;
 `;
 
+const MobileMenu__Icons = styled.div`
+    display: flex;
+`;
+
+const MobileMenu__UserImg = require('../../../../static/images/svg/man-user.svg');
+const MobileMenu__User = styled(Link)`
+    ${bgi(MobileMenu__UserImg, 22)};
+    margin-right: 10px;
+`;
+
 const MobileMenu__MenuImg = require('../../../../static/images/svg/menu-button-of-three-horizontal-lines.svg');
 const MobileMenu__Menu = styled(Link)`
     ${bgi(MobileMenu__MenuImg, 22)}
@@ -119,7 +129,7 @@ const ToggleMenu__NavLink = styled(Link)`
 `;
 
 const ContactHeader = styled.div`
-    padding: 10px 15px;
+    padding: 10px 0;
     background: ${colors.black};
     color: ${colors.white};
     font-size: ${fontSizes.s}
@@ -167,7 +177,9 @@ const Header = styled.div`
 const GeneralHeader = styled(Container)`
     display: none;
     ${media.laptop`
-        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         padding-top: 15px;
         padding-bottom: 15px;
     `}
@@ -177,6 +189,23 @@ const GeneralHeader__Logo = styled(Link)`
     display: flex;
     align-items: center;
     text-decoration: none;
+`;
+const GeneralHeader__Menu = styled.div`
+`;
+const GeneralHeader__MenuItem = styled(Link)`
+    font-size: ${fontSizes.s};
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: .25s ease all;
+    &:hover {
+        opacity: .75
+    }
+`;
+const MenuItem__UserImg = require('../../../../static/images/svg/man-user.svg');
+const MenuItem__User = styled.div`
+    ${bgi(MenuItem__UserImg, 14)}
+    margin-right: 5px;
 `;
 
 const GeneralHeader__LogoImageImg = require('../../../../static/images/logo/logoMain.svg');
@@ -407,10 +436,13 @@ export default class GeneralLayout extends React.Component {
                             <MobileMenu__Menu to='#' onClick={this.handleToggleMobileMenu}/>
                             <MobileMenu__Logo>AnyComp</MobileMenu__Logo>
                         </MobileMenu__LogoMenu>
-                        <MobileMenu__BasketSet to='#' onClick={this.handleToggleBasket} className='basket'>
-                            <MobileMenu__Basket/>
-                            <MobileMenu__BasketCount>{this.props.basket.data.length}</MobileMenu__BasketCount>
-                        </MobileMenu__BasketSet>
+                        <MobileMenu__Icons>
+                            <MobileMenu__User to='/login'/>
+                            <MobileMenu__BasketSet to='#' onClick={this.handleToggleBasket} className='basket'>
+                                <MobileMenu__Basket/>
+                                <MobileMenu__BasketCount>{this.props.basket.data.length}</MobileMenu__BasketCount>
+                            </MobileMenu__BasketSet>
+                        </MobileMenu__Icons>
                         {this.state.isBasketActive &&
                         <Menu__BasketBox className='basket'>
                             <BasketBox__Title>Корзина</BasketBox__Title>
@@ -480,6 +512,12 @@ export default class GeneralLayout extends React.Component {
                             <GeneralHeader__LogoImage/>
                             <GeneralHeader__LogoText>nyComp</GeneralHeader__LogoText>
                         </GeneralHeader__Logo>
+                        <GeneralHeader__Menu>
+                            <GeneralHeader__MenuItem to="/login">
+                                <MenuItem__User/>
+                                Мой кабинет
+                            </GeneralHeader__MenuItem>
+                        </GeneralHeader__Menu>
                     </GeneralHeader>
                     <Menu>
                         <Menu__Container>

@@ -8,6 +8,7 @@ import NotebooksContainer from './components/NotebooksPage/NotebooksContainer';
 import NotebookContainer from './components/NotebookPage/NotebookContainer';
 import TvsContainer from './components/TvsPage/TvsContainer';
 import TvContainer from './components/TvPage/TvContainer';
+import LoginContainer from './components/Login/LoginContainer';
 import Error503Page from './components/Errors/Error503Page';
 
 export const routes = (
@@ -18,6 +19,7 @@ export const routes = (
             <Route path='notebooks/:brand/:model' component={NotebookContainer}/>
             <Route path='tvs' component={TvsContainer}/>
             <Route path='tvs/:brand/:model' component={TvContainer}/>
+            <Route path='login' component={LoginContainer}/>
             <Route path='503' component={Error503Page}/>
         </Route>
     </div>

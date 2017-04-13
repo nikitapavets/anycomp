@@ -4,6 +4,7 @@ import {media} from './mixins';
 export const Container = styled.div`
     max-width: 750px;
     margin: 0 auto;
+    padding: 0 15px;
     ${media.desktop`
         max-width: 970px;
     `}
