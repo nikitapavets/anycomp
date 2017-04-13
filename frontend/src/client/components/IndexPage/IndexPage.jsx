@@ -8,6 +8,7 @@ import Slick from '../../components/Slick';
 import Arrow from '../../components/Arrow';
 import config from '../../../core/config/general';
 import Loader from '../Loader';
+import NumberFormat from 'react-number-format';
 
 const Slider = styled.div`
 `;
@@ -61,6 +62,9 @@ const Slide__HeaderBuyNow = styled(Link)`
     }
 `;
 
+const Slide__HeaderPrice = styled(NumberFormat)`
+    margin-left: 5px;
+`;
 const Catalog = styled.div`
     position: relative;
     background: ${colors.white};
@@ -105,7 +109,8 @@ const Catalog__GoodDescription = styled.div`
     opacity: .75;
     height: 90px;
 `;
-const Catalog__GoodPrice = styled.div`
+const Catalog__GoodPrice = styled(NumberFormat)`
+    display: block;
     text-align: center;
     color: ${colors.main};
     font-size: ${fontSizes.xl};
@@ -232,8 +237,11 @@ export default class IndexPage extends React.Component {
                                         <Slide__Header>
                                             <Slide__HeaderBrand>{popular.brand}</Slide__HeaderBrand>
                                             <Slide__HeaderModel>{popular.model}</Slide__HeaderModel>
-                                            <Slide__HeaderBuyNow to={popular.link}>Купить за {popular.price}
-                                                р.</Slide__HeaderBuyNow>
+                                            <Slide__HeaderBuyNow to={popular.link}>Купить за
+                                                <Slide__HeaderPrice value={popular.price} displayType={'text'}
+                                                                    thousandSeparator={' '}
+                                                                    suffix={' р.'}/>
+                                            </Slide__HeaderBuyNow>
                                         </Slide__Header>
                                     </Slide>
                                 )}
@@ -270,7 +278,9 @@ export default class IndexPage extends React.Component {
                                             </Catalog__GoodImageWrap>
                                             <Catalog__GoodTitle>{notebook.title}</Catalog__GoodTitle>
                                             <Catalog__GoodDescription>{notebook.description}</Catalog__GoodDescription>
-                                            <Catalog__GoodPrice>{notebook.price} р.</Catalog__GoodPrice>
+                                            <Catalog__GoodPrice value={notebook.price} displayType={'text'}
+                                                                thousandSeparator={' '}
+                                                                suffix={' р.'}/>
                                             <Catalog__GoodDetails>
                                                 <Catalog__GoodDetail className='basket'
                                                                      to='/basket'
@@ -311,7 +321,9 @@ export default class IndexPage extends React.Component {
                                                                 title={tv.title} alt={tv.title}/>
                                             <Catalog__GoodTitle>{tv.title}</Catalog__GoodTitle>
                                             <Catalog__GoodDescription>{tv.description}</Catalog__GoodDescription>
-                                            <Catalog__GoodPrice>{tv.price} р.</Catalog__GoodPrice>
+                                            <Catalog__GoodPrice value={tv.price} displayType={'text'}
+                                                                thousandSeparator={' '}
+                                                                suffix={' р.'}/>
                                             <Catalog__GoodDetails>
                                                 <Catalog__GoodDetail className='basket'
                                                                      to='/basket'

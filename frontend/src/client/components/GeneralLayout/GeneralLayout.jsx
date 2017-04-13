@@ -7,6 +7,7 @@ import {bgi, media} from '../../libs/mixins';
 import menu from '../../config/menu';
 import Dom from '../../../core/scripts/dom';
 import config from '../../../core/config/general';
+import NumberFormat from 'react-number-format';
 
 const Layout = styled.div`
     background: ${colors.mainBg};
@@ -173,7 +174,7 @@ const Header = styled.div`
     background: ${colors.mainBg};
     padding-bottom: 30px;
 `;
-
+const GeneralHeaderImg = require('../../../../static/images/bg/header.jpg');
 const GeneralHeader = styled(Container)`
     display: none;
     ${media.laptop`
@@ -182,6 +183,8 @@ const GeneralHeader = styled(Container)`
         align-items: center;
         padding-top: 15px;
         padding-bottom: 15px;
+        background-image: ${GeneralHeaderImg};
+        background-size: cover;
     `}
 `;
 
@@ -350,7 +353,8 @@ const BasketBox__ItemPriceBox = styled.div`
     text-align: right;
     width: 91px;
 `;
-const BasketBox__ItemPrice = styled.div`
+const BasketBox__ItemPrice = styled(NumberFormat)`
+    display: block;
     color: ${colors.red};
     span {
        color: ${colors.black}; 
@@ -455,7 +459,8 @@ export default class GeneralLayout extends React.Component {
                                             <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
                                             <BasketBox__ItemPriceBox>
                                                 <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
-                                                <BasketBox__ItemPrice>{basketItem.price}<span> р.</span></BasketBox__ItemPrice>
+                                                <BasketBox__ItemPrice value={basketItem.price} displayType={'text'} thousandSeparator={' '}
+                                                                      suffix={' р.'}/>
                                             </BasketBox__ItemPriceBox>
                                             <BasketBox__ItemClose to='#'
                                                                   onClick={_ => this.handleRemoveFromBasket(_, basketItem.index)}/>
@@ -550,7 +555,8 @@ export default class GeneralLayout extends React.Component {
                                                 <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
                                                 <BasketBox__ItemPriceBox>
                                                     <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
-                                                    <BasketBox__ItemPrice>{basketItem.price}<span> р.</span></BasketBox__ItemPrice>
+                                                    <BasketBox__ItemPrice value={basketItem.price} displayType={'text'} thousandSeparator={' '}
+                                                                          suffix={' р.'}/>
                                                 </BasketBox__ItemPriceBox>
                                                 <BasketBox__ItemClose to='#'
                                                                       onClick={_ => this.handleRemoveFromBasket(_, basketItem.index)}/>

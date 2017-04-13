@@ -83,7 +83,7 @@ class Catalog extends Model
     {
         $generalImages = $this->getImages($productType, true);
         if (!count($generalImages)) {
-            return '';
+            return config('image.image_gag');
         }
 
         return config('image.catalog_big_img').$generalImages[0]->getLink();
@@ -99,6 +99,9 @@ class Catalog extends Model
         }
         foreach ($images as $image) {
             $imagesPath[] = config('image.catalog_big_img').$image->getLink();
+        }
+        if(!$imagesPath) {
+	        $imagesPath[] = config('image.image_gag');
         }
 
         return $imagesPath;
@@ -118,7 +121,7 @@ class Catalog extends Model
     {
         $generalImages = $this->getImages($productType, true);
         if (!count($generalImages)) {
-            return '';
+            return config('image.image_gag');
         }
 
         return config('image.catalog_small_img').$generalImages[0]->getLink();

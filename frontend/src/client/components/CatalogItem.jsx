@@ -5,6 +5,7 @@ import {colors, fontSizes} from '../libs/variables';
 import {bgi} from '../libs/mixins';
 import config from '../../core/config/general';
 import {media} from '../libs/mixins';
+import NumberFormat from 'react-number-format';
 
 const Catalog__Good = styled(Link)`
     text-align: center;
@@ -45,7 +46,8 @@ const Catalog__GoodDescription = styled.div`
     opacity: .75;
     height: 90px;
 `;
-const Catalog__GoodPrice = styled.div`
+const Catalog__GoodPrice = styled(NumberFormat)`
+    display: block;
     text-align: center;
     color: ${colors.main};
     font-size: ${fontSizes.xl};
@@ -85,7 +87,8 @@ export default class CatalogItem extends React.Component {
                 </Catalog__GoodImageWrap>
                 <Catalog__GoodTitle>{this.props.item.title}</Catalog__GoodTitle>
                 <Catalog__GoodDescription>{this.props.item.description}</Catalog__GoodDescription>
-                <Catalog__GoodPrice>{this.props.item.price} р.</Catalog__GoodPrice>
+                <Catalog__GoodPrice value={this.props.item.price} displayType={'text'} thousandSeparator={' '}
+                                    suffix={' р.'}/>
                 <Catalog__GoodDetails>
                     <Catalog__GoodDetail className='basket'
                                          to='#'
