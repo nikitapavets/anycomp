@@ -78,13 +78,13 @@ const Enter__Input = styled.input`
     }
 `;
 
-export default class NotebooksPage extends React.Component {
+export default class LoginPage extends React.Component {
 
     componentWillMount() {
         this.props.setBreadcrumbs([
             {
                 title: 'Личный кабинет',
-                link: '/login'
+                link: '/user'
             }
         ]);
     }
@@ -102,16 +102,16 @@ export default class NotebooksPage extends React.Component {
                                 контролировать состояние заказа, а также просматривать заказы сделанные ранее. Вы
                                 сможете накапливать призовые баллы и получать скидочные купоны.А постоянным покупателям
                                 мы предлагаем гибкую систему скидок и персональное обслуживание.</Enter__Description>
-                            <Enter__Button to="/registration">Регистрация</Enter__Button>
+                            <Enter__Button to='/user/registration'>Регистрация</Enter__Button>
                         </Enter__Block>
                         <Enter__Block>
                             <Enter__Header>Зарегистрированный клиент</Enter__Header>
                             <Enter__SubHeader>Войти в Личный Кабинет</Enter__SubHeader>
                             <Enter__Description>
-                                <Enter__Input type="text" placeholder="E-mail"/>
-                                <Enter__Input type="text" placeholder="Пароль"/>
+                                <Enter__Input type='text' placeholder='E-mail'/>
+                                <Enter__Input type='text' placeholder='Пароль'/>
                             </Enter__Description>
-                            <Enter__Button to="/enter">Войти</Enter__Button>
+                            <Enter__Button to='/enter'>Войти</Enter__Button>
                         </Enter__Block>
                     </Enter>
                 </LoginStyled__Container>

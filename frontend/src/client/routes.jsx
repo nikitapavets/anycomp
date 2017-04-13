@@ -9,6 +9,7 @@ import NotebookContainer from './components/NotebookPage/NotebookContainer';
 import TvsContainer from './components/TvsPage/TvsContainer';
 import TvContainer from './components/TvPage/TvContainer';
 import LoginContainer from './components/Login/LoginContainer';
+import RegistrationContainer from './components/Registration/RegistrationContainer';
 import Error503Page from './components/Errors/Error503Page';
 
 export const routes = (
@@ -19,7 +20,10 @@ export const routes = (
             <Route path='notebooks/:brand/:model' component={NotebookContainer}/>
             <Route path='tvs' component={TvsContainer}/>
             <Route path='tvs/:brand/:model' component={TvContainer}/>
-            <Route path='login' component={LoginContainer}/>
+            <Route path='user'>
+                <IndexRoute component={LoginContainer}/>
+                <Route path='registration' component={RegistrationContainer}/>
+            </Route>
             <Route path='503' component={Error503Page}/>
         </Route>
     </div>

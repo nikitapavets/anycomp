@@ -13,7 +13,7 @@ const BreadcrumbsStyled = styled.div`
 const Menu__ItemHome = require('../../../static/images/svg/home.svg');
 const Menu__ItemHomeActive = require('../../../static/images/svg/home_699AD1.svg');
 const BreadcrumbsLink = styled(Link)`
-    font-size: ${fontSizes.s};
+    font-size: ${fontSizes.xs};
     text-decoration: none;
     margin-right: 10px;
     &:hover {
@@ -23,7 +23,7 @@ const BreadcrumbsLink = styled(Link)`
         content: '>';
         padding: 0;
         margin-right: 10px;
-        font-size: 12px;
+        font-size: 10px;
         color: ${colors.black};
     }
     &:first-child {

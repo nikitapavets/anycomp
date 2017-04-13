@@ -174,7 +174,6 @@ const Header = styled.div`
     background: ${colors.mainBg};
     padding-bottom: 30px;
 `;
-const GeneralHeaderImg = require('../../../../static/images/bg/header.jpg');
 const GeneralHeader = styled(Container)`
     display: none;
     ${media.laptop`
@@ -183,7 +182,6 @@ const GeneralHeader = styled(Container)`
         align-items: center;
         padding-top: 15px;
         padding-bottom: 15px;
-        background-image: ${GeneralHeaderImg};
         background-size: cover;
     `}
 `;
@@ -441,7 +439,7 @@ export default class GeneralLayout extends React.Component {
                             <MobileMenu__Logo>AnyComp</MobileMenu__Logo>
                         </MobileMenu__LogoMenu>
                         <MobileMenu__Icons>
-                            <MobileMenu__User to='/login'/>
+                            <MobileMenu__User to='/user'/>
                             <MobileMenu__BasketSet to='#' onClick={this.handleToggleBasket} className='basket'>
                                 <MobileMenu__Basket/>
                                 <MobileMenu__BasketCount>{this.props.basket.data.length}</MobileMenu__BasketCount>
@@ -518,7 +516,7 @@ export default class GeneralLayout extends React.Component {
                             <GeneralHeader__LogoText>nyComp</GeneralHeader__LogoText>
                         </GeneralHeader__Logo>
                         <GeneralHeader__Menu>
-                            <GeneralHeader__MenuItem to="/login">
+                            <GeneralHeader__MenuItem to='/user'>
                                 <MenuItem__User/>
                                 Мой кабинет
                             </GeneralHeader__MenuItem>

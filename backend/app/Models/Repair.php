@@ -141,7 +141,7 @@ class Repair extends Model
                 break;
             }
             case 4: {
-                $date .= "арпеля";
+                $date .= "апреля";
                 break;
             }
             case 5: {
