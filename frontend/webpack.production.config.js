@@ -56,6 +56,10 @@ module.exports = {
         }),
         new ExtractTextPlugin("./css/[name].css", {
             allChunks: true
+        }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
         })
         // new CopyWebpackPlugin([
         //     { from: './static/.htaccess'},

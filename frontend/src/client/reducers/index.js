@@ -6,6 +6,7 @@ import notebooks from './notebooks';
 import tvs from './tvs';
 import popularProducts from './popularProducts';
 import breadcrumbs from './breadcrumbs';
+import users from './users';
 
 export default combineReducers({
     routing: routerReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
     notebooks,
     tvs,
     popularProducts,
-    breadcrumbs
+    breadcrumbs,
+    users
 });

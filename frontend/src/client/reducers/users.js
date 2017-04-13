@@ -17,6 +17,7 @@ export default function notebooks(state = initialState, action) {
             };
 
         case actionTypes.FETCH_USER_SUCCESS:
+            console.log(action.payload);
             return {
                 ...state,
                 current: action.payload,
@@ -33,6 +34,12 @@ export default function notebooks(state = initialState, action) {
             return {
                 ...state,
                 current: cookie.load(cookie.USER_COOKIE)
+            };
+
+        case actionTypes.REGISTRATION_USER:
+            return {
+                ...state,
+                isLoading: true
             };
 
         case actionTypes.LOGIN_USER:

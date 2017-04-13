@@ -15,31 +15,29 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     protected $namespace = 'App\Http\Controllers';
+    protected $namespaceApi = 'App\Http\Controllers\Api';
 
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function boot(Router $router)
     {
-        //
-
         parent::boot($router);
     }
 
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)
     {
         $this->mapWebRoutes($router);
-
-        //
+        $this->mapApiRoutes($router);
     }
 
     /**
@@ -47,15 +45,33 @@ class RouteServiceProvider extends ServiceProvider
      *
      * These routes all receive session state, CSRF protection, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     protected function mapWebRoutes(Router $router)
     {
-        $router->group([
-            'namespace' => $this->namespace, 'middleware' => 'web',
-        ], function ($router) {
-            require app_path('Http/routes.php');
-        });
+        $router->group(
+            [
+                'namespace' => $this->namespace,
+                'middleware' => 'web',
+            ],
+            function ($router) {
+                require app_path('Http/routes/web.php');
+            }
+        );
+    }
+
+    protected function mapApiRoutes(Router $router)
+    {
+        $router->group(
+            [
+                'namespace' => $this->namespaceApi,
+                'middleware' => 'api',
+                'prefix' => 'api'
+            ],
+            function ($router) {
+                require app_path('Http/routes/api.php');
+            }
+        );
     }
 }

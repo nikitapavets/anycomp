@@ -1,31 +1,53 @@
 import React from 'react';
-import {Link} from 'react-router';
 import styled from 'styled-components';
+import $ from 'jquery';
 
-import {Container} from '../../libs/blocks';
-import {colors, fontSizes} from '../../libs/variables';
-import {media} from '../../libs/mixins';
-
+import FormButton from './FormButton';
+import errors from './FormErrors';
+import Dom from '../../../core/scripts/dom';
 
 const FormStyled = styled.section`
 `;
-const FormBlock = styled.section`
-`;
-const FormBlock__Header = styled.header`
-    padding: 5px 0;
-    border-bottom: 1px solid ${colors.minor};
-    font-size: ${fontSizes.m};
-    font-weight: 300;
+const Buttons = styled.div`
+    text-align: right;
 `;
 
+const FORM_ID = 'sendForm';
+const FROM_ERROR = 'error';
+
 export default class Form extends React.Component {
+
+    handleSendForm = (e) => {
+        e.preventDefault();
+
+        if(this.validateForm(FORM_ID)) {
+            const params = Dom.formItems(FORM_ID);
+            this.props.handle(params);
+        }
+    };
+
+    validateForm = (formId) => {
+        let validateStatus = true;
+        const form = $(`#${formId}`);
+        form.find(`.${FROM_ERROR}`).text('');
+        form.find('input').each((index, input) => {
+            if ($(input).data('required') && !$(input).val()) {
+                $(input).next(`.${FROM_ERROR}`).text(errors.error_required);
+                validateStatus = false;
+            }
+        });
+        return validateStatus;
+    };
 
     render() {
         return (
             <FormStyled>
-                <FormBlock>
-                    <FormBlock__Header>Основные данные</FormBlock__Header>
-                </FormBlock>
+                <form id={FORM_ID}>
+                    {this.props.children}
+                    <Buttons>
+                        <FormButton title={this.props.button} handleClick={this.handleSendForm}/>
+                    </Buttons>
+                </form>
             </FormStyled>
         )
     }

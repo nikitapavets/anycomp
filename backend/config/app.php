@@ -158,6 +158,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
 	    Maatwebsite\Excel\ExcelServiceProvider::class,
 	    Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class
 
     ],
 
