@@ -11,6 +11,7 @@ import {
     CHECK_AUTH_USER,
     REGISTRATION_USER,
     LOGOUT_USER,
+    LOGIN_USER
 } from '../actions-types/users';
 
 function fetchUserGet() {
@@ -52,6 +53,12 @@ function logoutUser() {
     }
 }
 
+function loginUser() {
+    return {
+        type: LOGIN_USER
+    }
+}
+
 export function handleUserGet() {
     return function (dispatch) {
         dispatch(fetchUserGet());
@@ -67,7 +74,7 @@ export function handleCheckAuthUser() {
     return function (dispatch) {
         dispatch(checkAuthUser());
         const user = cookie.load(cookieParams.USER_COOKIE);
-        if (!user.id) {
+        if (!user) {
             return dispatch(fetchUserFailure(false));
         }
 
@@ -82,6 +89,32 @@ export function handleLogout() {
     return function (dispatch) {
         cookie.remove(cookieParams.USER_COOKIE);
         dispatch(logoutUser());
+    }
+}
+
+export function handleLogin(data) {
+    return function (dispatch) {
+        dispatch(loginUser());
+
+        return fetch(`${config.server}/api/users/auth`, {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: data
+        })
+            .then(res => res.json())
+            .then(json => {
+                if (json.id) {
+                    cookie.save(cookieParams.USER_COOKIE, json, {path: '/', maxAge: cookieParams.USER_MAX_AGE});
+                    browserHistory.push('/');
+                    dispatch(fetchUserSuccess(json));
+                } else {
+                    dispatch(fetchUserFailure(json))
+                }
+            })
+            .catch(err => dispatch(fetchUserFailure(err)));
     }
 }
 

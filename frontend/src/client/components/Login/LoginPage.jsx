@@ -1,10 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router';
 import styled from 'styled-components';
 
 import {Container} from '../../libs/blocks';
 import {colors, fontSizes} from '../../libs/variables';
 import {media} from '../../libs/mixins';
+import Dom from '../../../core/scripts/dom';
 
 import Breadcrumbs from '../Breadcrumbs';
 
@@ -54,7 +54,7 @@ const Enter__Description = styled.header`
     border-top: 1px solid ${colors.minor};
     border-bottom: 1px solid ${colors.minor};
 `;
-const Enter__Button = styled(Link)`
+const Enter__Button = styled.button`
     display: inline-block;
     font-size: ${fontSizes.s};
     background-color: ${colors.main};
@@ -77,6 +77,16 @@ const Enter__Input = styled.input`
         border: 2px solid ${colors.main};
     }
 `;
+const Error = styled.div`
+    font-size: ${fontSizes.xs};
+    color: ${colors.red};
+    margin-top: 5px;
+`;
+const Info = styled(Error)`
+    color: ${colors.main};
+`;
+
+const FORM_ID = 'sendForm';
 
 export default class LoginPage extends React.Component {
 
@@ -88,6 +98,13 @@ export default class LoginPage extends React.Component {
             }
         ]);
     }
+
+    handleAuth = (e) => {
+        e.preventDefault();
+
+        const params = Dom.formItems(FORM_ID);
+        this.props.handleLogin(params);
+    };
 
     render() {
         return (
@@ -107,11 +124,17 @@ export default class LoginPage extends React.Component {
                         <Enter__Block>
                             <Enter__Header>Зарегистрированный клиент</Enter__Header>
                             <Enter__SubHeader>Войти в Личный Кабинет</Enter__SubHeader>
-                            <Enter__Description>
-                                <Enter__Input type='text' placeholder='E-mail'/>
-                                <Enter__Input type='text' placeholder='Пароль'/>
-                            </Enter__Description>
-                            <Enter__Button to='/enter'>Войти</Enter__Button>
+                            <form id={FORM_ID} onSubmit={this.handleAuth}>
+                                <Enter__Description>
+                                    <Enter__Input name='client_email' type='text' placeholder='E-mail'/>
+                                    <Enter__Input name='client_password' type='password' placeholder='Пароль'/>
+                                    {this.props.users.error
+                                        ? <Error>{this.props.users.error }</Error>
+                                        : <Info>Используйте Ваш email и пароль для входа.</Info>
+                                    }
+                                </Enter__Description>
+                                <Enter__Button type='submit' >Войти</Enter__Button>
+                            </form>
                         </Enter__Block>
                     </Enter>
                 </LoginStyled__Container>

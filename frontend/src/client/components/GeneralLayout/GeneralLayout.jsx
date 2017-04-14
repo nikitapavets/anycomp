@@ -195,6 +195,9 @@ const GeneralHeader__Logo = styled(Link)`
 const GeneralHeader__Menu = styled.div`
     min-width: 50px;
 `;
+const GeneralHeader__MenuItemWrap = styled.div`
+    position: relative;
+`;
 const GeneralHeader__MenuItem = styled(Link)`
     font-size: ${fontSizes.s};
     display: flex;
@@ -210,7 +213,24 @@ const MenuItem__User = styled.div`
     ${bgi(MenuItem__UserImg, 14)}
     margin-right: 5px;
 `;
-
+const MenuItem__UserBox = styled.div`
+    position: absolute;
+    right: 0;
+    top: 100%;
+    padding: 15px;
+    width: 150px;
+    background-color: ${colors.white};
+    margin-top: 15px;
+    z-index: 100000;
+`;
+const BoxItem = styled(Link)`
+    text-decoration: none;
+    font-size: ${fontSizes.xs};
+    text-transform: uppercase;
+    &:hover{
+        color: ${colors.main};
+    }
+`;
 const GeneralHeader__LogoImageImg = require('../../../../static/images/logo/logoMain.svg');
 const GeneralHeader__LogoImage = styled.div`
     ${bgi(GeneralHeader__LogoImageImg, 64)}
@@ -393,12 +413,19 @@ export default class GeneralLayout extends React.Component {
         super(props);
         this.state = {
             isMobileMenuActive: false,
-            isBasketActive: false
+            isBasketActive: false,
+            isMenuUserActive: false
         };
 
         Dom.outerClick('basket', (e) => {
             if (this.state.isBasketActive) {
                 this.handleToggleBasket(e);
+            }
+        });
+
+        Dom.outerClick('userBox', (e) => {
+            if (this.state.isMenuUserActive) {
+                this.handleToggleMenuUser(e);
             }
         });
     }
@@ -426,8 +453,20 @@ export default class GeneralLayout extends React.Component {
         e.preventDefault();
     };
 
+    handleToggleMenuUser = (e) => {
+        this.setState(_ => ({
+            isMenuUserActive: !_.isMenuUserActive
+        }));
+        e.preventDefault();
+    };
+
     handleRemoveFromBasket = (e, removeIndex) => {
         this.props.basketRemoveItem(removeIndex);
+        e.preventDefault();
+    };
+
+    handleLogoutUser = (e) => {
+        this.props.handleLogout();
         e.preventDefault();
     };
 
@@ -477,7 +516,7 @@ export default class GeneralLayout extends React.Component {
                                         sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
                                         <span> р.</span>
                                     </BasketBox__Sum>
-                                    <BasketBox__Button to='#'>Оформить заказ</BasketBox__Button>
+                                    <BasketBox__Button to='/checkout'>Оформить заказ</BasketBox__Button>
                                 </div>
                                 :
                                 <BasketBox__Empty>Корзина пуста</BasketBox__Empty>
@@ -523,15 +562,31 @@ export default class GeneralLayout extends React.Component {
                             <GeneralHeader__LogoText>nyComp</GeneralHeader__LogoText>
                         </GeneralHeader__Logo>
                         <GeneralHeader__Menu>
-                            {!this.props.users.isLoading ?
-                                <GeneralHeader__MenuItem to='/user'>
-                                    <MenuItem__User/>
+                            {!this.props.users.isLoading
+                                ?
+                                <GeneralHeader__MenuItemWrap>
                                     {this.props.users.current.id
-                                        ? `${this.props.users.current.first_name} ${this.props.users.current.second_name}`
-                                        : 'Мой кабинет'
+                                        ?
+                                        <div>
+                                            <GeneralHeader__MenuItem to='#' onClick={this.handleToggleMenuUser}>
+                                                <MenuItem__User/>
+                                                {`${this.props.users.current.first_name} ${this.props.users.current.second_name}`}
+                                            </GeneralHeader__MenuItem>
+                                            {this.state.isMenuUserActive &&
+                                            <MenuItem__UserBox className='userBox'>
+                                                <BoxItem to='#' onClick={this.handleLogoutUser}>Выйти</BoxItem>
+                                            </MenuItem__UserBox>
+                                            }
+                                        </div>
+                                        :
+                                        <GeneralHeader__MenuItem to='/user'>
+                                            <MenuItem__User/>
+                                            Мой кабинет
+                                        </GeneralHeader__MenuItem>
                                     }
-                                </GeneralHeader__MenuItem>
-                                : <Loader small/>
+                                </GeneralHeader__MenuItemWrap>
+                                :
+                                <Loader small/>
                             }
                         </GeneralHeader__Menu>
                     </GeneralHeader>
@@ -580,7 +635,7 @@ export default class GeneralLayout extends React.Component {
                                             sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
                                             <span> р.</span>
                                         </BasketBox__Sum>
-                                        <BasketBox__Button to='#'>Оформить заказ</BasketBox__Button>
+                                        <BasketBox__Button to='checkout'>Оформить заказ</BasketBox__Button>
                                     </div>
                                     :
                                     <BasketBox__Empty>Корзина пуста</BasketBox__Empty>

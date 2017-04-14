@@ -21,6 +21,24 @@ class ClientRepository
     }
 
     /**
+     * @param $email
+     * @return Client
+     */
+    public static function getClientByEmail($email)
+    {
+        return Client::where('email', $email)->first();
+    }
+
+    public static function auth($email, $password)
+    {
+        $client = self::getClientByEmail($email);
+        if($client && $client->checkPassword($password)) {
+            return $client;
+        }
+        return false;
+    }
+
+    /**
      * @param string $stringIds
      * @param string $delimiter
      */
@@ -124,4 +142,6 @@ class ClientRepository
             'address_flat' => $client->getFlat()
         ];
     }
+
+
 }

@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {setBreadcrumbs} from '../../actions/breadcrumbs';
 import {handleLogin} from '../../actions/users';
-import LoginPage from './LoginPage';
+import CheckoutPage from './CheckoutPage';
 
 const mapStateToProps = (state) => {
     return {
@@ -18,4 +18,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);

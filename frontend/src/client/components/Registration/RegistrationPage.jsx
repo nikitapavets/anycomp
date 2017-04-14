@@ -19,7 +19,10 @@ const RegistrationStyled__Container = styled(Container)`
 const Header = styled.header`
     font-weight: 500;
     text-align: center;
-    font-size: ${fontSizes.xl};
+    font-size: ${fontSizes.xxl};
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid ${colors.minor};
 `;
 const SubHeader = styled.div`
     text-align: center;

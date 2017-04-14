@@ -81,20 +81,18 @@ const Catalog__Title = styled.div`
 `;
 const Catalog__Goods = styled.div``;
 const Catalog__Good = styled(Link)`
-    padding: 30px;
+    padding: 15px;
     text-decoration: none;
 `;
 const Catalog__GoodImageWrap = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     height: 250px;
 `;
 const Catalog__GoodImage = styled.img`
-    width: 300px;
-    ${media.wide`
-        width: 100%;
-    `}
+    width: 250px;
 `;
 const Catalog__GoodTitle = styled.div`
     text-align: center;
@@ -317,8 +315,10 @@ export default class IndexPage extends React.Component {
                                 }} checkEmpty>
                                     {this.props.tvs.data.map((tv, index) =>
                                         <Catalog__Good to={tv.link} key={index}>
-                                            <Catalog__GoodImage src={`${config.server}${tv.image}`}
-                                                                title={tv.title} alt={tv.title}/>
+                                            <Catalog__GoodImageWrap>
+                                                <Catalog__GoodImage src={`${config.server}${tv.image}`}
+                                                                    title={tv.title} alt={tv.title}/>
+                                            </Catalog__GoodImageWrap>
                                             <Catalog__GoodTitle>{tv.title}</Catalog__GoodTitle>
                                             <Catalog__GoodDescription>{tv.description}</Catalog__GoodDescription>
                                             <Catalog__GoodPrice value={tv.price} displayType={'text'}

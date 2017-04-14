@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {bgi} from '../libs/mixins';
-import {colors} from '../libs/variables';
 
 const LoaderImg = require('../../../static/images/loading/facebook.gif');
 const LoaderSmallImg = require('../../../static/images/loading/facebook_small.gif');

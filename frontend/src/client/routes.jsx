@@ -10,6 +10,7 @@ import TvsContainer from './components/TvsPage/TvsContainer';
 import TvContainer from './components/TvPage/TvContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import RegistrationContainer from './components/Registration/RegistrationContainer';
+import CheckoutContainer from './components/Checkout/CheckoutContainer';
 import Error503Page from './components/Errors/Error503Page';
 
 export const routes = (
@@ -20,6 +21,7 @@ export const routes = (
             <Route path='notebooks/:brand/:model' component={NotebookContainer}/>
             <Route path='tvs' component={TvsContainer}/>
             <Route path='tvs/:brand/:model' component={TvContainer}/>
+            <Route path='checkout' component={CheckoutContainer}/>
             <Route path='user'>
                 <IndexRoute component={LoginContainer}/>
                 <Route path='registration' component={RegistrationContainer}/>
