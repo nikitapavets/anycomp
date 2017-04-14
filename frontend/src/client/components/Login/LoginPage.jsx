@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Link} from 'react-router';
 
 import {Container} from '../../libs/blocks';
 import {colors, fontSizes} from '../../libs/variables';
@@ -54,7 +55,7 @@ const Enter__Description = styled.header`
     border-top: 1px solid ${colors.minor};
     border-bottom: 1px solid ${colors.minor};
 `;
-const Enter__Button = styled.button`
+const Enter__Button = styled(Link)`
     display: inline-block;
     font-size: ${fontSizes.s};
     background-color: ${colors.main};

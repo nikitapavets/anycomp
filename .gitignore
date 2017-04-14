@@ -11,8 +11,8 @@
 
 # build folders
 /frontend/public
-/backend/public/images/catalog/*
-/backend/public/images/tmp/*
+/backend/public/images/catalog/
+/backend/public/images/tmp/
 
 # enviroment
 /backend/.env

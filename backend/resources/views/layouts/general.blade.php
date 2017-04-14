@@ -106,7 +106,7 @@
             AdminMenu.showMenu();
 
         </script>
-        <script src="{{ isset($page['scripts']) ? $page['scripts'] : '/scripts/admin.min.js' }}?{{ time() }}"></script>
+        <script src="{{ isset($page['scripts']) ? $page['scripts'] : '/scripts/admin.min.js' }}?v=.0.0.4"></script>
         <!-- Load Scripts End -->
 
     </body>
