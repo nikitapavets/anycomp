@@ -55,7 +55,17 @@ const Enter__Description = styled.header`
     border-top: 1px solid ${colors.minor};
     border-bottom: 1px solid ${colors.minor};
 `;
-const Enter__Button = styled(Link)`
+const Enter__Button = styled.button`
+    display: inline-block;
+    font-size: ${fontSizes.s};
+    background-color: ${colors.main};
+    border: none;
+    padding: 5px 10px;
+    color: ${colors.white};
+    text-decoration: none;
+    font-weight: 500;
+`;
+const Enter__Link = styled(Link)`
     display: inline-block;
     font-size: ${fontSizes.s};
     background-color: ${colors.main};
@@ -120,7 +130,7 @@ export default class LoginPage extends React.Component {
                                 контролировать состояние заказа, а также просматривать заказы сделанные ранее. Вы
                                 сможете накапливать призовые баллы и получать скидочные купоны.А постоянным покупателям
                                 мы предлагаем гибкую систему скидок и персональное обслуживание.</Enter__Description>
-                            <Enter__Button to='/user/registration'>Регистрация</Enter__Button>
+                            <Enter__Link to='/user/registration'>Регистрация</Enter__Link>
                         </Enter__Block>
                         <Enter__Block>
                             <Enter__Header>Зарегистрированный клиент</Enter__Header>
