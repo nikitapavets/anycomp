@@ -7,6 +7,8 @@ use App\Classes\Table\TableRow;
 use App\Collections\TableCellsCollection;
 use App\Collections\TableRowsCollection;
 use App\Models\Client;
+use App\Models\Database;
+use Illuminate\Http\Request;
 
 class ClientRepository
 {
@@ -78,5 +80,48 @@ class ClientRepository
         }
 
         return $tableRows;
+    }
+
+    public static function saveClient(Request $request)
+    {
+        /**
+         * @var Client $client
+         */
+        $client = Client::firstOrNew(['id' => $request->client_id ?? 0]);
+        $client->setSecondName($request->client_second_name);
+        $client->setFirstName($request->client_first_name);
+        $client->setFatherName($request->client_father_name);
+        $client->setOrganization($request->client_organization_id ?? Database::NO_SELECTED, $request->client_organization_new);
+        $client->setMobilePhone($request->client_mobile_phone);
+        $client->setHomePhone($request->client_home_phone);
+        $client->setEmail($request->client_email);
+        $client->setCityType($request->client_city_type_id ?? Database::NO_SELECTED, $request->client_city_type_new);
+        $client->setCity($request->client_city_id ?? Database::NO_SELECTED, $request->client_city_new);
+        $client->setStreet($request->client_street);
+        $client->setHouse($request->client_house);
+        $client->setFlat($request->client_flat);
+        $client->setPassword($request->client_password);
+        $client->save();
+
+        return $client;
+    }
+
+    public static function clientToArray(Client $client)
+    {
+        return [
+            'id' => $client->getId(),
+            'second_name' => $client->getSecondName(),
+            'first_name' => $client->getFirstName(),
+            'father_name' => $client->getFatherName(),
+            'organization' => $client->getOrganization()->getName(),
+            'mobile_phone' => $client->getMobilePhoneOnNativeFormat(),
+            'home_phone' => $client->getHomePhoneOnNativeFormat(),
+            'email' => $client->getEmail(),
+            'address_city_type' => $client->getCityType()->getName(),
+            'address_city' => $client->getCity()->getName(),
+            'address_street' => $client->getStreet(),
+            'address_house' => $client->getHouse(),
+            'address_flat' => $client->getFlat()
+        ];
     }
 }

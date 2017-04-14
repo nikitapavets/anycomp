@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import NumberFormat from 'react-number-format';
 
 import {colors, fontSizes} from '../../libs/variables';
 import {media} from '../../libs/mixins';
@@ -20,6 +21,8 @@ const Title = styled.div`
     }
     ${media.tablet`
         flex: 1 1;
+        text-align: right;
+        margin-right: 30px;
     `}
 `;
 const Field = styled.div`
@@ -48,7 +51,12 @@ const Error = styled.div`
 export default class FormInput extends React.Component {
 
     static propTypes = {
-        title: React.PropTypes.string
+        title: React.PropTypes.string,
+        type: React.PropTypes.string
+    };
+
+    static defaultProps = {
+        type: 'text'
     };
 
     render() {
@@ -56,10 +64,18 @@ export default class FormInput extends React.Component {
             <FormInputStyled>
                 <Title required={this.props.required}>{this.props.title}</Title>
                 <Field>
-                    <Input name={this.props.name}
-                           data-validate={this.props.validate}
-                           data-required={this.props.required}/>
-                    <Error className='error'/>
+                    {this.props.type == 'phone'
+                        ? <NumberFormat name={this.props.name}
+                                        data-type={this.props.type}
+                                        data-required={this.props.required}
+                                        customInput={Input}
+                                        format='+###(##)###-##-##' mask='_'/>
+                        : <Input name={this.props.name}
+                                 type={this.props.type}
+                                 data-validate={this.props.validate}
+                                 data-required={this.props.required}/>
+                    }
+                    <Error className='error'>{this.props.error}</Error>
                 </Field>
             </FormInputStyled>
         )

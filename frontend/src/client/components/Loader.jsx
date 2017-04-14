@@ -4,17 +4,17 @@ import {bgi} from '../libs/mixins';
 import {colors} from '../libs/variables';
 
 const LoaderImg = require('../../../static/images/loading/facebook.gif');
+const LoaderSmallImg = require('../../../static/images/loading/facebook_small.gif');
 const LoaderStyled = styled.div`
-    ${bgi(LoaderImg, 64)}
+    ${bgi(props => props.small ? LoaderSmallImg : LoaderImg, props => props.small ? 22 : 64)}
     width: 100%;
-    padding: 50px;
-    background-color: ${colors.white};
+    padding: ${props => props.small ? 5 : 100}px;
 `;
 
 export default class Loader extends React.Component {
     render() {
         return (
-            <LoaderStyled/>
+            <LoaderStyled {...this.props} />
         )
     }
 }

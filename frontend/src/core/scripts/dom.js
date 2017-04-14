@@ -9,6 +9,7 @@ export default class Dom {
     };
 
     static formItems = (formId) => {
-        return $(`#${formId}`).serialize()
+        let formItems = decodeURIComponent($(`#${formId}`).serialize());
+        return `{"${formItems.replace(/&/g, "\",\"").replace(/=/g, "\":\"")}"}`;
     };
 }

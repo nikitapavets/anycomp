@@ -9,6 +9,7 @@ use App\Traits\Relations\BelongTo\CityTrait;
 use App\Traits\Relations\BelongTo\CityTypeTrait;
 use App\Traits\Relations\BelongTo\OrganizationTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class Client extends Model
 {
@@ -203,5 +204,30 @@ class Client extends Model
         $stringTransformator = new StringTransformator();
 
         return $stringTransformator->transformToNativeHomePhoneFormat($this->getHomePhone());
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = Hash::make($password);
+    }
+
+    public function checkPassword($password)
+    {
+        return Hash::check($password, $this->getPassword());
     }
 }

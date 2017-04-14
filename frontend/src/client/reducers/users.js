@@ -1,4 +1,3 @@
-import * as cookie from "../config/cookie";
 import * as actionTypes from '../actions-types/users';
 
 const initialState = {
@@ -17,23 +16,25 @@ export default function notebooks(state = initialState, action) {
             };
 
         case actionTypes.FETCH_USER_SUCCESS:
-            console.log(action.payload);
             return {
                 ...state,
                 current: action.payload,
-                isLoading: false
+                isLoading: false,
+                error: initialState.error
             };
 
         case actionTypes.FETCH_USER_FAILURE:
             return {
                 ...state,
-                error: action.payload
+                current: initialState.current,
+                error: action.payload,
+                isLoading: false
             };
 
         case actionTypes.CHECK_AUTH_USER:
             return {
                 ...state,
-                current: cookie.load(cookie.USER_COOKIE)
+                isLoading: true
             };
 
         case actionTypes.REGISTRATION_USER:
@@ -44,12 +45,14 @@ export default function notebooks(state = initialState, action) {
 
         case actionTypes.LOGIN_USER:
             return {
-                ...state
+                ...state,
+                isLoading: true
             };
 
         case actionTypes.LOGOUT_USER:
             return {
-                ...state
+                ...state,
+                current: initialState.current
             };
 
         default:

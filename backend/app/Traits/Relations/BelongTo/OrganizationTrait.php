@@ -16,12 +16,12 @@ trait OrganizationTrait
 
     /**
      * @param int $organizationId
-     * @param string $newOrganizationId
+     * @param string $newOrganization
      */
-    public function setOrganization($organizationId, $newOrganizationId = '')
+    public function setOrganization($organizationId, $newOrganization = '')
     {
-        $organization = $newOrganizationId
-            ? Organization::firstOrCreate(['name' => $newOrganizationId])
+        $organization = $newOrganization
+            ? Organization::firstOrCreate(['name' => $newOrganization])
             : Organization::find($organizationId);
         $this->organization()->associate($organization);
     }
@@ -33,6 +33,4 @@ trait OrganizationTrait
     {
         return $this->belongsTo('App\Models\Database\Organization');
     }
-
-
 }

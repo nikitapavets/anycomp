@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
+use App\Repositories\ClientRepository;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function index()
+    public function store(StoreUserRequest $request)
     {
-        return response()->json(['index']);
+        $client = ClientRepository::saveClient($request);
+
+        return response()->json(['id' => $client->getId()]);
     }
 
-    public function store(Request $request)
+    public function show($userId)
     {
-        return response()->json(['store2']);
+        $client = ClientRepository::getClientById($userId);
+
+        return response()->json(ClientRepository::clientToArray($client));
     }
 }

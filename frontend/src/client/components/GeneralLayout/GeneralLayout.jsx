@@ -8,6 +8,7 @@ import menu from '../../config/menu';
 import Dom from '../../../core/scripts/dom';
 import config from '../../../core/config/general';
 import NumberFormat from 'react-number-format';
+import Loader from '../Loader';
 
 const Layout = styled.div`
     background: ${colors.mainBg};
@@ -192,6 +193,7 @@ const GeneralHeader__Logo = styled(Link)`
     text-decoration: none;
 `;
 const GeneralHeader__Menu = styled.div`
+    min-width: 50px;
 `;
 const GeneralHeader__MenuItem = styled(Link)`
     font-size: ${fontSizes.s};
@@ -429,6 +431,10 @@ export default class GeneralLayout extends React.Component {
         e.preventDefault();
     };
 
+    componentDidMount() {
+        this.props.handleCheckAuthUser();
+    }
+
     render() {
         return (
             <Layout>
@@ -457,7 +463,8 @@ export default class GeneralLayout extends React.Component {
                                             <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
                                             <BasketBox__ItemPriceBox>
                                                 <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
-                                                <BasketBox__ItemPrice value={basketItem.price} displayType={'text'} thousandSeparator={' '}
+                                                <BasketBox__ItemPrice value={basketItem.price} displayType={'text'}
+                                                                      thousandSeparator={' '}
                                                                       suffix={' р.'}/>
                                             </BasketBox__ItemPriceBox>
                                             <BasketBox__ItemClose to='#'
@@ -516,10 +523,16 @@ export default class GeneralLayout extends React.Component {
                             <GeneralHeader__LogoText>nyComp</GeneralHeader__LogoText>
                         </GeneralHeader__Logo>
                         <GeneralHeader__Menu>
-                            <GeneralHeader__MenuItem to='/user'>
-                                <MenuItem__User/>
-                                Мой кабинет
-                            </GeneralHeader__MenuItem>
+                            {!this.props.users.isLoading ?
+                                <GeneralHeader__MenuItem to='/user'>
+                                    <MenuItem__User/>
+                                    {this.props.users.current.id
+                                        ? `${this.props.users.current.first_name} ${this.props.users.current.second_name}`
+                                        : 'Мой кабинет'
+                                    }
+                                </GeneralHeader__MenuItem>
+                                : <Loader small/>
+                            }
                         </GeneralHeader__Menu>
                     </GeneralHeader>
                     <Menu>
@@ -553,7 +566,8 @@ export default class GeneralLayout extends React.Component {
                                                 <BasketBox__ItemTitle>{basketItem.title}</BasketBox__ItemTitle>
                                                 <BasketBox__ItemPriceBox>
                                                     <BasketBox__ItemCount>x{basketItem.quantity}</BasketBox__ItemCount>
-                                                    <BasketBox__ItemPrice value={basketItem.price} displayType={'text'} thousandSeparator={' '}
+                                                    <BasketBox__ItemPrice value={basketItem.price} displayType={'text'}
+                                                                          thousandSeparator={' '}
                                                                           suffix={' р.'}/>
                                                 </BasketBox__ItemPriceBox>
                                                 <BasketBox__ItemClose to='#'
