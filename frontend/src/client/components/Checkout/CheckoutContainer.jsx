@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {setBreadcrumbs} from '../../actions/breadcrumbs';
-import {handleLogin} from '../../actions/users';
+import {handleLogin, handleRegistrationUser} from '../../actions/users';
 import CheckoutPage from './CheckoutPage';
 
 const mapStateToProps = (state) => {
@@ -14,7 +14,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         handleLogin: bindActionCreators(handleLogin, dispatch),
-        setBreadcrumbs: bindActionCreators(setBreadcrumbs, dispatch)
+        setBreadcrumbs: bindActionCreators(setBreadcrumbs, dispatch),
+        handleRegistrationUser: bindActionCreators(handleRegistrationUser, dispatch)
     }
 };
 

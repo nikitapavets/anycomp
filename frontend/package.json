@@ -24,7 +24,6 @@
     "react-fetch": "0.0.9",
     "react-number-format": "^1.1.2",
     "react-redux": "^5.0.2",
-    "react-responsive-accordion": "^1.0.0",
     "react-router": "^3.0.2",
     "react-router-redux": "^4.0.7",
     "react-scripts": "0.8.5",

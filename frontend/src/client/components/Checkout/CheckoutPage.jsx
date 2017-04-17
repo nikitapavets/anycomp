@@ -1,5 +1,5 @@
 import React from 'react';
-import Accordion from 'react-responsive-accordion';
+import {browserHistory} from 'react-router';
 import styled from 'styled-components';
 
 import {Container} from '../../libs/blocks';
@@ -8,6 +8,8 @@ import Form from '../Form/Form';
 import FormBlock from '../Form/FormBlock';
 import FormInput from '../Form/FormInput';
 import FormRadio from '../Form/FormRadio';
+import Accordion from '../Accordion/Accordion';
+import Panel from '../Accordion/Panel';
 
 import Breadcrumbs from '../Breadcrumbs';
 
@@ -27,11 +29,11 @@ const Header = styled.header`
     border-bottom: 1px solid ${colors.minor};
 `;
 const AccordionStyled = styled.div`
-    .Collapsible {
+    .rc-collapse-item {
         border: 1px solid ${colors.minor};
         margin: 5px 0;
     }
-    .Collapsible__trigger {
+    .rc-collapse-item {
         display: block;
         padding: 15px;
         background: ${colors.minor};
@@ -43,7 +45,17 @@ const AccordionStyled = styled.div`
         padding: 15px;
     }
 `;
-const Accordion__Item = styled.div`
+const Accordion__Title = styled.header`
+    font-size: ${fontSizes.xl};
+    font-weight: 500;
+    margin-bottom: 30px;
+`;
+const Accordion__Description = styled.div`
+    font-size: ${fontSizes.xs};
+    line-height: 1.5em;
+`;
+const FormRadioWrap = styled.div`
+    margin: 10px 0;
 `;
 
 
@@ -52,21 +64,9 @@ export default class CheckoutPage extends React.Component {
         super(props);
 
         this.state = {
-            stepOneRadio: [
-                {
-                    name: 'auth_type',
-                    value: 'authorization',
-                    title: 'Авторизация',
-                },
-                {
-                    name: 'auth_type',
-                    value: 'registration',
-                    title: 'Регистрация',
-                }
-            ]
-        };
+            activateNextPanel: null
+        }
     }
-
 
     componentWillMount() {
         this.props.setBreadcrumbs([
@@ -77,13 +77,42 @@ export default class CheckoutPage extends React.Component {
         ]);
     }
 
-    handleAuth = (e) => {
-        e.preventDefault();
+    handleFirstStep = (params) => {
+        params = JSON.parse(params);
+        if (params.auth_type == 'reg' && !this.props.users.auth) {
+            browserHistory.push('/user');
+        } else {
+            this.state.activateNextPanel();
+        }
+    };
 
+    handleSecondStep = (params) => {
+        this.props.handleRegistrationUser(params);
+    };
+
+    initAccordion = (activateNextPanelFunc) => {
+        this.setState({
+            activateNextPanel: activateNextPanelFunc
+        });
     };
 
     render() {
         const error = this.props.users.error;
+        const stepOneRadio = [
+            {
+                name: 'auth_type',
+                value: 'reg',
+                title: 'Регистрация/Авторизация',
+            },
+            {
+                name: 'auth_type',
+                value: 'no_reg',
+                title: 'Оформить заказ без регистрации',
+            }
+        ];
+        const FIRST_STEP_FORM = 'firstStep';
+        const SECOND_STEP_FORM = 'secondStep';
+        const ACTIVE_PANEL = this.props.users.auth ? 1 : 0;
 
         return (
             <LoginStyled>
@@ -91,49 +120,69 @@ export default class CheckoutPage extends React.Component {
                     <Breadcrumbs data={this.props.breadcrumbs}/>
                     <Header>Оформление заказа</Header>
                     <AccordionStyled>
-                        <Accordion>
-                            <Accordion__Item data-trigger='Шаг 1: Оформление заказа'>
-                                <Form handle={this.props.handleRegistrationUser} button='Продолжить'>
-                                    <FormRadio items={this.state.stepOneRadio}/>
+                        <Accordion initAccordion={this.initAccordion} activePanel={ACTIVE_PANEL}>
+                            <Panel header='Шаг 1: Оформление заказа'>
+                                <Form id={FIRST_STEP_FORM} handle={this.handleFirstStep} button='Продолжить'>
+                                    <Accordion__Description>Варианты Оформления заказа</Accordion__Description>
+                                    <FormRadioWrap>
+                                        <FormRadio items={stepOneRadio}/>
+                                    </FormRadioWrap>
+                                    <Accordion__Description>Создание учётной записи поможет делать покупки
+                                        быстрее и удобнее, а так же получать скидки как постоянный
+                                        покупатель.</Accordion__Description>
                                 </Form>
-                            </Accordion__Item>
+                            </Panel>
 
-                            <Accordion__Item data-trigger='Шаг 2: Платежная информация'>
-                                <Form handle={this.props.handleRegistrationUser} button='Продолжить'>
+                            <Panel header='Шаг 2: Платежная информация'>
+                                <Form id={SECOND_STEP_FORM} handle={this.handleSecondStep} button='Продолжить'>
                                     <FormBlock title='Основная информация'>
+                                        <FormInput name='client_id'
+                                                   type="hidden"
+                                                   value={this.props.users.current.id}/>
                                         <FormInput title='Фамилия' name='client_second_name'
-                                                   error={error.client_second_name} required/>
+                                                   value={this.props.users.current.second_name}
+                                                   error={error.client_second_name}
+                                                   required/>
                                         <FormInput title='Имя' name='client_first_name' error={error.client_first_name}
+                                                   value={this.props.users.current.first_name}
                                                    required/>
                                         <FormInput title='Отчество' name='client_father_name'
-                                                   error={error.client_father_name}/>
+                                                   value={this.props.users.current.father_name}
+                                                   error={error.client_father_name}
+                                                   required/>
                                         <FormInput title='E-mail' name='client_email' type='email'
-                                                   error={error.client_email} required/>
+                                                   value={this.props.users.current.email}
+                                                   error={error.client_email}
+                                                   required/>
                                         <FormInput title='Телефон' name='client_mobile_phone' type='phone'
-                                                   error={error.client_mobile_phone} required/>
+                                                   value={this.props.users.current.mobile_phone}
+                                                   error={error.client_mobile_phone}
+                                                   required/>
                                     </FormBlock>
                                     <FormBlock title='Ваш адрес'>
                                         <FormInput title='Компания' name='client_organization_new'
+                                                   value={this.props.users.current.organization}
                                                    error={error.client_organization_new}/>
-                                        <FormInput title='Город' name='client_city_new' error={error.client_city_new}/>
-                                        <FormInput title='Улица' name='client_street' error={error.client_street}/>
-                                        <FormInput title='Дом' name='client_house' error={error.client_house}/>
-                                        <FormInput title='Квартира' name='client_flat' error={error.client_flat}/>
-                                    </FormBlock>
-                                    <FormBlock title='Ваш пароль'>
-                                        <FormInput title='Пароль' type='password' name='client_password'
-                                                   error={error.client_password} required/>
-                                        <FormInput title='Повторите пароль' type='password'
-                                                   name='client_password_confirmation'
-                                                   error={error.client_password_confirmed} required/>
+                                        <FormInput title='Город' name='client_city_new'
+                                                   value={this.props.users.current.address_city}
+                                                   error={error.client_city_new}/>
+                                        <FormInput title='Улица' name='client_street'
+                                                   value={this.props.users.current.address_street}
+                                                   error={error.client_street}/>
+                                        <FormInput title='Дом' name='client_house'
+                                                   value={this.props.users.current.address_house}
+                                                   error={error.client_house}/>
+                                        <FormInput title='Квартира' name='client_flat'
+                                                   value={this.props.users.current.address_flat}
+                                                   error={error.client_flat}/>
                                     </FormBlock>
                                 </Form>
-                            </Accordion__Item>
+                            </Panel>
 
-                            <Accordion__Item data-trigger='Шаг 3: Способ оплаты'>
+                            <Panel header='Шаг 3: Способ оплаты'>
                                 <p>And this Accordion component is also completely repsonsive. Hurrah for mobile
                                     users!</p>
-                            </Accordion__Item>
+                            </Panel>
                         </Accordion>
                     </AccordionStyled>
                 </LoginStyled__Container>

@@ -45,7 +45,7 @@ const FakeInput = styled.div`
     }
 `;
 const Title = styled.div`
-    font-size: ${fontSizes.s};
+    font-size: ${fontSizes.xs};
     margin-left: 15px;
 `;
 
@@ -89,7 +89,7 @@ export default class FormInputRadio extends React.Component {
     render() {
         return (
             <FormCheckboxStyled htmlFor={this.props.value}>
-                <Input type='radio' name={this.props.name} id={this.props.value} value={this.props.value}/>
+                <Input type='radio' name={this.props.name} id={this.props.value} value={this.props.value} defaultChecked={this.props.active ? 'checked' : ''}/>
                 <FakeInput isActive={this.state.isActive}/>
                 <Title onClick={this.handleClick}>{this.props.title}</Title>
             </FormCheckboxStyled>

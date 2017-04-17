@@ -8,6 +8,7 @@ const FormStyled = styled.section`
 `;
 const Buttons = styled.div`
     text-align: right;
+    margin-top: 15px;
 `;
 
 const FORM_ID = 'sendForm';
@@ -17,14 +18,18 @@ export default class Form extends React.Component {
     handleSendForm = (e) => {
         e.preventDefault();
 
-        const params = Dom.formItems(FORM_ID);
+        const params = Dom.formItems(this.props.id);
         this.props.handle(params);
+    };
+
+    static defaultProps = {
+        id: FORM_ID
     };
 
     render() {
         return (
             <FormStyled>
-                <form id={FORM_ID}>
+                <form id={this.props.id}>
                     {this.props.children}
                     <Buttons>
                         <FormButton title={this.props.button} handleClick={this.handleSendForm}/>

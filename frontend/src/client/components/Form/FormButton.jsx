@@ -13,6 +13,7 @@ const FormButtonStyled = styled(Link)`
     color: ${colors.white};
     text-decoration: none;
     font-weight: 500;
+    cursor: pointer;
 `;
 
 export default class FormButton extends React.Component {

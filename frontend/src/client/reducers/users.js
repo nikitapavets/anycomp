@@ -3,6 +3,7 @@ import * as actionTypes from '../actions-types/users';
 const initialState = {
     data: [],
     current: {},
+    auth: false,
     isLoading: false,
     error: false
 };
@@ -19,6 +20,7 @@ export default function notebooks(state = initialState, action) {
             return {
                 ...state,
                 current: action.payload,
+                auth: true,
                 isLoading: false,
                 error: initialState.error
             };
@@ -52,7 +54,8 @@ export default function notebooks(state = initialState, action) {
         case actionTypes.LOGOUT_USER:
             return {
                 ...state,
-                current: initialState.current
+                current: initialState.current,
+                auth: initialState.auth
             };
 
         default:

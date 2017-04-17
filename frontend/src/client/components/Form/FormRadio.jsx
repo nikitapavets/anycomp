@@ -58,7 +58,8 @@ export default class FormRadio extends React.Component {
                     <Radio key={index}>
                         <FormInputRadio {...radio}
                                         collectRadioFlushFunc={this.collectRadioFlushFunc}
-                                        flushRadioCollection={this.flushRadioCollection}/>
+                                        flushRadioCollection={this.flushRadioCollection}
+                                        active={!index} />
                     </Radio>
                 )}
             </FormRadioStyled>

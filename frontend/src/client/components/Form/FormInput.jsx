@@ -9,7 +9,9 @@ const FormInputStyled = styled.div`
     ${media.tablet`
         display: flex;
         margin: 15px 0;
+        display: ${props => props.type == 'hidden' ? 'none' : 'flex'};
     `}
+    display: ${props => props.type == 'hidden' ? 'none' : 'block'};
 `;
 const Title = styled.div`
     margin: 10px 0;
@@ -61,16 +63,18 @@ export default class FormInput extends React.Component {
 
     render() {
         return (
-            <FormInputStyled>
+            <FormInputStyled {...this.props}>
                 <Title required={this.props.required}>{this.props.title}</Title>
                 <Field>
                     {this.props.type == 'phone'
                         ? <NumberFormat name={this.props.name}
+                                        value={this.props.value}
                                         data-type={this.props.type}
                                         data-required={this.props.required}
                                         customInput={Input}
                                         format='+###(##)###-##-##' mask='_'/>
                         : <Input name={this.props.name}
+                                 defaultValue={this.props.value}
                                  type={this.props.type}
                                  data-validate={this.props.validate}
                                  data-required={this.props.required}/>
