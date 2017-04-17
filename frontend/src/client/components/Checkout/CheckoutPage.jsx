@@ -48,6 +48,25 @@ const Accordion__Item = styled.div`
 
 
 export default class CheckoutPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            stepOneRadio: [
+                {
+                    name: 'auth_type',
+                    value: 'authorization',
+                    title: 'Авторизация',
+                },
+                {
+                    name: 'auth_type',
+                    value: 'registration',
+                    title: 'Регистрация',
+                }
+            ]
+        };
+    }
+
 
     componentWillMount() {
         this.props.setBreadcrumbs([
@@ -65,7 +84,7 @@ export default class CheckoutPage extends React.Component {
 
     render() {
         const error = this.props.users.error;
-        
+
         return (
             <LoginStyled>
                 <LoginStyled__Container>
@@ -74,28 +93,39 @@ export default class CheckoutPage extends React.Component {
                     <AccordionStyled>
                         <Accordion>
                             <Accordion__Item data-trigger='Шаг 1: Оформление заказа'>
-                                <FormRadio/>
+                                <Form handle={this.props.handleRegistrationUser} button='Продолжить'>
+                                    <FormRadio items={this.state.stepOneRadio}/>
+                                </Form>
                             </Accordion__Item>
 
                             <Accordion__Item data-trigger='Шаг 2: Платежная информация'>
                                 <Form handle={this.props.handleRegistrationUser} button='Продолжить'>
                                     <FormBlock title='Основная информация'>
-                                        <FormInput title='Фамилия' name='client_second_name' error={error.client_second_name} required/>
-                                        <FormInput title='Имя' name='client_first_name' error={error.client_first_name} required/>
-                                        <FormInput title='Отчество' name='client_father_name' error={error.client_father_name}/>
-                                        <FormInput title='E-mail' name='client_email' type='email' error={error.client_email} required/>
-                                        <FormInput title='Телефон' name='client_mobile_phone' type='phone' error={error.client_mobile_phone} required/>
+                                        <FormInput title='Фамилия' name='client_second_name'
+                                                   error={error.client_second_name} required/>
+                                        <FormInput title='Имя' name='client_first_name' error={error.client_first_name}
+                                                   required/>
+                                        <FormInput title='Отчество' name='client_father_name'
+                                                   error={error.client_father_name}/>
+                                        <FormInput title='E-mail' name='client_email' type='email'
+                                                   error={error.client_email} required/>
+                                        <FormInput title='Телефон' name='client_mobile_phone' type='phone'
+                                                   error={error.client_mobile_phone} required/>
                                     </FormBlock>
                                     <FormBlock title='Ваш адрес'>
-                                        <FormInput title='Компания' name='client_organization_new' error={error.client_organization_new}/>
+                                        <FormInput title='Компания' name='client_organization_new'
+                                                   error={error.client_organization_new}/>
                                         <FormInput title='Город' name='client_city_new' error={error.client_city_new}/>
                                         <FormInput title='Улица' name='client_street' error={error.client_street}/>
                                         <FormInput title='Дом' name='client_house' error={error.client_house}/>
                                         <FormInput title='Квартира' name='client_flat' error={error.client_flat}/>
                                     </FormBlock>
                                     <FormBlock title='Ваш пароль'>
-                                        <FormInput title='Пароль' type='password' name='client_password' error={error.client_password} required/>
-                                        <FormInput title='Повторите пароль' type='password' name='client_password_confirmation' error={error.client_password_confirmed} required/>
+                                        <FormInput title='Пароль' type='password' name='client_password'
+                                                   error={error.client_password} required/>
+                                        <FormInput title='Повторите пароль' type='password'
+                                                   name='client_password_confirmation'
+                                                   error={error.client_password_confirmed} required/>
                                     </FormBlock>
                                 </Form>
                             </Accordion__Item>

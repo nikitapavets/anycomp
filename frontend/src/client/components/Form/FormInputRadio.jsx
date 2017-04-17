@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {colors, fontSizes} from '../../libs/variables';
 
 const FormCheckboxStyled = styled.label`
-    display: inline-flex;
+    display: flex;
     position: relative;
     align-items: center;
     cursor: pointer;
@@ -56,13 +56,24 @@ export default class FormInputRadio extends React.Component {
 
         this.state = {
             isActive: props.active
-        }
+        };
+    }
+
+    componentWillMount() {
+        this.props.collectRadioFlushFunc(this.flushActiveStatus);
     }
 
     handleClick = () => {
+        this.props.flushRadioCollection();
         this.setState(_ => ({
             isActive: !_.isActive
         }));
+    };
+
+    flushActiveStatus = () => {
+        this.setState({
+            isActive: false
+        });
     };
 
     static propTypes = {
@@ -77,10 +88,10 @@ export default class FormInputRadio extends React.Component {
 
     render() {
         return (
-            <FormCheckboxStyled htmlFor={this.props.name} onClick={this.handleClick}>
-                <Input type='checkbox' name={this.props.name} id={this.props.value} value={this.props.value}/>
-                <FakeInput isActive={this.state.isActive} type='checkbox'/>
-                <Title>{this.props.title}</Title>
+            <FormCheckboxStyled htmlFor={this.props.value}>
+                <Input type='radio' name={this.props.name} id={this.props.value} value={this.props.value}/>
+                <FakeInput isActive={this.state.isActive}/>
+                <Title onClick={this.handleClick}>{this.props.title}</Title>
             </FormCheckboxStyled>
         )
     }

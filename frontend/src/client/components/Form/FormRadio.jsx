@@ -6,6 +6,13 @@ import FormInputRadio from './FormInputRadio';
 const FormRadioStyled = styled.div`
     
 `;
+const Radio = styled.div`
+    padding-bottom: 5px;
+    
+    &:last-child: {
+        padding-bottom: 0;
+    }
+`;
 
 export default class FormRadio extends React.Component {
 
@@ -13,7 +20,8 @@ export default class FormRadio extends React.Component {
         super(props);
 
         this.state = {
-            isActive: props.active
+            isActive: props.active,
+            flushFunctions: []
         }
     }
 
@@ -23,25 +31,35 @@ export default class FormRadio extends React.Component {
         }));
     };
 
+    collectRadioFlushFunc = (flushFunc) => {
+        this.setState(_ => ({
+            flushFunctions: [..._.flushFunctions, flushFunc]
+        }));
+    };
+
+    flushRadioCollection = () => {
+        this.state.flushFunctions.map(func =>
+            func()
+        );
+    };
+
     static propTypes = {
         items: React.PropTypes.array
     };
 
     static defaultProps = {
-        items: [
-            {
-                name: 'test',
-                value: 'Test',
-                title: 'Авторизация',
-            }
-        ]
+        items: []
     };
 
     render() {
         return (
             <FormRadioStyled>
                 {this.props.items.map((radio, index) =>
-                    <FormInputRadio {...radio} key={index}/>
+                    <Radio key={index}>
+                        <FormInputRadio {...radio}
+                                        collectRadioFlushFunc={this.collectRadioFlushFunc}
+                                        flushRadioCollection={this.flushRadioCollection}/>
+                    </Radio>
                 )}
             </FormRadioStyled>
         )

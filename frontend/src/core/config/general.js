@@ -1,4 +1,4 @@
 export default {
-    server: 'http://anycomp.by',
+    server: 'http://anycomp.loc',
     enableDevMode: false
 }
