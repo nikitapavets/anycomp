@@ -446,11 +446,13 @@ export default class GeneralLayout extends React.Component {
         }
     };
 
-    handleToggleBasket = (e) => {
+    handleToggleBasket = (e, link = false) => {
         this.setState(_ => ({
             isBasketActive: !_.isBasketActive
         }));
-        e.preventDefault();
+        if(!link) {
+            e.preventDefault();
+        }
     };
 
     handleToggleMenuUser = (e) => {
@@ -470,8 +472,9 @@ export default class GeneralLayout extends React.Component {
         e.preventDefault();
     };
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.handleCheckAuthUser();
+        this.props.handleLoadingBasket();
     }
 
     render() {
@@ -516,7 +519,7 @@ export default class GeneralLayout extends React.Component {
                                         sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
                                         <span> р.</span>
                                     </BasketBox__Sum>
-                                    <BasketBox__Button to='/checkout'>Оформить заказ</BasketBox__Button>
+                                    <BasketBox__Button to='/checkout' onClick={_ => this.handleToggleBasket(_, true)}>Оформить заказ</BasketBox__Button>
                                 </div>
                                 :
                                 <BasketBox__Empty>Корзина пуста</BasketBox__Empty>
@@ -635,7 +638,7 @@ export default class GeneralLayout extends React.Component {
                                             sum + parseFloat(basketItem.price) * parseFloat(basketItem.quantity)), 0.00).toFixed(2)}
                                             <span> р.</span>
                                         </BasketBox__Sum>
-                                        <BasketBox__Button to='checkout'>Оформить заказ</BasketBox__Button>
+                                        <BasketBox__Button to='checkout' onClick={_ => this.handleToggleBasket(_, true)}>Оформить заказ</BasketBox__Button>
                                     </div>
                                     :
                                     <BasketBox__Empty>Корзина пуста</BasketBox__Empty>

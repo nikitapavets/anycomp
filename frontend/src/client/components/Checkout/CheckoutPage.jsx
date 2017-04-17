@@ -1,6 +1,7 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 import styled from 'styled-components';
+import NumberFormat from 'react-number-format';
 
 import {Container} from '../../libs/blocks';
 import {colors, fontSizes} from '../../libs/variables';
@@ -57,6 +58,34 @@ const Accordion__Description = styled.div`
 const FormRadioWrap = styled.div`
     margin: 10px 0;
 `;
+const ResponsiveTable = styled.div`
+    overflow-x: auto;
+`;
+const Table = styled.table`
+    border: 2px solid ${colors.minor};
+    border-collapse: collapse;
+    width: 100%;
+`;
+const TR = styled.tr``;
+const TD = styled.td`
+    font-size: ${fontSizes.s};
+    padding: 15px;
+    border: 1px solid ${colors.minor};
+    border-left: none;
+    border-top: none;    
+    &.result {
+        font-weight: bold;
+    }
+`;
+const TD_Number = styled(TD)`
+    white-space: nowrap;
+    text-align: right;
+`;
+const TH = styled.th`
+    font-size: ${fontSizes.s};
+    padding: 15px;
+    border: 1px solid ${colors.minor};
+`;
 
 
 export default class CheckoutPage extends React.Component {
@@ -112,6 +141,7 @@ export default class CheckoutPage extends React.Component {
         ];
         const FIRST_STEP_FORM = 'firstStep';
         const SECOND_STEP_FORM = 'secondStep';
+        const THIRD_STEP_FORM = 'thirdStep';
         const ACTIVE_PANEL = this.props.users.auth ? 1 : 0;
 
         return (
@@ -120,7 +150,7 @@ export default class CheckoutPage extends React.Component {
                     <Breadcrumbs data={this.props.breadcrumbs}/>
                     <Header>Оформление заказа</Header>
                     <AccordionStyled>
-                        <Accordion initAccordion={this.initAccordion} activePanel={ACTIVE_PANEL}>
+                        <Accordion initAccordion={this.initAccordion} activePanel='2'>
                             <Panel header='Шаг 1: Оформление заказа'>
                                 <Form id={FIRST_STEP_FORM} handle={this.handleFirstStep} button='Продолжить'>
                                     <Accordion__Description>Варианты Оформления заказа</Accordion__Description>
@@ -179,9 +209,48 @@ export default class CheckoutPage extends React.Component {
                                 </Form>
                             </Panel>
 
-                            <Panel header='Шаг 3: Способ оплаты'>
-                                <p>And this Accordion component is also completely repsonsive. Hurrah for mobile
-                                    users!</p>
+                            <Panel header='Шаг 3: Подтверждение заказа '>
+                                <Form id={THIRD_STEP_FORM} handle={this.handleSecondStep} button='Оформить'>
+                                    <ResponsiveTable>
+                                        <Table>
+                                            <TR>
+                                                <TH>Название</TH>
+                                                <TH>Колличество</TH>
+                                                <TH>Цена</TH>
+                                                <TH>Итого</TH>
+                                            </TR>
+                                            {this.props.basket.data.map((product, index) =>
+                                                <TR>
+                                                    <TD>{product.title}</TD>
+                                                    <TD_Number>{product.quantity}</TD_Number>
+                                                    <TD_Number>
+                                                        <NumberFormat value={product.price}
+                                                                      displayType={'text'}
+                                                                      thousandSeparator={' '}
+                                                                      suffix={' р.'}/>
+                                                    </TD_Number>
+                                                    <TD_Number>
+                                                        <NumberFormat
+                                                            value={(product.price * product.quantity).toFixed(2)}
+                                                            displayType={'text'}
+                                                            thousandSeparator={' '}
+                                                            suffix={' р.'}/>
+                                                    </TD_Number>
+                                                </TR>
+                                            )}
+                                            <TR>
+                                                <TD_Number className='result' colSpan="4">
+                                                    <NumberFormat
+                                                        value={this.props.basket.data.reduce(((sum, basketItem) =>
+                                                        sum + basketItem.price * basketItem.quantity), 0.00).toFixed(2)}
+                                                        displayType={'text'}
+                                                        thousandSeparator={' '}
+                                                        suffix={' р.'}/>
+                                                </TD_Number>
+                                            </TR>
+                                        </Table>
+                                    </ResponsiveTable>
+                                </Form>
                             </Panel>
                         </Accordion>
                     </AccordionStyled>

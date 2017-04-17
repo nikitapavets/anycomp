@@ -111,6 +111,7 @@ class NotebookRepository
                 'price' => $notebook->getPrice(),
                 'image' => $notebook->getSmallImage(),
                 'imageBig' => $notebook->getBigImage(),
+                'basket_number' => Notebook::BASKET_TYPE,
             ];
         }
 

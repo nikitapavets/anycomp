@@ -107,7 +107,7 @@ export function handleLogin(data) {
             .then(res => res.json())
             .then(json => {
                 if (json.id) {
-                    cookie.save(cookieParams.USER_COOKIE, json, {path: '/', maxAge: cookieParams.USER_MAX_AGE});
+                    cookie.save(cookieParams.USER_COOKIE, json, {path: '/', maxAge: cookieParams.MAX_AGE});
                     browserHistory.push('/');
                     dispatch(fetchUserSuccess(json));
                 } else {

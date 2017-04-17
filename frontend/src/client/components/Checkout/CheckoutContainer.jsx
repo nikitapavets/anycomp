@@ -7,6 +7,7 @@ import CheckoutPage from './CheckoutPage';
 const mapStateToProps = (state) => {
     return {
         users: state.users,
+        basket: state.basket,
         breadcrumbs: state.breadcrumbs,
     }
 };

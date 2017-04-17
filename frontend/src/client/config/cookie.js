@@ -1,4 +1,6 @@
 import md5 from "js-md5";
 
 export const USER_COOKIE = md5('user');
-export const USER_MAX_AGE = 31536000;
+export const BASKET_COOKIE = md5('basket');
+
+export const MAX_AGE = 31536000;

@@ -1,5 +1,8 @@
 import config from '../../core/config/general';
 import fetch from 'isomorphic-fetch';
+import cookie from 'react-cookie'
+
+import * as cookieParams from "../config/cookie";
 import {
     FETCH_BASKET_REQUEST,
     FETCH_BASKET_SUCCESS,
@@ -28,17 +31,6 @@ function fetchBasketFailure(payload) {
     }
 }
 
-export function handleLoadingBasket() {
-    return function (dispatch) {
-        dispatch(fetchBasketRequest());
-
-        return fetch(`${config.server}/api/notebooks`)
-            .then(res => res.json())
-            .then(json => dispatch(fetchBasketSuccess(json)))
-            .catch(err => dispatch(fetchBasketFailure(err)));
-    }
-}
-
 export function basketAddItem(newBasketItem) {
     return {
         type: BASKET_ADD_ITEM,
@@ -50,5 +42,17 @@ export function basketRemoveItem(basketItemIndexForRemove) {
     return {
         type: BASKET_REMOVE_ITEM,
         payload: basketItemIndexForRemove
+    }
+}
+
+export function handleLoadingBasket() {
+    return function (dispatch) {
+        dispatch(fetchBasketRequest());
+        const basket = cookie.load(cookieParams.BASKET_COOKIE);
+        if (basket) {
+            dispatch(fetchBasketSuccess(basket));
+        } else {
+            dispatch(fetchBasketFailure());
+        }
     }
 }

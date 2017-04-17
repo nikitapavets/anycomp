@@ -55,6 +55,7 @@ class TvRepository
                 'price' => $tv->getPrice(),
                 'image' => $tv->getSmallImage(),
                 'imageBig' => $tv->getBigImage(),
+                'basket_number' => Tv::BASKET_TYPE,
             ];
         }
 
