@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import styled from 'styled-components';
 
-import {colors, fontSizes} from '../../libs/variables';
+import {colors} from '../../libs/variables';
 
 const PanelStyled = styled.section`
     border: 1px solid ${colors.minor};

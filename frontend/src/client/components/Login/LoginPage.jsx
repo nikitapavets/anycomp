@@ -114,7 +114,8 @@ export default class LoginPage extends React.Component {
         e.preventDefault();
 
         const params = Dom.formItems(FORM_ID);
-        this.props.handleLogin(params);
+        let location = this.props.location.query.type == 'checkout' ? '/checkout' : '/';
+        this.props.handleLogin(params, location);
     };
 
     render() {
@@ -130,7 +131,7 @@ export default class LoginPage extends React.Component {
                                 контролировать состояние заказа, а также просматривать заказы сделанные ранее. Вы
                                 сможете накапливать призовые баллы и получать скидочные купоны.А постоянным покупателям
                                 мы предлагаем гибкую систему скидок и персональное обслуживание.</Enter__Description>
-                            <Enter__Link to='/user/registration'>Регистрация</Enter__Link>
+                            <Enter__Link to={`/user/registration?type=${this.props.location.query.type}`}>Регистрация</Enter__Link>
                         </Enter__Block>
                         <Enter__Block>
                             <Enter__Header>Зарегистрированный клиент</Enter__Header>

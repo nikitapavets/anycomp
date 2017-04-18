@@ -4,6 +4,7 @@ import {browserHistory} from 'react-router'
 import cookie from 'react-cookie'
 
 import * as cookieParams from "../config/cookie";
+import * as order from "./order";
 import {
     FETCH_USER_GET,
     FETCH_USER_SUCCESS,
@@ -65,7 +66,11 @@ export function handleUserGet() {
 
         return fetch(`${config.server}/api/users`)
             .then(res => res.json())
-            .then(json => dispatch(fetchUserSuccess(json)))
+            .then(json => {
+                    dispatch(fetchUserSuccess(json));
+                    dispatch(order.setOrderUserStep());
+                }
+            )
             .catch(err => dispatch(fetchUserFailure(err)));
     }
 }
@@ -80,7 +85,10 @@ export function handleCheckAuthUser() {
 
         return fetch(`${config.server}/api/users/${user.id}`)
             .then(res => res.json())
-            .then(json => dispatch(fetchUserSuccess(json)))
+            .then(json => {
+                dispatch(fetchUserSuccess(json));
+                dispatch(order.setOrderUserStep());
+            })
             .catch(err => dispatch(fetchUserFailure(err)));
     }
 }
@@ -88,11 +96,13 @@ export function handleCheckAuthUser() {
 export function handleLogout() {
     return function (dispatch) {
         cookie.remove(cookieParams.USER_COOKIE);
+        dispatch(order.setOrderInitStep());
+        browserHistory.push('/');
         dispatch(logoutUser());
     }
 }
 
-export function handleLogin(data) {
+export function handleLogin(data, location) {
     return function (dispatch) {
         dispatch(loginUser());
 
@@ -108,8 +118,9 @@ export function handleLogin(data) {
             .then(json => {
                 if (json.id) {
                     cookie.save(cookieParams.USER_COOKIE, json, {path: '/', maxAge: cookieParams.MAX_AGE});
-                    browserHistory.push('/');
+                    browserHistory.push(location);
                     dispatch(fetchUserSuccess(json));
+                    dispatch(order.setOrderUserStep());
                 } else {
                     dispatch(fetchUserFailure(json))
                 }
@@ -118,7 +129,7 @@ export function handleLogin(data) {
     }
 }
 
-export function handleRegistrationUser(data) {
+export function handleRegistrationUser(data, location) {
     return function (dispatch) {
         dispatch(registrationUser());
 
@@ -134,8 +145,9 @@ export function handleRegistrationUser(data) {
             .then(json => {
                 if (json.id) {
                     cookie.save(cookieParams.USER_COOKIE, json, {path: '/', maxAge: cookieParams.USER_MAX_AGE});
-                    browserHistory.push('/');
+                    browserHistory.push(location);
                     dispatch(fetchUserSuccess(json));
+                    dispatch(order.setOrderUserStep());
                 } else {
                     dispatch(fetchUserFailure(json))
                 }

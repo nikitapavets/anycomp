@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="root"></div>
-<script src="/js/core.js?v=.0.0.7"></script>
-<script src="/js/client.js?v=.0.0.7"></script>
+<script src="/js/core.js?v=.0.0.8"></script>
+<script src="/js/client.js?v=.0.0.8"></script>
 </body>
 </html>

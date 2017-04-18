@@ -33,6 +33,12 @@ export default function basket(state = initialState, action) {
                 error: action.payload
             };
 
+        case actionTypes.FLUSH_BASKET:
+            return {
+                ...state,
+                data: initialState.data
+            };
+
         case actionTypes.BASKET_ADD_ITEM: {
             let newBasketItem = action.payload;
             newBasketItem.index = state.data.length + 1;

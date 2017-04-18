@@ -46,11 +46,6 @@ const AccordionStyled = styled.div`
         padding: 15px;
     }
 `;
-const Accordion__Title = styled.header`
-    font-size: ${fontSizes.xl};
-    font-weight: 500;
-    margin-bottom: 30px;
-`;
 const Accordion__Description = styled.div`
     font-size: ${fontSizes.xs};
     line-height: 1.5em;
@@ -106,17 +101,34 @@ export default class CheckoutPage extends React.Component {
         ]);
     }
 
+    componentWillUpdate(nextProps) {
+        if(nextProps.order.stepNumber != this.props.order.stepNumber) {
+            this.state.activateNextPanel();
+        }
+    }
+
     handleFirstStep = (params) => {
         params = JSON.parse(params);
         if (params.auth_type == 'reg' && !this.props.users.auth) {
-            browserHistory.push('/user');
+            browserHistory.push('/user?type=checkout');
         } else {
-            this.state.activateNextPanel();
+            this.props.handleOrderUserStep();
         }
     };
 
     handleSecondStep = (params) => {
-        this.props.handleRegistrationUser(params);
+        this.props.handleOrderUser(params);
+    };
+
+    handleThirdStep = () => {
+        this.props.handleOrderProducts(JSON.stringify(
+            {
+                ...this.props.users.current,
+                ...this.props.order.client,
+                products: this.props.basket.data
+            }
+        ));
+        browserHistory.push('/');
     };
 
     initAccordion = (activateNextPanelFunc) => {
@@ -126,7 +138,7 @@ export default class CheckoutPage extends React.Component {
     };
 
     render() {
-        const error = this.props.users.error;
+        const error = this.props.order.error;
         const stepOneRadio = [
             {
                 name: 'auth_type',
@@ -142,7 +154,6 @@ export default class CheckoutPage extends React.Component {
         const FIRST_STEP_FORM = 'firstStep';
         const SECOND_STEP_FORM = 'secondStep';
         const THIRD_STEP_FORM = 'thirdStep';
-        const ACTIVE_PANEL = this.props.users.auth ? 1 : 0;
 
         return (
             <LoginStyled>
@@ -150,7 +161,7 @@ export default class CheckoutPage extends React.Component {
                     <Breadcrumbs data={this.props.breadcrumbs}/>
                     <Header>Оформление заказа</Header>
                     <AccordionStyled>
-                        <Accordion initAccordion={this.initAccordion} activePanel='2'>
+                        <Accordion initAccordion={this.initAccordion} activePanel={this.props.order.stepNumber}>
                             <Panel header='Шаг 1: Оформление заказа'>
                                 <Form id={FIRST_STEP_FORM} handle={this.handleFirstStep} button='Продолжить'>
                                     <Accordion__Description>Варианты Оформления заказа</Accordion__Description>
@@ -167,7 +178,7 @@ export default class CheckoutPage extends React.Component {
                                 <Form id={SECOND_STEP_FORM} handle={this.handleSecondStep} button='Продолжить'>
                                     <FormBlock title='Основная информация'>
                                         <FormInput name='client_id'
-                                                   type="hidden"
+                                                   type='hidden'
                                                    value={this.props.users.current.id}/>
                                         <FormInput title='Фамилия' name='client_second_name'
                                                    value={this.props.users.current.second_name}
@@ -180,10 +191,6 @@ export default class CheckoutPage extends React.Component {
                                                    value={this.props.users.current.father_name}
                                                    error={error.client_father_name}
                                                    required/>
-                                        <FormInput title='E-mail' name='client_email' type='email'
-                                                   value={this.props.users.current.email}
-                                                   error={error.client_email}
-                                                   required/>
                                         <FormInput title='Телефон' name='client_mobile_phone' type='phone'
                                                    value={this.props.users.current.mobile_phone}
                                                    error={error.client_mobile_phone}
@@ -195,10 +202,12 @@ export default class CheckoutPage extends React.Component {
                                                    error={error.client_organization_new}/>
                                         <FormInput title='Город' name='client_city_new'
                                                    value={this.props.users.current.address_city}
-                                                   error={error.client_city_new}/>
+                                                   error={error.client_city_new}
+                                                   required/>
                                         <FormInput title='Улица' name='client_street'
                                                    value={this.props.users.current.address_street}
-                                                   error={error.client_street}/>
+                                                   error={error.client_street}
+                                                   required/>
                                         <FormInput title='Дом' name='client_house'
                                                    value={this.props.users.current.address_house}
                                                    error={error.client_house}/>
@@ -209,8 +218,8 @@ export default class CheckoutPage extends React.Component {
                                 </Form>
                             </Panel>
 
-                            <Panel header='Шаг 3: Подтверждение заказа '>
-                                <Form id={THIRD_STEP_FORM} handle={this.handleSecondStep} button='Оформить'>
+                            <Panel header='Шаг 3: Подтверждение заказа'>
+                                <Form id={THIRD_STEP_FORM} handle={this.handleThirdStep} button='Оформить'>
                                     <ResponsiveTable>
                                         <Table>
                                             <TR>
@@ -220,7 +229,7 @@ export default class CheckoutPage extends React.Component {
                                                 <TH>Итого</TH>
                                             </TR>
                                             {this.props.basket.data.map((product, index) =>
-                                                <TR>
+                                                <TR key={index}>
                                                     <TD>{product.title}</TD>
                                                     <TD_Number>{product.quantity}</TD_Number>
                                                     <TD_Number>
@@ -239,7 +248,7 @@ export default class CheckoutPage extends React.Component {
                                                 </TR>
                                             )}
                                             <TR>
-                                                <TD_Number className='result' colSpan="4">
+                                                <TD_Number className='result' colSpan='4'>
                                                     <NumberFormat
                                                         value={this.props.basket.data.reduce(((sum, basketItem) =>
                                                         sum + basketItem.price * basketItem.quantity), 0.00).toFixed(2)}

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-
 class OrderUserRequest extends Request
 {
     /**
@@ -28,7 +26,8 @@ class OrderUserRequest extends Request
             'client_second_name' => 'bail|required',
             'client_father_name' => 'bail|required',
             'client_mobile_phone' => 'bail|required|phone',
-            'client_email' => 'bail|required|email|unique:clients,email',
+            'client_city_new' => 'bail|required',
+            'client_street' => 'bail|required',
         ];
     }
 }

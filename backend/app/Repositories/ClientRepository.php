@@ -35,7 +35,7 @@ class ClientRepository
         if($client && $client->checkPassword($password)) {
             return $client;
         }
-        return false;
+        return $email;
     }
 
     /**
@@ -118,7 +118,8 @@ class ClientRepository
         $client->setStreet($request->client_street);
         $client->setHouse($request->client_house);
         $client->setFlat($request->client_flat);
-        $client->setPassword($request->client_password);
+        $client->setPassword($request->client_password ?? 0);
+        $client->setRang($request->client_id ? Client::RANG_REGISTERED : Client::RANG_NO_REGISTERED);
         $client->save();
 
         return $client;

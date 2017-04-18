@@ -69,7 +69,7 @@ class Notebook extends Catalog
 
     const PRODUCT_TITLE = "Ноутбук";
     const SYSTEM_NAME = 'notebooks';
-    const BASKET_TYPE = 1;
+    const ORDER_TYPE = 1;
 
     protected $casts = [
         'transformer' => 'boolean',

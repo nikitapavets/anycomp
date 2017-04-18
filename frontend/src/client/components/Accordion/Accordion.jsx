@@ -9,7 +9,7 @@ export default class Accordion extends React.Component {
 
         this.state = {
             panelsFuncs: [],
-            activePanelNumber: 0
+            activePanelNumber: props.activePanel
         }
     }
 
@@ -47,7 +47,7 @@ export default class Accordion extends React.Component {
     };
 
     render() {
-        const childrenWithProps = React.Children.map(this.props.children,
+        let childrenWithProps = React.Children.map(this.props.children,
             (child, number) => React.cloneElement(child, {
                 initPanels: this.initPanels,
                 activatePanel: this.activatePanel,

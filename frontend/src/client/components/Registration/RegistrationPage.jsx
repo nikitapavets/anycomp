@@ -53,6 +53,7 @@ export default class RegistrationPage extends React.Component {
 
     render() {
         const error = this.props.users.error;
+        const location = this.props.location.query.type == 'checkout' ? '/checkout' : '/';
 
         return (
             <RegistrationStyled>
@@ -61,7 +62,7 @@ export default class RegistrationPage extends React.Component {
                     <Header>Регистрация</Header>
                     <SubHeader>Если Вы уже зарегистрированы, перейдите на страницу
                         <SubHeader__Link to='/user'>авторизации</SubHeader__Link>.</SubHeader>
-                    <Form handle={this.props.handleRegistrationUser} button='Готово'>
+                    <Form handle={this.props.handleRegistrationUser} handleParams={location} button='Готово'>
                         <FormBlock title='Основная информация'>
                             <FormInput title='Фамилия' name='client_second_name' error={error.client_second_name} required/>
                             <FormInput title='Имя' name='client_first_name' error={error.client_first_name} required/>

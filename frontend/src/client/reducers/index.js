@@ -7,6 +7,7 @@ import tvs from './tvs';
 import popularProducts from './popularProducts';
 import breadcrumbs from './breadcrumbs';
 import users from './users';
+import order from './order';
 
 export default combineReducers({
     routing: routerReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
     tvs,
     popularProducts,
     breadcrumbs,
+    order,
     users
 });

@@ -39,7 +39,7 @@ class Tv extends Catalog
 
     const PRODUCT_TITLE = "Телевизор";
     const SYSTEM_NAME = 'tvs';
-    const BASKET_TYPE = 2;
+    const ORDER_TYPE = 2;
 
     protected $casts = [
         'screen_curved' => 'boolean',

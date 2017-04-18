@@ -13,7 +13,7 @@ class UserController extends Controller
     {
         $client = ClientRepository::saveClient($request);
 
-        return response()->json(['id' => $client->getId()]);
+        return response()->json(ClientRepository::clientToArray($client));
     }
 
     public function show($userId)

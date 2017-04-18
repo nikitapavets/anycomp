@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\StringTransformator;
+use App\Services\StringValidator;
 use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
 use App\Traits\Relations\BelongTo\CityTrait;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Hash;
 class Client extends Model
 {
     const CLIENT_UNKNOWN = 'Неизвестный';
+    const RANG_NO_REGISTERED = '1';
+    const RANG_REGISTERED = '2';
 
     use OrganizationTrait;
     use CityTypeTrait;
@@ -25,29 +28,29 @@ class Client extends Model
 
     public function setFirstName($firstName)
     {
-        $this->first_name = $firstName;
+        $this->first_name = StringValidator::validateStr($firstName, $this->first_name);
     }
 
     public function setFatherName($fatherName)
     {
-        $this->father_name = $fatherName;
+        $this->father_name = StringValidator::validateStr($fatherName, $this->father_name);
     }
 
     public function setSecondName($secondName)
     {
-        $this->second_name = $secondName;
+        $this->second_name = StringValidator::validateStr($secondName, $this->second_name);
     }
 
     public function setMobilePhone($mobilePhone)
     {
         $stringTransformator = new StringTransformator();
-        $this->mobile_phone = $stringTransformator->clearPhone($mobilePhone);
+        $this->mobile_phone = StringValidator::validateStr($stringTransformator->clearPhone($mobilePhone), $this->mobile_phone);
     }
 
     public function setHomePhone($homePhone)
     {
         $stringTransformator = new StringTransformator();
-        $this->home_phone = $stringTransformator->clearPhone($homePhone);;
+        $this->home_phone = StringValidator::validateStr($stringTransformator->clearPhone($homePhone), $this->home_phone);
     }
 
     public function getStreet()
@@ -57,7 +60,7 @@ class Client extends Model
 
     public function setStreet($street)
     {
-        $this->address_street = $street;
+        $this->address_street = StringValidator::validateStr($street, $this->address_street);
     }
 
     public function getHouse()
@@ -67,7 +70,7 @@ class Client extends Model
 
     public function setHouse($house)
     {
-        $this->address_house = $house;
+        $this->address_house = StringValidator::validateStr($house, $this->address_house);
     }
 
     public function getFlat()
@@ -77,7 +80,17 @@ class Client extends Model
 
     public function setFlat($flat)
     {
-        $this->address_flat = $flat;
+        $this->address_flat = StringValidator::validateStr($flat, $this->address_flat);
+    }
+
+    public function getRang()
+    {
+        return $this->rang;
+    }
+
+    public function setRang($rang)
+    {
+        $this->rang = StringValidator::validateStr($rang, $this->rang);
     }
 
     public function getFullName()
@@ -213,7 +226,7 @@ class Client extends Model
 
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->email = StringValidator::validateStr($email, $this->email);
     }
 
     public function getPassword()
@@ -223,7 +236,9 @@ class Client extends Model
 
     public function setPassword($password)
     {
-        $this->password = Hash::make($password);
+        if($password) {
+            $this->password = Hash::make($password);
+        }
     }
 
     public function checkPassword($password)

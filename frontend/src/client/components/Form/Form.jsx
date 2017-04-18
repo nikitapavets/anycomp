@@ -19,7 +19,7 @@ export default class Form extends React.Component {
         e.preventDefault();
 
         const params = Dom.formItems(this.props.id);
-        this.props.handle(params);
+        this.props.handle(params, this.props.handleParams);
     };
 
     static defaultProps = {
