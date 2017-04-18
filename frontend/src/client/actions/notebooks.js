@@ -70,11 +70,11 @@ export function handleSearchNotebooks(searchForm) {
     }
 }
 
-export function handleNotebookGet(getParams) {
+export function handleNotebookGet(notebookId) {
     return function (dispatch) {
         dispatch(fetchNotebookGet());
 
-        return fetch(`${config.server}/api/notebooks/show?brand=${getParams.brand}&model=${getParams.model}&config=${getParams.config}`)
+        return fetch(`${config.server}/api/notebooks/${notebookId}`)
             .then(res => res.json())
             .then(json => dispatch(fetchNotebookSuccess(json)))
             .catch(err => dispatch(fetchNotebooksFailure(err)));

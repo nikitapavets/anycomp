@@ -71,33 +71,6 @@ class TvRepository
     }
 
     /**
-     * @param $brand
-     * @param $model
-     * @return Tv
-     */
-    public static function getTvsByBrandAndModel($brand, $model)
-    {
-        $model = str_replace(
-            ['-', '~'],
-            [' ', '-'],
-            str_replace(
-                'chr47',
-                '/',
-                strtolower($model)
-            )
-        );
-
-        return Tv::where('model', '=', $model)
-            ->whereHas(
-                'brand',
-                function ($query) use ($brand) {
-                    $query->where('name', '=', $brand);
-                }
-            )
-            ->first();
-    }
-
-    /**
      * @param Tv $tv
      * @return array
      */

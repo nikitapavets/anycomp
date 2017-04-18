@@ -985,9 +985,9 @@ class Notebook extends Catalog
         return self::PRODUCT_TITLE.' '.$this->getName();
     }
 
-    public function getLink($systemName = self::SYSTEM_NAME, $customModel = '')
+    public function getLink($systemName = self::SYSTEM_NAME)
     {
-        return parent::getLink($systemName, $this->getConfig());
+        return parent::getLink($systemName);
     }
 
     public function getConfig()

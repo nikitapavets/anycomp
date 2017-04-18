@@ -9,6 +9,7 @@ import Breadcrumbs from '../Breadcrumbs';
 import Form from '../Form/Form';
 import FormBlock from '../Form/FormBlock';
 import FormInput from '../Form/FormInput';
+import DocumentMeta from 'react-document-meta';
 
 const RegistrationStyled = styled.div`
     background-color: ${colors.white};
@@ -55,8 +56,14 @@ export default class RegistrationPage extends React.Component {
         const error = this.props.users.error;
         const location = this.props.location.query.type == 'checkout' ? '/checkout' : '/';
 
+        const meta = {
+            title: 'Регистрация пользователя | AnyComp.by',
+            description: 'AnyComp.by - продажи и ремонт компьютерной техники, установка и обслуживание спутникового TV и видеонаблюдения.'
+        };
+
         return (
             <RegistrationStyled>
+                <DocumentMeta {...meta} />
                 <RegistrationStyled__Container>
                     <Breadcrumbs data={this.props.breadcrumbs}/>
                     <Header>Регистрация</Header>

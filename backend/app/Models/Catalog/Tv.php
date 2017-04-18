@@ -600,7 +600,7 @@ class Tv extends Catalog
         parent::setImages($images, $isGeneral, $productType);
     }
 
-    public function getLink($systemName = self::SYSTEM_NAME, $customModel = '')
+    public function getLink($systemName = self::SYSTEM_NAME)
     {
         return parent::getLink($systemName);
     }

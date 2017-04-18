@@ -6,11 +6,11 @@ use Carbon\Carbon;
 
 trait UpdatedAtTrait
 {
-    /**
-     * @return string
-     */
-    public function getUpdatedAt()
+    public function getUpdatedAt($isSource = false)
     {
+        if ($isSource) {
+            return $this->updated_at;
+        }
         $time = Carbon::parse($this->updated_at);
 
         return date('d-m-Y', $time->timestamp);

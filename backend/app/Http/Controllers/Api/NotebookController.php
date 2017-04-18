@@ -17,14 +17,10 @@ class NotebookController extends Controller
         return response()->json(array_merge($notebooks, $notebooks));
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
         $notebook = NotebookRepository::transformNotebookToFront(
-            NotebookRepository::getNotebooksByBrandAndModel(
-                $request->brand,
-                $request->model,
-                $request->config
-            )
+            NotebookRepository::getNotebookById($id)
         );
 
         return response()->json($notebook);

@@ -11,10 +11,13 @@ export default class NotebooksPage extends React.Component {
             }
         ]);
 
-        this.props.handleTvGet({
-            brand: this.props.params.brand,
-            model: this.props.params.model,
-        });
+        this.props.handleTvGet(this.props.params.id);
+    }
+
+    componentWillUpdate(nextProps) {
+        if(nextProps.tvs.review.title != this.props.tvs.review.title) {
+            document.title = `${nextProps.tvs.review.title} купить | AnyComp`
+        }
     }
 
     render() {

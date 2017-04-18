@@ -2,11 +2,11 @@
 /.idea
 
 # library folders
-/backend/vendor
+**/vendor
 /backend/composer.phar
 /backend/node_modules
 /backend/bower_components
-/backend/composer.phar
+/backend/public/sitemap*
 /frontend/node_modules
 
 # build folders

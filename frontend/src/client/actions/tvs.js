@@ -70,11 +70,11 @@ export function handleSearchTvs(searchForm) {
     }
 }
 
-export function handleTvGet(getParams) {
+export function handleTvGet($tvId) {
     return function (dispatch) {
         dispatch(fetchTvsGet());
 
-        return fetch(`${config.server}/api/tvs/show?brand=${getParams.brand}&model=${getParams.model}`)
+        return fetch(`${config.server}/api/tvs/${$tvId}`)
             .then(res => res.json())
             .then(json => dispatch(fetchTvSuccess(json)))
             .catch(err => dispatch(fetchTvsFailure(err)));

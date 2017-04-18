@@ -33,30 +33,9 @@ class Catalog extends Model
         return $this->page_lookups;
     }
 
-    public function getLink($systemName, $customModel = '')
+    public function getLink($systemName)
     {
-        $model = str_replace(
-            [' ', '-'],
-            ['-', '~'],
-            str_replace(
-                '/',
-                'chr47',
-                strtolower($this->getModel())
-            )
-        );
-        if ($customModel) {
-            $customModel = '?config='.str_replace(
-                    [' ', '-'],
-                    ['-', '~'],
-                    str_replace(
-                        '/',
-                        'chr47',
-                        strtolower($customModel)
-                    )
-                );
-        }
-
-        return '/'.$systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$model.$customModel;
+        return '/'.$systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$this->getId();
     }
 
     public function getPrice()

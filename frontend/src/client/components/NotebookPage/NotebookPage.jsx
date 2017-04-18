@@ -11,11 +11,7 @@ export default class NotebooksPage extends React.Component {
             }
         ]);
 
-        this.props.handleNotebookGet({
-            brand: this.props.params.brand,
-            model: this.props.params.model,
-            config: this.props.location.query.config
-        });
+        this.props.handleNotebookGet(this.props.params.id);
     }
 
     render() {

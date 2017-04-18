@@ -2,6 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import styled from 'styled-components';
 import NumberFormat from 'react-number-format';
+import DocumentMeta from 'react-document-meta';
 
 import {Container} from '../../libs/blocks';
 import {colors, fontSizes} from '../../libs/variables';
@@ -154,9 +155,14 @@ export default class CheckoutPage extends React.Component {
         const FIRST_STEP_FORM = 'firstStep';
         const SECOND_STEP_FORM = 'secondStep';
         const THIRD_STEP_FORM = 'thirdStep';
+        const meta = {
+            title: 'Оформление заказа | AnyComp.by',
+            description: 'AnyComp.by - продажа и ремонт компьютерной техники, установка и обслуживание спутникового TV и видеонаблюдения.'
+        };
 
         return (
             <LoginStyled>
+                <DocumentMeta {...meta} />
                 <LoginStyled__Container>
                     <Breadcrumbs data={this.props.breadcrumbs}/>
                     <Header>Оформление заказа</Header>

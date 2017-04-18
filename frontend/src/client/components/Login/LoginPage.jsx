@@ -8,6 +8,7 @@ import {media} from '../../libs/mixins';
 import Dom from '../../../core/scripts/dom';
 
 import Breadcrumbs from '../Breadcrumbs';
+import DocumentMeta from 'react-document-meta';
 
 const LoginStyled = styled.div`
     background-color: ${colors.white};
@@ -119,8 +120,15 @@ export default class LoginPage extends React.Component {
     };
 
     render() {
+
+        const meta = {
+            title: 'Авторизация пользователя | AnyComp.by',
+            description: 'AnyComp.by - продажи и ремонт компьютерной техники, установка и обслуживание спутникового TV и видеонаблюдения.'
+        };
+
         return (
             <LoginStyled>
+                <DocumentMeta {...meta} />
                 <LoginStyled__Container>
                     <Breadcrumbs data={this.props.breadcrumbs}/>
                     <Enter>

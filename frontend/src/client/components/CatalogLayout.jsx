@@ -8,6 +8,7 @@ import SearchWidget from './Widgets/SearchWidget';
 import RowWidget from './Layouts/RowWidget';
 import CatalogItem from './CatalogItem';
 import Loader from './Loader';
+import DocumentMeta from 'react-document-meta';
 
 const Catalog = styled.div`
     background-color: ${colors.white};
@@ -74,8 +75,13 @@ export default class CatalogLayout extends React.Component {
     };
 
     render() {
+        const meta = {
+            title: `${this.props.title}: цены, сравнение товара, техническое обслуживание | AnyComp.by`,
+            description: 'AnyComp.by - это удобный способ купить любой товар. Характеристики, сравнение ценовых предложений, техническое обслуживание.'
+        };
         return (
             <Catalog>
+                <DocumentMeta {...meta} />
                 <Catalog__Container>
                     <Breadcrumbs data={this.props.breadcrumbs}/>
                     <Catalog__Header>{this.props.title}</Catalog__Header>

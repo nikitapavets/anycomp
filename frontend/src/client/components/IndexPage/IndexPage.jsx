@@ -9,6 +9,7 @@ import Arrow from '../../components/Arrow';
 import config from '../../../core/config/general';
 import Loader from '../Loader';
 import NumberFormat from 'react-number-format';
+import DocumentMeta from 'react-document-meta';
 
 const Slider = styled.div`
 `;
@@ -208,8 +209,14 @@ export default class IndexPage extends React.Component {
     }
 
     render() {
+        const meta = {
+            title: 'AnyСomp.by - Компьютерная техника',
+            description: 'AnyComp.by - продажи и ремонт компьютерной техники, установка и обслуживание спутникового TV и видеонаблюдения.'
+        };
+
         return (
             <div>
+                <DocumentMeta {...meta} />
                 {!this.props.popularProducts.isLoading
                     ?
                     <Slider>

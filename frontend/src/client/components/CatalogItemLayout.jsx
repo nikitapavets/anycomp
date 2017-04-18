@@ -10,6 +10,7 @@ import Arrow from '../components/Arrow';
 import Loader from './Loader';
 import config from '../../core/config/general';
 import NumberFormat from 'react-number-format';
+import DocumentMeta from 'react-document-meta';
 
 const Catalog = styled.div`
     background-color: ${colors.white};
@@ -181,12 +182,17 @@ export default class CatalogItemLayout extends React.Component {
 
     render() {
         const item = this.props.item.review;
+        const meta = {
+            title: `${item.title} купить | AnyComp.by`,
+            description: `AnyComp.by - это удобный способ купить ${item.title}. Характеристики, сравнение ценовых предложений, техническое обслуживание.`
+        };
 
         return (
             <Catalog>
                 {!this.props.item.isLoading
                     ?
                     <Catalog__Container>
+                        <DocumentMeta {...meta} />
                         <Breadcrumbs data={this.props.breadcrumbs}/>
                         {Object.keys(this.props.item.review).length &&
                         <Product>

@@ -15,13 +15,10 @@ class TvController extends Controller
         return response()->json($notebooks);
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
         $tv = TvRepository::transformTvToFront(
-            TvRepository::getTvsByBrandAndModel(
-                $request->brand,
-                $request->model
-            )
+            TvRepository::getTvById($id)
         );
 
         return response()->json($tv);

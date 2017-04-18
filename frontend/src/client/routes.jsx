@@ -18,9 +18,9 @@ export const routes = (
         <Route path='/' component={GeneralLayoutContainer} onEnter={GeneralLayout.auth}>
             <IndexRoute component={IndexContainer}/>
             <Route path='notebooks' component={NotebooksContainer}/>
-            <Route path='notebooks/:brand/:model' component={NotebookContainer}/>
+            <Route path='notebooks/:brand/:id' component={NotebookContainer}/>
             <Route path='tvs' component={TvsContainer}/>
-            <Route path='tvs/:brand/:model' component={TvContainer}/>
+            <Route path='tvs/:brand/:id' component={TvContainer}/>
             <Route path='checkout' component={CheckoutContainer}/>
             <Route path='user'>
                 <IndexRoute component={LoginContainer}/>

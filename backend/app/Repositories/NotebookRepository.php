@@ -40,44 +40,6 @@ class NotebookRepository
     }
 
     /**
-     * @param $brand
-     * @param $model
-     * @param $config
-     * @return Notebook
-     */
-    public static function getNotebooksByBrandAndModel($brand, $model, $config)
-    {
-        $model = str_replace(
-            ['-', '~'],
-            [' ', '-'],
-            str_replace(
-                'chr47',
-                '/',
-                strtolower($model)
-            )
-        );
-        $config = str_replace(
-            ['-', '~'],
-            [' ', '-'],
-            str_replace(
-                'chr47',
-                '/',
-                strtolower($config)
-            )
-        );
-
-        return Notebook::where('model', '=', $model)
-            ->whereIn('config', ['', $config])
-            ->whereHas(
-                'brand',
-                function ($query) use ($brand) {
-                    $query->where('name', '=', $brand);
-                }
-            )
-            ->first();
-    }
-
-    /**
      * @return Notebook[]
      */
     public static function getNotebooks()

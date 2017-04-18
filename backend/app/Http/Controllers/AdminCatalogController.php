@@ -47,6 +47,7 @@ use App\Models\Database\StandType;
 use App\Models\Database\MatrixType;
 use App\Models\Database\VesaWallMount;
 use App\Models\Database\Year;
+use Illuminate\Support\Facades\Artisan;
 
 class AdminCatalogController extends Controller
 {
@@ -496,6 +497,7 @@ class AdminCatalogController extends Controller
     public function tvSave(Request $request)
     {
         TvRepository::saveTv($request);
+        Artisan::call('make:sitemap');
 
         return redirect()->route('admin.catalog.tv.list');
     }
@@ -1109,6 +1111,7 @@ class AdminCatalogController extends Controller
     public function notebookSave(Request $request)
     {
         NotebookRepository::saveNotebook($request);
+        Artisan::call('make:sitemap');
 
         return redirect()->route('admin.catalog.notebook.list');
     }
