@@ -35,6 +35,10 @@ class Kernel extends HttpKernel
             \Barryvdh\Cors\HandleCors::class,
             \App\Http\Middleware\ApiMiddleware::class,
         ],
+
+        'admin' => [
+            \App\Http\Middleware\AdminMiddleware::class
+        ],
     ];
 
     /**

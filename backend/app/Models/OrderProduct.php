@@ -37,12 +37,29 @@ class OrderProduct extends Model
         }
     }
 
-    private function tv()
+    /**
+     * @return Notebook|Tv
+     */
+    public function getProduct()
+    {
+        switch ($this->getProductType()) {
+            case Notebook::ORDER_TYPE: {
+                return $this->notebook;
+                break;
+            }
+            case Tv::ORDER_TYPE: {
+                return $this->tv;
+                break;
+            }
+        }
+    }
+
+    public function tv()
     {
         return $this->belongsTo('App\Models\Catalog\Tv', 'product_id');
     }
 
-    private function notebook()
+    public function notebook()
     {
         return $this->belongsTo('App\Models\Catalog\Notebook', 'product_id');
     }

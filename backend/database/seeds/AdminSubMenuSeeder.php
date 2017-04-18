@@ -285,5 +285,13 @@ class AdminSubMenuSeeder extends Seeder
             'system_name' => 'admin.db.storage_sizes',
             'pos' => 28,
         ]);
+
+        AdminSubMenu::create([
+            'admin_menu_id' => 5,
+            'title' => 'Сайт',
+            'link' => '/admin/orders/site',
+            'system_name' => 'admin.orders.site',
+            'pos' => 1,
+        ]);
     }
 }

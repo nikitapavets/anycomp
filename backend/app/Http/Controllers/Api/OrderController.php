@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\OrderUserRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Models\Sms;
 use App\Repositories\ClientRepository;
 use App\Repositories\OrderProductRepository;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class OrderController extends Controller
 {
@@ -27,6 +29,12 @@ class OrderController extends Controller
         foreach ($request->products as $product) {
             OrderProductRepository::saveOrderProduct($product, $order);
         }
+        if(Config::get('sms.notification.new_order')) {
+            $host = Config::get('sms.host');
+            $msg = 'Оформлен заказ №'.$order->getId().' - AnyComp.by';
+            Sms::sendSms($host, $msg);
+        }
+
 
         return response()->json($order);
     }

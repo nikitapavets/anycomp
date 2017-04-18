@@ -1,6 +1,11 @@
 <?php
 
+const D = 'd.karimov';
+const N = 'n.pavets';
+
 return [
-	'add_to_repair' => false,
-	'callback' => true,
+    'host' => N,
+	'notification' => [
+	    'new_order' => true
+    ],
 ];
