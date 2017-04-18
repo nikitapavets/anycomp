@@ -3,7 +3,7 @@ Disallow:
 Disallow: /admin
 Disallow: /api
 Disallow: /dev
-Sitemap: http://www.anycomp.by/sitemap.xml
+Sitemap: http://www.anycomp.by/sitemap
 
 User-agent: Yandex
 Disallow:
@@ -11,4 +11,4 @@ Disallow: /admin
 Disallow: /api
 Disallow: /dev
 Host: www.anycomp.by
-Sitemap: http://www.anycomp.by/sitemap.xml
+Sitemap: http://www.anycomp.by/sitemap
