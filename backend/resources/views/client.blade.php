@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="root"></div>
-<script src="/js/core.js?v=.0.0.10"></script>
-<script src="/js/client.js?v=.0.0.10"></script>
+<script src="/js/core.js?v=.0.0.11"></script>
+<script src="/js/client.js?v=.0.0.11"></script>
 </body>
 </html>
