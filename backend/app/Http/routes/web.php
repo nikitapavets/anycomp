@@ -78,5 +78,12 @@ Route::get(
     }
 );
 
+Route::get(
+    'yml',
+    function () {
+        return response()->file('yml.xml');
+    }
+);
+
 Route::get('{slug}', ['as' => 'index', 'uses' => 'MainController@index'])
     ->where('slug', '([A-z\d-\/_.]+)?');
