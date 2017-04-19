@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\MakeSitemap::class
+        Commands\MakeSitemap::class,
+        Commands\MakeYml::class
     ];
 
     /**

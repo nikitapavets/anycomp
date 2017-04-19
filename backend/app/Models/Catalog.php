@@ -10,6 +10,7 @@ use App\Traits\GetSet\UpdatedAtTrait;
 use App\Traits\Relations\BelongTo\BrandTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\ImageRepository;
+use Illuminate\Support\Facades\Config;
 use Intervention\Image\ImageManagerStatic as ImageManager;
 
 class Catalog extends Model
@@ -35,7 +36,7 @@ class Catalog extends Model
 
     public function getLink($systemName)
     {
-        return '/'.$systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$this->getId();
+        return Config::get('app.url').'/'.$systemName.'/'.strtolower($this->getBrand()->getName()).'/'.$this->getId();
     }
 
     public function getPrice()
