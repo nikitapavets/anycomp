@@ -14,7 +14,7 @@ class NotebookController extends Controller
     {
         $notebooks = NotebookRepository::getNotebooksForFront();
 
-        return response()->json(array_merge($notebooks, $notebooks));
+        return response()->json($notebooks);
     }
 
     public function show($id)

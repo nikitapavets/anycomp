@@ -346,6 +346,7 @@ class TvRepository
             'quantity' => $tv->getQuantity(),
             'price' => $tv->getPrice(),
             'link' => $tv->getLink(),
+	        'orderType' => Tv::ORDER_TYPE,
             'sections' => $sectionArray,
         ];
     }

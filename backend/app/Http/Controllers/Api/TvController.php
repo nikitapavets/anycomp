@@ -10,9 +10,9 @@ class TvController extends Controller
 {
     public function index()
     {
-        $notebooks = TvRepository::getTvsForFront();
+        $tvs = TvRepository::getTvsForFront();
 
-        return response()->json($notebooks);
+        return response()->json($tvs);
     }
 
     public function show($id)

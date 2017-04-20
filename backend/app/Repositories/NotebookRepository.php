@@ -448,6 +448,7 @@ class NotebookRepository
             'quantity' => $notebook->getQuantity(),
             'price' => $notebook->getPrice(),
             'link' => $notebook->getLink(),
+	        'orderType' => Notebook::ORDER_TYPE,
             'sections' => $sectionArray
         ];
     }
