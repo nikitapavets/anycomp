@@ -4,7 +4,7 @@ const D = 'd.karimov';
 const N = 'n.pavets';
 
 return [
-    'host' => N,
+    'host' => D,
 	'notification' => [
 	    'new_order' => true
     ],
