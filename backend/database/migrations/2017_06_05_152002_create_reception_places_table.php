@@ -13,6 +13,7 @@ class CreateReceptionPlacesTable extends Migration
     public function up()
     {
         Schema::create('reception_places', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->nullable();
             $table->timestamps();
