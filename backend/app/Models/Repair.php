@@ -110,6 +110,16 @@ class Repair extends Model
         $this->defect = $defect;
     }
 
+    public function getAppearance()
+    {
+        return $this->appearance;
+    }
+
+    public function setAppearance($appearance)
+    {
+        $this->appearance = $appearance;
+    }
+
     public function getFullName()
     {
         return $this->getCategory()->getName().' '.$this->getName();

@@ -14,6 +14,7 @@ class TablePopupItem
     const TYPE_ORGANIZATION = 'organization';
     const TYPE_ADDRESS = 'address';
     const TYPE_HASH = 'hash';
+    const TYPE_APPEARANCE = 'appearance';
     const TYPE_CODE = 'code';
     const TYPE_BOX = 'box';
     const TYPE_SET = 'set';

@@ -271,6 +271,10 @@ class RepairController extends Controller
         $widget->setValue($repair ? $repair->getDefect() : false);
         $widgetCollection->pushWidget($widget);
 
+        $widget = new WidgetInput('Внешний вид', 'product_appearance', false);
+        $widget->setValue($repair ? $repair->getAppearance() : false);
+        $widgetCollection->pushWidget($widget);
+
         $widget = new WidgetInput('Комментарий', 'product_comment', false);
         $widget->setValue($repair ? $repair->getComment() : false);
         $widgetCollection->pushWidget($widget);

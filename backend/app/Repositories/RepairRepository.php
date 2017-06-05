@@ -94,6 +94,8 @@ class RepairRepository
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_HASH, $repair->getHashCode());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_APPEARANCE, $repair->getAppearance());
+            $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_COMMENT, $repair->getComment());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PLACE, $repair->getReceptionPlace()->getName());
@@ -213,6 +215,7 @@ class RepairRepository
                 $repair->setDefect($request->product_defect);
                 $repair->setHashCode($request->product_code);
                 $repair->setSet($request->product_set);
+                $repair->setAppearance($request->product_appearance);
                 $repair->setComment($request->product_comment);
                 $repair->setReceptionPlace($request->reception_place_id);
                 $repair->setWorker($request->worker_id);

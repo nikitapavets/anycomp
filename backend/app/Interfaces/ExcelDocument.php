@@ -62,24 +62,25 @@ class ExcelDocument implements Document
                             array(
                                 17 => 25.5,
                                 19 => 25.5,
-                                25 => 25.5,
-                                26 => 9,
-                                27 => 18,
-                                28 => 18,
-                                29 => 25.5,
-                                30 => 9,
+                                21 => 25.5,
+                                27 => 25.5,
+                                28 => 9,
+                                29 => 18,
+                                30 => 18,
                                 31 => 18,
-                                32 => 18,
-                                33 => 18,
-                                34 => 9,
+                                32 => 9,
+                                33 => 9,
+                                34 => 18,
                                 35 => 18,
                                 36 => 9,
-                                37 => 9,
-                                38 => 18,
-                                39 => 18,
-                                40 => 9,
-                                41 => 9,
-                                43 => 18,
+                                37 => 18,
+                                38 => 9,
+                                39 => 9,
+                                40 => 18,
+                                41 => 18,
+                                42 => 9,
+                                43 => 9,
+                                45 => 18,
                             )
                         );
 
@@ -480,15 +481,54 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'A21',
                             function ($cell) use ($orgInfo) {
+                                $cell->setValue('Внешний осмотр:');
+                                $cell->setValignment('top');
+                                $cell->setAlignment('left');
+                                $cell->setFontFamily('Verdana');
+                            }
+                        );
+
+                        $sheet->mergeCells('I21:S21');
+                        $sheet->getStyle('I21')->getAlignment()->setWrapText(true);
+                        $sheet->cell(
+                            'I21',
+                            function ($cell) use ($currentRepair) {
+                                $cell->setValue($currentRepair->getAppearance());
+                                $cell->setAlignment('left');
+                                $cell->setValignment('top');
+                                $cell->setFontFamily('Verdana');
+                                $cell->setBorder(
+                                    array(
+                                        'top' => array(
+                                            'style' => 'thin',
+                                        ),
+                                        'right' => array(
+                                            'style' => 'thin',
+                                        ),
+                                        'bottom' => array(
+                                            'style' => 'thin',
+                                        ),
+                                        'left' => array(
+                                            'style' => 'thin',
+                                        ),
+                                    )
+                                );
+                            }
+                        );
+
+                        $sheet->mergeCells('A23:G23');
+                        $sheet->cell(
+                            'A23',
+                            function ($cell) use ($orgInfo) {
                                 $cell->setValue('Принял в ремонт:');
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
                             }
                         );
 
-                        $sheet->mergeCells('I21:M21');
+                        $sheet->mergeCells('I23:M23');
                         $sheet->cell(
-                            'I21',
+                            'I23',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue($currentRepair->getWorker()->getShortName());
                                 $cell->setAlignment('center');
@@ -503,9 +543,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('O21:S21');
+                        $sheet->mergeCells('O23:S23');
                         $sheet->cell(
-                            'O21',
+                            'O23',
                             function ($cell) use ($currentRepair) {
                                 $cell->setBorder(
                                     array(
@@ -517,9 +557,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('I22:M22');
+                        $sheet->mergeCells('I24:M24');
                         $sheet->cell(
-                            'I22',
+                            'I24',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue('Ф.И.О.');
                                 $cell->setAlignment('center');
@@ -529,9 +569,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('O22:S22');
+                        $sheet->mergeCells('O24:S24');
                         $sheet->cell(
-                            'O22',
+                            'O24',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue('подпись');
                                 $cell->setAlignment('center');
@@ -541,40 +581,12 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('A24:S24');
-                        $sheet->cell(
-                            'A24',
-                            function ($cell) use ($currentRepair) {
-                                $cell->setValue('Правила оказания услуг по ремонту и техническому обслуживанию');
-                                $cell->setAlignment('center');
-                                $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
-                            }
-                        );
-
-                        $sheet->mergeCells('A25:S25');
-                        $sheet->getStyle('A25')->getAlignment()->setWrapText(true);
-                        $sheet->cell(
-                            'A25',
-                            function ($cell) use ($currentRepair) {
-                                $cell->setValue(
-                                    '1. Степень интеграции компонентов, используемых в ноутбуках и ПК, очень высока (далее - техническое изделие, ТИ), поэтому незначительное повреждение любого из узлов может вызвать тотальный выход из строя. Исходя из этого, сервисный центр (далее - СЦ) не несёт ответственность за возможные ухудшения работы ТИ и/или его последующего выхода из строя (во время и/или после ремонтных работ).'
-                                );
-                                $cell->setAlignment('left');
-                                $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
-                            }
-                        );
-
                         $sheet->mergeCells('A26:S26');
-                        $sheet->getStyle('A26')->getAlignment()->setWrapText(true);
                         $sheet->cell(
                             'A26',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue(
-                                    '2. Ремонт производится только в отношении неисправностей, указанных в квитанции о приеме в ремонт со слов заказчика.'
-                                );
-                                $cell->setAlignment('left');
+                                $cell->setValue('Правила оказания услуг по ремонту и техническому обслуживанию');
+                                $cell->setAlignment('center');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setFontSize(6);
                             }
@@ -586,7 +598,7 @@ class ExcelDocument implements Document
                             'A27',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '3. Принимаемое ТИ считается полностью или частично неработоспособным. ТИ принимается в ремонт в собранном и укомплектованном виде (отсутствовать могут блоки питания и аккумуляторные батареи), в противном случает СЦ не несёт ответственности за комплектацию сданного ТИ.'
+                                    '1. Степень интеграции компонентов, используемых в ноутбуках и ПК, очень высока (далее - техническое изделие, ТИ), поэтому незначительное повреждение любого из узлов может вызвать тотальный выход из строя. Исходя из этого, сервисный центр (далее - СЦ) не несёт ответственность за возможные ухудшения работы ТИ и/или его последующего выхода из строя (во время и/или после ремонтных работ).'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -600,7 +612,7 @@ class ExcelDocument implements Document
                             'A28',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '4. СЦ не несёт ответственности за дефекты, обнаруженные в процессе диагностики и ремонта, но неизвестные Заказчику или не заявленные Заказчиком выявленные незаявленные дефекты устраняются за дополнительную плату с согласия Заказчика.'
+                                    '2. Ремонт производится только в отношении неисправностей, указанных в квитанции о приеме в ремонт со слов заказчика.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -614,7 +626,7 @@ class ExcelDocument implements Document
                             'A29',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '5. Срок диагностики от 2 до 14 дней. Сведение о ходе диагностики и ремонта можно получить в рабочее время СЦ (09:00-18:00) не ранее, чем через 2 дня с момента поступления ТИ к исполнителю, если иное не оговорено при приеме. Диагностика выполняется бесплатно в случае дальнейшего проведения ремонта.'
+                                    '3. Принимаемое ТИ считается полностью или частично неработоспособным. ТИ принимается в ремонт в собранном и укомплектованном виде (отсутствовать могут блоки питания и аккумуляторные батареи), в противном случает СЦ не несёт ответственности за комплектацию сданного ТИ.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -628,7 +640,7 @@ class ExcelDocument implements Document
                             'A30',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '6. При ремонте АКБ и БП возможно ухудшение состояния корпуса, так как многие из них неразборные.'
+                                    '4. СЦ не несёт ответственности за дефекты, обнаруженные в процессе диагностики и ремонта, но неизвестные Заказчику или не заявленные Заказчиком выявленные незаявленные дефекты устраняются за дополнительную плату с согласия Заказчика.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -642,7 +654,7 @@ class ExcelDocument implements Document
                             'A31',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '7. Ориентировочная стоимость ремонта ТИ согласовывается с заказчиком при приеме ТИ в ремонт, а также после диагностики (в случае её превышения).'
+                                    '5. Срок диагностики от 2 до 14 дней. Сведение о ходе диагностики и ремонта можно получить в рабочее время СЦ (09:00-18:00) не ранее, чем через 2 дня с момента поступления ТИ к исполнителю, если иное не оговорено при приеме. Диагностика выполняется бесплатно в случае дальнейшего проведения ремонта.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -656,7 +668,7 @@ class ExcelDocument implements Document
                             'A32',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '8. Время ремонта 3-180 дней с момента согласования условий, при наличии необходимых комплектующих. Срочным считается ремонт, выполненный в течении 48 часов (тарификация при срочном ремонте производится с 50% надбавкой).'
+                                    '6. При ремонте АКБ и БП возможно ухудшение состояния корпуса, так как многие из них неразборные.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -670,7 +682,7 @@ class ExcelDocument implements Document
                             'A33',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '9. Исполнитель не несет расходы, связанные с доставкой ТИ к месту ремонта, (даже в случае наступления гарантийных обязательств исполнителя). В случае наступления гарантийных обязательств исполнитель имеет 14 дней на их устранение.'
+                                    '7. Ориентировочная стоимость ремонта ТИ согласовывается с заказчиком при приеме ТИ в ремонт, а также после диагностики (в случае её превышения).'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -684,7 +696,7 @@ class ExcelDocument implements Document
                             'A34',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '10. Исполнитель не несет ответственности за случаи потери, утраты, порчи данных на носителях заказчика, если иное не оговорено при приёме.'
+                                    '8. Время ремонта 3-180 дней с момента согласования условий, при наличии необходимых комплектующих. Срочным считается ремонт, выполненный в течении 48 часов (тарификация при срочном ремонте производится с 50% надбавкой).'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -698,7 +710,7 @@ class ExcelDocument implements Document
                             'A35',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '11. Исполнитель несёт ответственность за сохранность ТИ только в течении 3 месяцев с момента объявления о завершении работ заказчику. В случае отказа от ремонта ТИ после определения неисправности, Заказчик оплачивает стоимость диагностики в размере 10,00 рублей.'
+                                    '9. Исполнитель не несет расходы, связанные с доставкой ТИ к месту ремонта, (даже в случае наступления гарантийных обязательств исполнителя). В случае наступления гарантийных обязательств исполнитель имеет 14 дней на их устранение.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -712,7 +724,7 @@ class ExcelDocument implements Document
                             'A36',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '12. Исполнитель вправе наклеивать гарантийные "стикеры" в любом месте ТИ, не мешающие его эксплуатации.'
+                                    '10. Исполнитель не несет ответственности за случаи потери, утраты, порчи данных на носителях заказчика, если иное не оговорено при приёме.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -725,7 +737,9 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'A37',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue('13. Исполнитель вправе привлечь для ремонта сторонние организации.');
+                                $cell->setValue(
+                                    '11. Исполнитель несёт ответственность за сохранность ТИ только в течении 3 месяцев с момента объявления о завершении работ заказчику. В случае отказа от ремонта ТИ после определения неисправности, Заказчик оплачивает стоимость диагностики в размере 10,00 рублей.'
+                                );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setFontSize(6);
@@ -738,7 +752,7 @@ class ExcelDocument implements Document
                             'A38',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '14. ТИ выдается только по предоставлению квитанции о приёме в ремонт. В случает утери квитанции, ТИ выдается по заявлению при предъявлении документа, удостоверяющего личность Заказчика.'
+                                    '12. Исполнитель вправе наклеивать гарантийные "стикеры" в любом месте ТИ, не мешающие его эксплуатации.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -751,9 +765,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'A39',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue(
-                                    '15. Оборудование выдается не ранее, чем через 2 рабочих дня с момента оповещения Заказчика о невозможности выполнения ремонта или с письменного заявления Заказчика в СЦ об отказе ремонтировать ТИ.'
-                                );
+                                $cell->setValue('13. Исполнитель вправе привлечь для ремонта сторонние организации.');
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setFontSize(6);
@@ -761,12 +773,12 @@ class ExcelDocument implements Document
                         );
 
                         $sheet->mergeCells('A40:S40');
-                        $sheet->getStyle('A40')->getAlignment()->setWrapText(true);
+                        $sheet->getStyle('A38')->getAlignment()->setWrapText(true);
                         $sheet->cell(
                             'A40',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '16. Все вопросы, по которым не было достигнуто соглашения сторон, решаются в рамках законодательства Республики Беларусь.'
+                                    '14. ТИ выдается только по предоставлению квитанции о приёме в ремонт. В случает утери квитанции, ТИ выдается по заявлению при предъявлении документа, удостоверяющего личность Заказчика.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -779,6 +791,34 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'A41',
                             function ($cell) use ($currentRepair) {
+                                $cell->setValue(
+                                    '15. Оборудование выдается не ранее, чем через 2 рабочих дня с момента оповещения Заказчика о невозможности выполнения ремонта или с письменного заявления Заказчика в СЦ об отказе ремонтировать ТИ.'
+                                );
+                                $cell->setAlignment('left');
+                                $cell->setFontFamily('Verdana');
+                                $cell->setFontSize(6);
+                            }
+                        );
+
+                        $sheet->mergeCells('A42:S42');
+                        $sheet->getStyle('A40')->getAlignment()->setWrapText(true);
+                        $sheet->cell(
+                            'A42',
+                            function ($cell) use ($currentRepair) {
+                                $cell->setValue(
+                                    '16. Все вопросы, по которым не было достигнуто соглашения сторон, решаются в рамках законодательства Республики Беларусь.'
+                                );
+                                $cell->setAlignment('left');
+                                $cell->setFontFamily('Verdana');
+                                $cell->setFontSize(6);
+                            }
+                        );
+
+                        $sheet->mergeCells('A43:S43');
+                        $sheet->getStyle('A41')->getAlignment()->setWrapText(true);
+                        $sheet->cell(
+                            'A43',
+                            function ($cell) use ($currentRepair) {
                                 $cell->setValue('17. СЦ в праве отказаться от ремонта без разъяснения причин.');
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
@@ -786,10 +826,10 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('A43:I43');
-                        $sheet->getStyle('A43')->getAlignment()->setWrapText(true);
+                        $sheet->mergeCells('A45:I45');
+                        $sheet->getStyle('A45')->getAlignment()->setWrapText(true);
                         $sheet->cell(
-                            'A43',
+                            'A45',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue('ТИ в ремонт сдал, с правилами ремонта ознакомлен и согласен.');
                                 $cell->setAlignment('left');
@@ -800,10 +840,10 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('K43:S43');
-                        $sheet->getStyle('K43')->getAlignment()->setWrapText(true);
+                        $sheet->mergeCells('K45:S45');
+                        $sheet->getStyle('K45')->getAlignment()->setWrapText(true);
                         $sheet->cell(
-                            'K43',
+                            'K45',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
                                     'ТИ из ремонта принял. Претензии к качетсву, cрокам и объему выполненных работ не имею.'
@@ -816,9 +856,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('A45:D45');
+                        $sheet->mergeCells('A47:D47');
                         $sheet->cell(
-                            'A45',
+                            'A47',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue($currentRepair->getClient()->getShortName());
                                 $cell->setAlignment('center');
@@ -833,9 +873,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('F45:I45');
+                        $sheet->mergeCells('F47:I47');
                         $sheet->cell(
-                            'F45',
+                            'F47',
                             function ($cell) use ($currentRepair) {
                                 $cell->setBorder(
                                     array(
@@ -847,9 +887,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('K45:N45');
+                        $sheet->mergeCells('K47:N47');
                         $sheet->cell(
-                            'K45',
+                            'K47',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue($currentRepair->getClient()->getShortName());
                                 $cell->setAlignment('center');
@@ -864,9 +904,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('P45:S45');
+                        $sheet->mergeCells('P47:S47');
                         $sheet->cell(
-                            'P45',
+                            'P47',
                             function ($cell) use ($currentRepair) {
                                 $cell->setBorder(
                                     array(
@@ -878,9 +918,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('A46:D46');
+                        $sheet->mergeCells('A48:D48');
                         $sheet->cell(
-                            'A46',
+                            'A48',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue('Ф.И.О');
                                 $cell->setAlignment('center');
@@ -890,9 +930,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('F46:I46');
+                        $sheet->mergeCells('F48:I48');
                         $sheet->cell(
-                            'F46',
+                            'F48',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue('подпись');
                                 $cell->setAlignment('center');
@@ -902,9 +942,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('K46:N46');
+                        $sheet->mergeCells('K48:N48');
                         $sheet->cell(
-                            'K46',
+                            'K48',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue('Ф.И.О');
                                 $cell->setAlignment('center');
@@ -914,9 +954,9 @@ class ExcelDocument implements Document
                             }
                         );
 
-                        $sheet->mergeCells('P46:S46');
+                        $sheet->mergeCells('P48:S48');
                         $sheet->cell(
-                            'P46',
+                            'P48',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue('подпись');
                                 $cell->setAlignment('center');
