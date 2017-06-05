@@ -44,10 +44,10 @@ class RepairController extends Controller
         $tableField = new TableField('№', '150px');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Техника');
+        $tableField = new TableField('Техника', '50%');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Клиент');
+        $tableField = new TableField('Клиент', '50%');
         $tableFields->pushTableField($tableField);
 
         $tableField = new TableField('Номер телефона', '150px');
