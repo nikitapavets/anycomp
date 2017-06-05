@@ -2,15 +2,24 @@
 
 namespace App\Models;
 
+use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
+use App\Traits\GetSet\UpdatedAtTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Admin extends Model
 {
     use IdTrait;
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
 
     const IMG_SRC = "/images/users/no-avatar.png";
     const CREATOR_LOGIN = 'n.pavets';
+
+    const SKILL_ADMIN = 'creator';
+    const SKILL_DIRECTOR = 'director';
+    const SKILL_WORKER = 'worker';
+    const SKILL_MANAGER = 'manager';
 
     /**
      * @return Admin
@@ -44,19 +53,19 @@ class Admin extends Model
 
     public function getSFName()
     {
-        return $this->getSecondName().' '.$this->getFirstName();
+        return $this->getSecondName() . ' ' . $this->getFirstName();
     }
 
     public function getFullName()
     {
-        return $this->getSecondName().' '.$this->getFirstName().' '.$this->getFatherName();
+        return $this->getSecondName() . ' ' . $this->getFirstName() . ' ' . $this->getFatherName();
     }
 
     public function getShortName()
     {
         $second_name = $this->getSecondName();
-        $initials = mb_substr($this->getFirstName(), 0, 1).". ".mb_substr($this->getFatherName(), 0, 1).".";
-        $shortName = $second_name.' '.$initials;
+        $initials = mb_substr($this->getFirstName(), 0, 1) . ". " . mb_substr($this->getFatherName(), 0, 1) . ".";
+        $shortName = $second_name . ' ' . $initials;
 
         return $shortName;
     }
@@ -67,7 +76,7 @@ class Admin extends Model
             return $this->img ? $this->img : config('constants.NO_AVATAR_SRC');
         } else {
             $image_scr = substr($this->img, 0, -4);
-            $image_scr .= '_'.$image_size.'x'.$image_size.substr($this->img, -4);
+            $image_scr .= '_' . $image_size . 'x' . $image_size . substr($this->img, -4);
 
             return $image_scr;
         }
@@ -96,5 +105,25 @@ class Admin extends Model
     public function getFatherName()
     {
         return $this->father_name;
+    }
+
+    public function getSkill()
+    {
+        $skill = '';
+        switch ($this->skill) {
+            case self::SKILL_ADMIN:
+                $skill = 'Администратор';
+                break;
+            case self::SKILL_DIRECTOR:
+                $skill = 'Директор';
+                break;
+            case self::SKILL_WORKER:
+                $skill = 'Инженер';
+                break;
+            case self::SKILL_MANAGER:
+                $skill = 'Менеджер';
+                break;
+        }
+        return $skill;
     }
 }

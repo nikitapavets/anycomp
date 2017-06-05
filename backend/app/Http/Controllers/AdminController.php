@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminMenu;
+use App\Repositories\AdminRepository;
 use App\Repositories\ClientRepository;
 use Illuminate\Http\Request;
 use App\Models\Admin;
@@ -10,9 +11,12 @@ use App\Models\Admin;
 class AdminController extends Controller {
 
     public function index() {
-        $block = [];
-        $block['title'] = 'Статистика по ремонту';
-        $block['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
+        $blocks = [];
+        $blocks['repair_statistic']['title'] = 'Статистика по ремонту';
+        $blocks['repair_statistic']['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
+
+        $blocks['users']['title'] = 'Сотрудники';
+        $blocks['users']['people'] = AdminRepository::adminsToArray(AdminRepository::getAdmins());
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
@@ -32,7 +36,7 @@ class AdminController extends Controller {
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
                 'page' => $page,
-                'block' => $block
+                'blocks' => $blocks
             ]
         );
     }

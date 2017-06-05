@@ -16,6 +16,7 @@ use App\Models\Admin;
 use App\Models\Client;
 use App\Models\Database\ReceptionPlace;
 use App\Models\Worker;
+use App\Repositories\AdminRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\RepairRepository;
 use Illuminate\Http\Request;
@@ -285,7 +286,7 @@ class RepairController extends Controller
 
         $widget = new WidgetSelect('Принял в ремонт', 'worker_id', true);
         $widget->setValue($repair ? $repair->getWorker() : false);
-        $widget->setSelectItems(Worker::getAll());
+        $widget->setSelectItems(AdminRepository::getRepairAdmins());
         $widgetCollection->pushWidget($widget);
 
         $widgets[] = $widgetCollection->toArray();
