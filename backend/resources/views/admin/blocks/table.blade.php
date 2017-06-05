@@ -78,7 +78,7 @@
                     <thead>
                     <tr>
                         @foreach($table['table_fields'] as $tableField)
-                            <td class="{{ $tableField['field_class'] . ' ' .$tableField['field_sort_type'] }}"style="min-width: {{$tableField['field_size']}}">
+                            <td class="{{ $tableField['field_class'] . ' ' .$tableField['field_sort_type'] }}"style="width: {{$tableField['field_size']}}; min-width: {{$tableField['field_size']}}">
                                 {!! $tableField['field_name'] !!}
                                 @if($tableField['field_class'] == 'checker')
                                     <div class="admin-panel__checkers">
