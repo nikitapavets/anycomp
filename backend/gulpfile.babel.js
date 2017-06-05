@@ -81,7 +81,8 @@ gulp.task(cmd.scriptsCopy, function () {
 gulp.task(cmd.scriptsLibs, [cmd.scriptsCopy], function () {
     return gulp.src([
         './node_modules/jquery/dist/jquery.js',
-        './node_modules/jquery.maskedinput/src/jquery.maskedinput.js'
+        './node_modules/jquery.maskedinput/src/jquery.maskedinput.js',
+        './node_modules/chart.js/dist/Chart.min.js'
     ])
         .pipe(plumber())
         .pipe(filesize())

@@ -2,13 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminMenu;
+use App\Repositories\ClientRepository;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 
 class AdminController extends Controller {
 
     public function index() {
-        return redirect()->route('admin.repair.list');
+        $block = [];
+        $block['title'] = 'Статистика по ремонту';
+        $block['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
+
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+
+        $page = [
+            'title' => 'AnyComp | Панель управления - Статистика',
+            'css' => '/styles/admin.min.css',
+            'css_header' => '',
+            'sub_title' => 'Статистика',
+            'sub_descr' => 'Статистика добавленных квитанций.',
+            'view_system_name' => 'admin.dashboard',
+        ];
+
+        return view(
+            $page['view_system_name'],
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'block' => $block
+            ]
+        );
     }
 
     public function login() {

@@ -301,5 +301,13 @@ class AdminSubMenuSeeder extends Seeder
             'system_name' => 'admin.orders.site',
             'pos' => 1,
         ]);
+
+        AdminSubMenu::create([
+            'admin_menu_id' => 6,
+            'title' => 'Главная',
+            'link' => '/admin',
+            'system_name' => 'admin',
+            'pos' => 1,
+        ]);
     }
 }

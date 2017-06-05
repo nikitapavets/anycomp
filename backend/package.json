@@ -33,6 +33,7 @@
     "yargs": "^8.0.1"
   },
   "dependencies": {
+    "chart.js": "^2.6.0",
     "jquery": "^3.2.1",
     "jquery.maskedinput": "^1.4.1",
     "node-bourbon": "^4.2.8"

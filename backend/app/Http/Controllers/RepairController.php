@@ -128,7 +128,6 @@ class RepairController extends Controller
 
     public function chooseClient()
     {
-
         $block = [];
         $block['title'] = 'Поиск клиента';
         $block['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
@@ -142,7 +141,7 @@ class RepairController extends Controller
             'css_header' => '',
             'sub_title' => 'Поиск клиента',
             'sub_descr' => 'Вам доступен поиск клиента или добавление нового клиента',
-            'view_system_name' => 'admin.custom_blocks.choose_client',
+            'view_system_name' => 'admin.create_repair_order',
         ];
 
         return view(
@@ -356,10 +355,12 @@ class RepairController extends Controller
 
     public function statistics(Request $request)
     {
+        $block = [];
+        $block['title'] = 'Статистика';
+        $block['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
+
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
-
-        $widget = new WidgetCollection('Информация о клиенте');
 
         $page = [
             'title' => 'AnyComp | Панель управления - Статистика',
@@ -367,7 +368,7 @@ class RepairController extends Controller
             'css_header' => '',
             'sub_title' => 'Статистика',
             'sub_descr' => 'Статистика добавленных квитанций.',
-            'view_system_name' => 'admin.blocks.block',
+            'view_system_name' => 'admin.custom_blocks.statistics',
         ];
 
         return view(
@@ -376,7 +377,7 @@ class RepairController extends Controller
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
                 'page' => $page,
-                'widget' => $widget->toArray(),
+                'block' => $block
             ]
         );
     }

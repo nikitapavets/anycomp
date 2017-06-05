@@ -48,5 +48,12 @@ class AdminMenusSeeder extends Seeder
             'title' => 'Заказы',
             'pos' => 5
         ]);
+
+        AdminMenu::create([
+            'id' => 6,
+            'img' => '#admin_home_e0e0e0',
+            'title' => 'Главная',
+            'pos' => 0
+        ]);
     }
 }

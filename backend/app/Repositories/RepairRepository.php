@@ -140,7 +140,7 @@ class RepairRepository
             $tableCell = new TablePopupCell('Действия');
             $tablePopupItems = new TablePopupItemCollection();
             $tablePopupItem = new TablePopupLinkItem(TablePopupItem::TYPE_EDIT, 'Изменить');
-            $tablePopupItem->setLinkHref('/admin/repair/'.$repair->getId().'/update');
+            $tablePopupItem->setLinkHref('/admin/repair/' . $repair->getId() . '/update');
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupInlineLinkItem(TablePopupItem::TYPE_STATUS, 'Статус');
             $tablePopupItem->setClass(TablePopupInlineLinkItem::CLASS_REPAIR_STATUS);
@@ -149,7 +149,7 @@ class RepairRepository
             $tablePopupItem->setDataSelected($repair->getStatus());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupLinkItem(TablePopupItem::TYPE_XLS, 'Квитанция');
-            $tablePopupItem->setLinkHref('/admin/repair/print_doc?id='.$repair->getId());
+            $tablePopupItem->setLinkHref('/admin/repair/print_doc?id=' . $repair->getId());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tableCell->setTablePopupItems($tablePopupItems);
             $tableCells->pushTableCell($tableCell);
@@ -169,7 +169,7 @@ class RepairRepository
     {
         if ($repair instanceof Repair) {
             $repair->setStatus($newStatus);
-            if($newStatus == Repair::STATUS_ISSUED) {
+            if ($newStatus == Repair::STATUS_ISSUED) {
                 $repair->setCompletedAt();
             }
             $repair->save();
@@ -228,11 +228,11 @@ class RepairRepository
     public static function makeReceiptNumber()
     {
         $lastRepair = RepairRepository::getLastRepair();
-        $nextReceiptNumber = 'AC'.date('dmy/1');
+        $nextReceiptNumber = 'AC' . date('dmy/1');
         if ($lastRepair) {
             if (substr($lastRepair->getReceiptNumber(), 2, 6) == date('dmy')) {
                 $nextReceiptNumber = (int)substr($lastRepair->getReceiptNumber(), 9) + 1;
-                $nextReceiptNumber = 'AC'.date('dmy/').$nextReceiptNumber;
+                $nextReceiptNumber = 'AC' . date('dmy/') . $nextReceiptNumber;
             }
         }
 
@@ -257,5 +257,25 @@ class RepairRepository
         return $repairs->map(function ($item) {
             return self::repairToArray($item);
         });
+    }
+
+    /**
+     * @param Repair[] $repairs
+     * @return array
+     */
+    public static function repairToStatistics($repairs)
+    {
+        $statistics = [];
+
+        foreach ($repairs as $repair) {
+            $statistics[$repair->getCreatedAtYear()][$repair->getCreatedAtMonth()][$repair->getCreatedAtDay()][] = 1;
+        }
+        foreach ($statistics as $keyYear => $year) {
+            foreach ($year as $keyMonth => $month) {
+                $statistics[$keyYear][$keyMonth] = count($month);
+            }
+        }
+
+        return $statistics;
     }
 }

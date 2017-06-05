@@ -9,3 +9,5 @@ Route::post('users/auth', ['uses' => 'UserController@post']);
 Route::resource('users', 'UserController');
 Route::post('order/client', ['uses' => 'OrderController@client']);
 Route::post('order/products', ['uses' => 'OrderController@products']);
+
+Route::get('repairs', ['uses' => 'StatisticsController@repairs']);
