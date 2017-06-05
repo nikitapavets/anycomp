@@ -53,9 +53,6 @@ class RepairController extends Controller
         $tableField = new TableField('Номер телефона', '150px');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Добавлен', '80px', TableField::SORT_TYPE_SORTABLE);
-        $tableFields->pushTableField($tableField);
-
         $tableField = new TableField('Выдан', '80px', TableField::SORT_TYPE_SORTABLE);
         $tableFields->pushTableField($tableField);
 

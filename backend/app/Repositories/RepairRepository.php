@@ -132,9 +132,6 @@ class RepairRepository
             $tableCell = new TableCell($repair->getClient()->getMobilePhoneOnNativeFormat());
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($repair->getCreatedAt());
-            $tableCells->pushTableCell($tableCell);
-
             $tableCell = new TableCell($repair->getCompletedAt());
             $tableCells->pushTableCell($tableCell);
 
