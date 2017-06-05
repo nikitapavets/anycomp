@@ -33,7 +33,7 @@ class AdminRepository
             'father_name' => $admin->getFatherName(),
             'full_name' => $admin->getFullName(),
             'email' => $admin->getEmail(),
-            'image' => $admin->getImg(),
+            'image' => $admin->getImg(128),
             'phone' => $admin->getPhone(),
             'skill' => $admin->getSkill(),
             'created_at' => $admin->getCreatedAt(),

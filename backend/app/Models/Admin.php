@@ -72,8 +72,11 @@ class Admin extends Model
 
     public function getImg($image_size = '')
     {
+        if(!$this->img) {
+            return config('constants.NO_AVATAR_SRC');
+        }
         if (!$image_size) {
-            return $this->img ? $this->img : config('constants.NO_AVATAR_SRC');
+            return $this->img;
         } else {
             $image_scr = substr($this->img, 0, -4);
             $image_scr .= '_' . $image_size . 'x' . $image_size . substr($this->img, -4);
