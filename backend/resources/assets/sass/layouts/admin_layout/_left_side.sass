@@ -1,3 +1,6 @@
+@import "../../mixins"
+@import "../../vars"
+
 .admin-panel__left-side
   background: url("/images/admin/bg/body_bg.png") repeat-y 0 0
   float: left
@@ -16,6 +19,8 @@
     overflow-y: scroll
     position: relative
     width: 236px
+    @include respond-to(tablet)
+      width: auto
   &.active
     transform: translateX(0)
   &--logo

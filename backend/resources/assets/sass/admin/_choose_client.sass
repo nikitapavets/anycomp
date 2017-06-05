@@ -51,13 +51,18 @@
 
   &__row
     display: flex
+    flex-wrap: wrap
     padding: 3px 0
 
   &__type
     flex-basis: 200px
+    @include respond-to(tablet)
+      flex-basis: 100%
 
   &__value
     font-weight: bold
+    @include respond-to(tablet)
+      padding: 3px 0
 
   &__btn
     margin-top: 15px

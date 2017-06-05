@@ -73,58 +73,58 @@
                     </label>
                 </div>
             </div>
-            <table cellpadding="0" cellspacing="0" border="0" class="tabs responsive">
-                <thead>
-                <tr>
-                    @foreach($table['table_fields'] as $tableField)
-                        <td class="{{ $tableField['field_class'] . ' ' .$tableField['field_sort_type'] }}"
-                            width="{{ $tableField['field_size'] }}">
-                            {!! $tableField['field_name'] !!}
-                            @if($tableField['field_class'] == 'checker')
-                                <div class="admin-panel__checkers">
-                                    <div class="admin-panel__checker">
+            <div class="admin-form-table">
+                <table cellpadding="0" cellspacing="0" border="0" class="tabs responsive">
+                    <thead>
+                    <tr>
+                        @foreach($table['table_fields'] as $tableField)
+                            <td class="{{ $tableField['field_class'] . ' ' .$tableField['field_sort_type'] }}"style="min-width: {{$tableField['field_size']}}">
+                                {!! $tableField['field_name'] !!}
+                                @if($tableField['field_class'] == 'checker')
+                                    <div class="admin-panel__checkers">
+                                        <div class="admin-panel__checker">
                                         <span class="mainChecker">
                                             <input type="checkbox">
                                         </span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
+                                <span></span>
+                            </td>
+                        @endforeach
+                    </tr>
+                    </thead>
+                    @foreach($table['table_rows'] as $tabNumber => $tabRows)
+                        @if($table['table_tabs'][$tabNumber]['tab_status'] == 'active')
+                            <tbody class="tab">
+                        @else
+                            <tbody class="tab hidden">
                             @endif
-                            <span></span>
-                        </td>
-                    @endforeach
-                </tr>
-                </thead>
-                @foreach($table['table_rows'] as $tabNumber => $tabRows)
-                    @if($table['table_tabs'][$tabNumber]['tab_status'] == 'active')
-                        <tbody class="tab">
-                    @else
-                        <tbody class="tab hidden">
-                        @endif
-                        @foreach($tabRows as $tabRow)
-                            <tr>
-                                @foreach($tabRow as $cell)
-                                    <td class="{{$cell['cell_class']}}">
-                                        @if($cell['cell_class'] == 'checker')
-                                            <div class="admin-panel__checkers">
-                                                <div class="admin-panel__checker">
+                            @foreach($tabRows as $tabRow)
+                                <tr>
+                                    @foreach($tabRow as $cell)
+                                        <td class="{{$cell['cell_class']}}">
+                                            @if($cell['cell_class'] == 'checker')
+                                                <div class="admin-panel__checkers">
+                                                    <div class="admin-panel__checker">
                                                     <span class="subChecker" data-id="{{$cell['cell_value']}}">
                                                         <input type="checkbox">
                                                     </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        @else
-                                            @if($cell['cell_type'] == 'link' || $cell['cell_type'] == 'popup')
-                                                <a href="{{$cell['cell_link_href']}}"
-                                                   class="{{$cell['cell_link_class']}}"
-                                                   target="{{$cell['cell_link_target']}}">
-                                                    {{$cell['cell_value']}}
-                                                </a>
-                                                @if($cell['cell_type'] == 'popup')
-                                                    <div class="additional-info hidden">
-                                                        @foreach($cell['cell_popup'] as $popupItem)
-                                                            @if(!empty($popupItem['popup_value']))
-                                                                <div class="additional-info__row">
-                                                                    <div class="additional-info__left">
+                                            @else
+                                                @if($cell['cell_type'] == 'link' || $cell['cell_type'] == 'popup')
+                                                    <a href="{{$cell['cell_link_href']}}"
+                                                       class="{{$cell['cell_link_class']}}"
+                                                       target="{{$cell['cell_link_target']}}">
+                                                        {{$cell['cell_value']}}
+                                                    </a>
+                                                    @if($cell['cell_type'] == 'popup')
+                                                        <div class="additional-info hidden">
+                                                            @foreach($cell['cell_popup'] as $popupItem)
+                                                                @if(!empty($popupItem['popup_value']))
+                                                                    <div class="additional-info__row">
+                                                                        <div class="additional-info__left">
                                                                 <span class="{{$popupItem['popup_type']}}">
                                                                     <svg class="contacts__svg"
                                                                          xmlns="http://www.w3.org/2000/svg"
@@ -164,44 +164,45 @@
                                                                         @endif
                                                                     </svg>
                                                                 </span>
-                                                                    </div>
-                                                                    <div class="additional-info__right">
-                                                                        @if($popupItem['popup_form'] == 'link')
-                                                                            <a href="{{$popupItem['popup_link_href'] ?? 'javascript:;'}}"
-                                                                               target="{{$popupItem['popup_link_target']}}"
-                                                                               class="{{$popupItem['popup_class']}}"
+                                                                        </div>
+                                                                        <div class="additional-info__right">
+                                                                            @if($popupItem['popup_form'] == 'link')
+                                                                                <a href="{{$popupItem['popup_link_href'] ?? 'javascript:;'}}"
+                                                                                   target="{{$popupItem['popup_link_target']}}"
+                                                                                   class="{{$popupItem['popup_class']}}"
                                                                                    data-id="{{$popupItem['popup_inline-link_data_id'] ?? ''}}"
-                                                                               data-action="{{$popupItem['popup_inline-link_data_action'] ?? ''}}"
-                                                                               data-selected="{{$popupItem['popup_inline-link_data_selected'] ?? ''}}">
-                                                                                {{$popupItem['popup_value']}}
-                                                                            </a>
-                                                                        @else
-                                                                            {{ $popupItem['popup_value'] ?? '' }}
-                                                                        @endif
+                                                                                   data-action="{{$popupItem['popup_inline-link_data_action'] ?? ''}}"
+                                                                                   data-selected="{{$popupItem['popup_inline-link_data_selected'] ?? ''}}">
+                                                                                    {{$popupItem['popup_value']}}
+                                                                                </a>
+                                                                            @else
+                                                                                {{ $popupItem['popup_value'] ?? '' }}
+                                                                            @endif
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            @endif
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                            @else
-                                                <span>{{$cell['cell_value']}}</span>
-                                                @if($cell['cell_type'] == 'edit')
-                                                    <div class="admin-panel__button-small hide-me DBEditBtn"
-                                                         data-id="{{$cell['cell_data_id']}}"
-                                                         data-action="2">
-                                                        <span class="edit"></span>
-                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                @else
+                                                    <span>{{$cell['cell_value']}}</span>
+                                                    @if($cell['cell_type'] == 'edit')
+                                                        <div class="admin-panel__button-small hide-me DBEditBtn"
+                                                             data-id="{{$cell['cell_data_id']}}"
+                                                             data-action="2">
+                                                            <span class="edit"></span>
+                                                        </div>
+                                                    @endif
                                                 @endif
                                             @endif
-                                        @endif
-                                    </td>
-                                @endforeach
-                            </tr>
-                        @endforeach
-                        </tbody>
-                        @endforeach
-            </table>
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            @endforeach
+                </table>
+            </div>
             <div class="dynamic-table__stats tabs">
                 @foreach($table['table_rows'] as $key => $tableRows)
                     @if($key == 0)
