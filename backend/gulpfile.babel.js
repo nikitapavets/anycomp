@@ -85,8 +85,6 @@ gulp.task(cmd.scriptsLibs, [cmd.scriptsCopy], function () {
     ])
         .pipe(plumber())
         .pipe(filesize())
-        .pipe(gulpif(argv.production, stripDebug()))
-        .pipe(gulpif(argv.production, uglify()))
         .pipe(concat('libs.min.js'))
         .pipe(plumber.stop())
         .pipe(gulp.dest('./public/scripts/'))
