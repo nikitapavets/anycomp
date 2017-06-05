@@ -22,7 +22,9 @@
                              data-father_name="{{$client['father_name']}}"
                              data-organization="{{$client['organization']}}"
                              data-mobile_phone="{{$client['mobile_phone']}}"
+                             data-mobile_phone_native="{{$client['mobile_phone_native']}}"
                              data-home_phone="{{$client['home_phone']}}"
+                             data-home_phone_native="{{$client['home_phone_native']}}"
                              data-address="{{$client['address']}}"
                              data-repairs="{{count($client['repairs'])}}"
                              data-last-repair="{{$client['repairs'][count($client['repairs']) - 1]['receipt_number'] ?? ''}}">
@@ -58,12 +60,12 @@
                     <div class="client-info__row">
                         <div class="client-info__type">Мобильный телефон:</div>
                         <div class="client-info__value"
-                             id="clientInfoMobilePhone">{{$block['clients'][0]['mobile_phone'] ? $block['clients'][0]['mobile_phone'] : '-'}}</div>
+                             id="clientInfoMobilePhone">{{$block['clients'][0]['mobile_phone_native'] ? $block['clients'][0]['mobile_phone_native'] : '-'}}</div>
                     </div>
                     <div class="client-info__row">
                         <div class="client-info__type">Доп. телефон:</div>
                         <div class="client-info__value"
-                             id="clientInfoHomePhone">{{$block['clients'][0]['home_phone'] ? $block['clients'][0]['home_phone'] : '-'}}</div>
+                             id="clientInfoHomePhone">{{$block['clients'][0]['home_phone_native'] ? $block['clients'][0]['home_phone_native'] : '-'}}</div>
                     </div>
                     <div class="client-info__row">
                         <div class="client-info__type">Адрес:</div>

@@ -8,6 +8,7 @@
 /backend/bower_components
 /backend/public/sitemap*
 /frontend/node_modules
+/backups
 
 # build folders
 /frontend/public

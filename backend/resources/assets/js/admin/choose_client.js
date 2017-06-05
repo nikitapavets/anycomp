@@ -27,8 +27,8 @@
         clientInfo.find('#clientInfoFirstName').text($(currentClient).data('first_name') ? $(currentClient).data('first_name') : '-');
         clientInfo.find('#clientInfoFatherName').text($(currentClient).data('father_name') ? $(currentClient).data('father_name') : '-');
         clientInfo.find('#clientInfoOrganization').text($(currentClient).data('organization') ? $(currentClient).data('organization') : '-');
-        clientInfo.find('#clientInfoMobilePhone').text($(currentClient).data('mobile_phone') ? $(currentClient).data('mobile_phone') : '-');
-        clientInfo.find('#clientInfoHomePhone').text($(currentClient).data('home_phone') ? $(currentClient).data('home_phone') : '-');
+        clientInfo.find('#clientInfoMobilePhone').text($(currentClient).data('mobile_phone_native') ? $(currentClient).data('mobile_phone_native') : '-');
+        clientInfo.find('#clientInfoHomePhone').text($(currentClient).data('home_phone_native') ? $(currentClient).data('home_phone_native') : '-');
         clientInfo.find('#clientInfoAddress').text($(currentClient).data('address') ? $(currentClient).data('address') : '-');
         clientInfo.find('#clientInfoRepairs').text($(currentClient).data('repairs') ? $(currentClient).data('repairs') : '-');
         clientInfo.find('#clientInfoLastRepair').text($(currentClient).data('last-repair') ? $(currentClient).data('last-repair') : '-');
@@ -48,6 +48,19 @@
             const fatherName = $(client).data('father_name').toLowerCase();
             const name = `${secondName} ${firstName} ${fatherName}`;
             searchElementStatus = name.indexOf(searchValue);
+
+            if(searchElementStatus === -1) {
+                const organization = $(client).data('organization').toLowerCase();
+                searchElementStatus = organization.indexOf(searchValue);
+            }
+            if(searchElementStatus === -1) {
+                const mobilePhone = $(client).data('mobile_phone').toString();
+                searchElementStatus = mobilePhone.indexOf(searchValue);
+            }
+            if(searchElementStatus === -1) {
+                const homePhone = $(client).data('home_phone').toString();
+                searchElementStatus = homePhone.indexOf(searchValue);
+            }
 
             if (searchElementStatus !== -1) {
                 clients.eq(number).removeClass('hidden');

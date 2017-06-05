@@ -100,7 +100,7 @@ class RepairController extends Controller
         $tableAction = new TableAction(
             TableAction::TYPE_CREATE,
             TableAction::FORM_EXTERNAL,
-            '/admin/repair/create'
+            '/admin/repair/choose_client'
         );
         $tableActions->pushTableAction($tableAction);
 
@@ -183,62 +183,62 @@ class RepairController extends Controller
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Клиент ИД', 'client_id');
-        $widget->setValue($repair->getClient()->getId());
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getId() : false);
         $widget->setValueType('hidden');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Фамилия', 'client_second_name', false);
-        $widget->setValue($repair ? $repair->getClient()->getSecondName() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getSecondName() : false);
         $widget->setValidationType(WidgetInput::VALIDATION_TYPE_ONLY_RUS);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Имя', 'client_first_name', false);
-        $widget->setValue($repair ? $repair->getClient()->getFirstName() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getFirstName() : false);
         $widget->setValidationType(WidgetInput::VALIDATION_TYPE_ONLY_RUS);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Отчество', 'client_father_name', false);
-        $widget->setValue($repair ? $repair->getClient()->getFatherName() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getFatherName() : false);
         $widget->setValidationType(WidgetInput::VALIDATION_TYPE_ONLY_RUS);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetSelect('Организация', 'client_organization_id', false);
-        $widget->setValue($repair ? $repair->getClient()->getOrganization() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getOrganization() : false);
         $widget->setSelectItems(Organization::getAll());
         $widget->setAllowAddName('client_organization_new');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Мобильный телефон', 'client_mobile_phone', false);
-        $widget->setValue($repair ? $repair->getClient()->getMobilePhone() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getMobilePhone() : false);
         $widget->setValueType(WidgetInput::VALUE_TYPE_PHONE);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Домашний телефон', 'client_home_phone', false);
-        $widget->setValue($repair ? $repair->getClient()->getHomePhone() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getHomePhone() : false);
         $widget->setValueType(WidgetInput::VALUE_TYPE_HOME_PHONE);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetSelect('Тип населённого пункта', 'client_city_type_id', false);
-        $widget->setValue($repair ? $repair->getClient()->getCityType() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getCityType() : false);
         $widget->setSelectItems(CityType::getAll());
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetSelect('Населённый пункт', 'client_city_id', false);
-        $widget->setValue($repair ? $repair->getClient()->getCity() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getCity() : false);
         $widget->setSelectItems(City::getAll());
         $widget->setAllowAddName('client_city_new');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Улица', 'client_street', false);
-        $widget->setValue($repair ? $repair->getClient()->getStreet() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getStreet() : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Дом', 'client_house', false);
-        $widget->setValue($repair ? $repair->getClient()->getHouse() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getHouse() : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Квартира', 'client_flat', false);
-        $widget->setValue($repair ? $repair->getClient()->getFlat() : false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->getFlat() : false);
         $widgetCollection->pushWidget($widget);
 
         $widgets[] = $widgetCollection->toArray();
