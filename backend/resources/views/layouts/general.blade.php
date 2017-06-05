@@ -73,9 +73,9 @@
         @yield('content')
         <a href="" id="upload_img" class="hidden"></a>
         <!-- Load Scripts Start -->
-        <script src="/scripts/libs.min.js?v.2.6"></script>
+        <script src="/scripts/libs.min.js?v.2.7"></script>
         <script src="/scripts/libs/ajax_upload.js"></script>
-        <script src="/scripts/admin.min.js?v.2.6"></script>
+        <script src="/scripts/admin.min.js?v.2.7"></script>
         <script>
 
             $(document).ready(function(){
