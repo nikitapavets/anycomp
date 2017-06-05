@@ -9,7 +9,7 @@ use App\Classes\Table\TableTab;
 use App\Collections\TableActionCollection;
 use App\Collections\TableFieldCollection;
 use App\Collections\TableTabCollection;
-use App\Models\Database;
+use App\Models\Database\ReceptionPlace;
 use App\Models\Database\Brand;
 use App\Models\Database\CityType;
 use App\Models\Database\Complect;
@@ -160,6 +160,10 @@ class DatabaseController extends Controller
             }
             case 'storage-sizes' : {
                 $class = StorageSize::class;
+                break;
+            }
+            case 'reception-places' : {
+                $class = ReceptionPlace::class;
                 break;
             }
             default : {
@@ -357,6 +361,10 @@ class DatabaseController extends Controller
                 $class = StorageSize::class;
                 break;
             }
+            case 'reception-places' : {
+                $class = ReceptionPlace::class;
+                break;
+            }
             default : {
                 return redirect()->route('admin');
             }
@@ -482,6 +490,10 @@ class DatabaseController extends Controller
             }
             case 'storage-sizes' : {
                 $class = StorageSize::class;
+                break;
+            }
+            case 'reception-places' : {
+                $class = ReceptionPlace::class;
                 break;
             }
             default : {

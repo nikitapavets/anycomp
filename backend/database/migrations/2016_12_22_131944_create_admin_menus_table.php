@@ -16,7 +16,7 @@ class CreateAdminMenusTable extends Migration
             $table->increments('id');
             $table->string('title')->nullable();
             $table->string('link')->nullable();
-            $table->string('img')->nullable();
+            $table->string('images')->nullable();
             $table->integer('pos')->unsigned()->default(0);
             $table->timestamps();
         });

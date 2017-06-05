@@ -10,6 +10,8 @@
             $index = 0;
         @endphp
         @foreach($form['widgets'] as $widget)
+
+            <!-- Top Buttons -->
             <div class="admin-panel__buttons {{ $index > 0 ? 'hidden' : '' }}" style="margin-top: 0;">
                 @if($index < count($form['widgets']) - 1)
                     <button class="admin-panel__button formNextBtn top" data-pos="{{ $index }}">Далее</button>
@@ -21,6 +23,8 @@
                 @endif
                 <div class="clearfix"></div>
             </div>
+            <!-- Top Buttons / -->
+
             <div class="admin-panel__widget {{ $index > 0 ? 'hidden' : '' }}">
                 <div class="title">
                     <div class="text">

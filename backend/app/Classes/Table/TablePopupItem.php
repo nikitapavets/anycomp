@@ -23,6 +23,7 @@ class TablePopupItem
     const TYPE_XLS = 'xls';
     const TYPE_STATUS = 'status';
     const TYPE_COMMENT = 'comment';
+    const TYPE_PLACE = 'place';
 
     const FORM_TEXT = 'text';
 

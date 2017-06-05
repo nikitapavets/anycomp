@@ -1,5 +1,8 @@
-@import "bourbon"
+@import 'bourbon'
 
-+font-face("RobotoRegular", "/fonts/RobotoRegular/RobotoRegular", $file-formats: eot woff ttf)
-+font-face("RobotoLight", "/fonts/RobotoLight/robotolight", $file-formats: woff2 woff ttf)
-+font-face("RobotoBold", "/fonts/RobotoBold/RobotoBold", $file-formats: woff2 woff ttf)
+@include font-face("Roboto", "/fonts/Roboto-Thin", 100, $file-formats: ttf)
+@include font-face("Roboto", "/fonts/Roboto-Light", 300, $file-formats: ttf)
+@include font-face("Roboto", "/fonts/Roboto-Regular", normal, $file-formats: ttf)
+@include font-face("Roboto", "/fonts/Roboto-Medium", 500, $file-formats: ttf)
+@include font-face("Roboto", "/fonts/Roboto-Bold", bold, $file-formats: ttf)
+@include font-face("Roboto", "/fonts/Roboto-Black", 900, $file-formats: ttf)

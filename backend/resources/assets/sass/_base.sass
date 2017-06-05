@@ -1,4 +1,4 @@
-@import "bourbon"
+@import 'bourbon'
 @import "vars"
 
 *::-webkit-input-placeholder
@@ -28,8 +28,8 @@ body
   font-size: 16px
   min-width: 320px
   position: relative
-  line-height: em(22px)
-  font-family: "RobotoLight", $helvetica
+  line-height: 22px
+  font-family: Roboto, $helvetica
   overflow-x: hidden
   color: $main_text
 
@@ -56,8 +56,6 @@ ul
     list-style: none
 
 h1,h2,h3,h4,h5,h6
-  font-family: "RobotoLight", $helvetica
-  font-weight: normal
   line-height: em(16px)
 
 h2
@@ -79,7 +77,6 @@ h2
   border: none
   color: #FFF
   font-size: em(24px)
-  font-family: "RobotoLight"
   display: inline-block
   &:hover, &:visited, &:active, &:target
     background-color: $main_orange_hover
@@ -130,7 +127,3 @@ h2
     border: 1px solid #d2d2d2
     &.active
       background: url("/images/admin/ui-icons.png") -65px -146px
-
-@import "/bower_components/owl.carousel/dist/assets/owl.carousel.min.css"
-@import "/bower_components/owl.carousel/dist/assets/owl.theme.default.css"
-

@@ -17,8 +17,8 @@ class AdminSubMenuSeeder extends Seeder
         AdminSubMenu::create([
             'admin_menu_id' => 1,
             'title' => 'Добавить в ремонт',
-            'link' => '/admin/repair/create',
-            'system_name' => 'admin.repair.create',
+            'link' => '/admin/repair/choose_client',
+            'system_name' => 'admin.repair.choose_client',
             'pos' => 1
         ]);
 
@@ -284,6 +284,14 @@ class AdminSubMenuSeeder extends Seeder
             'link' => '/admin/db/storage-sizes',
             'system_name' => 'admin.db.storage_sizes',
             'pos' => 28,
+        ]);
+
+        AdminSubMenu::create([
+            'admin_menu_id' => 4,
+            'title' => 'Пункты приема заказа',
+            'link' => '/admin/db/reception-places',
+            'system_name' => 'admin.db.reception-places',
+            'pos' => 29,
         ]);
 
         AdminSubMenu::create([

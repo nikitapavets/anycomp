@@ -5,11 +5,12 @@
     <div class="admin-panel__widget">
         <div class="title">
             <div class="text">
-                {{ $widget['title'] }}
+                {{ $block['title'] }}
             </div>
         </div>
         <div class="widget-row">
-            <a href="/admin/repair/statistics/print">Распечатать</a>
+            @yield('block_content')
+            {{--<a href="/admin/repair/statistics/print">Распечатать</a>--}}
         </div>
     </div>
 

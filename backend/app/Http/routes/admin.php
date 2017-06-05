@@ -127,6 +127,10 @@ Route::group(
             '/statistics/print',
             ['as' => 'admin.repair.statistics.print', 'uses' => 'RepairController@statisticsPrint']
         );
+        Route::get(
+            '/choose_client',
+            ['as' => 'admin.repair.choose_client', 'uses' => 'RepairController@chooseClient']
+        );
 
     }
 );

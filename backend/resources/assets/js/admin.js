@@ -53,7 +53,7 @@ $('document').ready(function () {
                         onComplete: function (file, response) {
                             var item = '' +
                                 '<div class="item">' +
-                                '<img src="' + response + '" data-link="' + response + '">' +
+                                '<images src="' + response + '" data-link="' + response + '">' +
                                 ' <a href="javascript:;" class="cross">' +
                                 '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
                                 '<use xlink:href="#cross_ff491f"></use>' +
@@ -98,7 +98,7 @@ $('document').ready(function () {
                         onComplete: function (file, response) {
                             var item = '' +
                                 '<div class="item">' +
-                                '<img src="' + response + '" data-link="' + response + '">' +
+                                '<images src="' + response + '" data-link="' + response + '">' +
                                 ' <a href="javascript:;" class="cross">' +
                                 '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
                                 '<use xlink:href="#cross_ff491f"></use>' +
@@ -120,7 +120,7 @@ $('document').ready(function () {
 
             var links = [];
             item.find('.item').each(function (i) {
-                links.push(item.find('.item img').eq(i).data('link'));
+                links.push(item.find('.item images').eq(i).data('link'));
             });
             item.find('.inp_img').val(links.join(','));
             if (item.find('.item').length == 0) {
@@ -719,7 +719,7 @@ $('document').ready(function () {
 
     function tableTabs(el) {
 
-        var self = this;
+        var self = el;
         self.pos = -1;
 
         $('ul.tabs a').each(function (i) {

@@ -18,7 +18,7 @@ return array(
     'driver' => 'imagick',
 	'catalog_big_img' => '/images/catalog/big/',
 	'catalog_small_img' => '/images/catalog/small/',
-	'image_gag' => '/static/img/logo/image_gag.png',
+	'image_gag' => '/static/images/logo/image_gag.png',
 	'tmp_img' => '/../storage/app/public/',
 
 );

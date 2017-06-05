@@ -96,6 +96,8 @@ class RepairRepository
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_COMMENT, $repair->getComment());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PLACE, $repair->getReceptionPlace()->getName());
+            $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_WORKER, $repair->getWorker()->getSFName());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_CODE, $repair->getCode());
@@ -127,7 +129,13 @@ class RepairRepository
             $tableCell->setTablePopupItems($tablePopupItems);
             $tableCells->pushTableCell($tableCell);
 
+            $tableCell = new TableCell($repair->getClient()->getMobilePhoneOnNativeFormat());
+            $tableCells->pushTableCell($tableCell);
+
             $tableCell = new TableCell($repair->getCreatedAt());
+            $tableCells->pushTableCell($tableCell);
+
+            $tableCell = new TableCell($repair->getCompletedAt());
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TablePopupCell('Действия');
@@ -161,7 +169,11 @@ class RepairRepository
     public static function updateRepairStatus($repair, $newStatus)
     {
         if ($repair instanceof Repair) {
-            $repair->update(['current_status' => $newStatus]);
+            $repair->setStatus($newStatus);
+            if($newStatus == Repair::STATUS_ISSUED) {
+                $repair->setCompletedAt();
+            }
+            $repair->save();
         }
     }
 
@@ -205,6 +217,7 @@ class RepairRepository
                 $repair->setHashCode($request->product_code);
                 $repair->setSet($request->product_set);
                 $repair->setComment($request->product_comment);
+                $repair->setReceptionPlace($request->reception_place_id);
                 $repair->setWorker($request->worker_id);
 
                 $repair->save();
@@ -224,5 +237,25 @@ class RepairRepository
         }
 
         return $nextReceiptNumber;
+    }
+
+    public static function repairToArray(Repair $repair)
+    {
+        return [
+            'id' => $repair->getId(),
+            'receipt_number' => $repair->getReceiptNumber(),
+            'created_at' => $repair->getCreatedAt()
+        ];
+    }
+
+    /**
+     * @param Repair[] $repairs
+     * @return array
+     */
+    public static function repairsToArray($repairs)
+    {
+        return $repairs->map(function ($item) {
+            return self::repairToArray($item);
+        });
     }
 }

@@ -73,10 +73,9 @@
         @yield('content')
         <a href="" id="upload_img" class="hidden"></a>
         <!-- Load Scripts Start -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-        <script src="/scripts/libs.min.js"></script>
+        <script src="/scripts/libs.min.js?v.2.6"></script>
         <script src="/scripts/libs/ajax_upload.js"></script>
-        <script src="/scripts/base.min.js?{{ time() }}"></script>
+        <script src="/scripts/admin.min.js?v.2.6"></script>
         <script>
 
             $(document).ready(function(){
@@ -106,7 +105,6 @@
             AdminMenu.showMenu();
 
         </script>
-        <script src="{{ isset($page['scripts']) ? $page['scripts'] : '/scripts/admin.min.js' }}?v=.0.0.4"></script>
         <!-- Load Scripts End -->
 
     </body>

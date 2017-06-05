@@ -19,6 +19,7 @@ use App\Models\Database\CursorControlType;
 use App\Models\Database\Complect;
 use App\Models\Database\StorageSize;
 use App\Models\Database\City;
+use App\Models\Database\ReceptionPlace;
 
 class SetNoSelectedDatabaseSeeder extends Seeder
 {
@@ -115,6 +116,11 @@ class SetNoSelectedDatabaseSeeder extends Seeder
         ]);
 
         StorageSize::firstOrCreate([
+            'id' => '1',
+            'name' => 'No selected'
+        ]);
+
+        ReceptionPlace::firstOrCreate([
             'id' => '1',
             'name' => 'No selected'
         ]);

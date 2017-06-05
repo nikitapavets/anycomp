@@ -13,7 +13,10 @@ use App\Collections\TableFieldCollection;
 use App\Collections\TableTabCollection;
 use App\Collections\WidgetCollection;
 use App\Models\Admin;
+use App\Models\Client;
+use App\Models\Database\ReceptionPlace;
 use App\Models\Worker;
+use App\Repositories\ClientRepository;
 use App\Repositories\RepairRepository;
 use Illuminate\Http\Request;
 use App\Models\Repair;
@@ -47,10 +50,16 @@ class RepairController extends Controller
         $tableField = new TableField('Клиент');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Добавлен', false, TableField::SORT_TYPE_SORTABLE);
+        $tableField = new TableField('Номер телефона', '150px');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('', false, TableField::SORT_TYPE_NO_SORTABLE);
+        $tableField = new TableField('Добавлен', '80px', TableField::SORT_TYPE_SORTABLE);
+        $tableFields->pushTableField($tableField);
+
+        $tableField = new TableField('Выдан', '80px', TableField::SORT_TYPE_SORTABLE);
+        $tableFields->pushTableField($tableField);
+
+        $tableField = new TableField('', '150px', TableField::SORT_TYPE_NO_SORTABLE);
         $tableFields->pushTableField($tableField);
 
         $table->setTableFields($tableFields);
@@ -120,29 +129,63 @@ class RepairController extends Controller
         );
     }
 
+    public function chooseClient()
+    {
+
+        $block = [];
+        $block['title'] = 'Поиск клиента';
+        $block['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
+
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+
+        $page = [
+            'title' => 'AnyComp | Панель управления - Поиск клиента',
+            'css' => '/styles/admin.min.css',
+            'css_header' => '',
+            'sub_title' => 'Поиск клиента',
+            'sub_descr' => 'Вам доступен поиск клиента или добавление нового клиента',
+            'view_system_name' => 'admin.custom_blocks.choose_client',
+        ];
+
+        return view(
+            $page['view_system_name'],
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'block' => $block
+            ]
+        );
+    }
+
     public function repairCreateUpdate(Request $request)
     {
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
-        $repair = RepairRepository::getRepairById($request->repair_id);
+        /**
+         * @var Repair $repair
+         */
+        $repair = Repair::firstOrNew(['id' => $request->repair_id ?? 0]);
+        if($request->client_id && !$request->repair_id) {
+            $repair->setClient(Client::find($request->client_id));
+        }
 
         $widgets = [];
 
         // Section 1 (about client)
         $widgetCollection = new WidgetCollection('Информация о клиенте');
 
-        if ($repair) {
-            $widget = new WidgetInput('Ид', 'repair_id', true);
-            $widget->setValue($repair->getId());
-            $widget->setValueType('hidden');
-            $widgetCollection->pushWidget($widget);
+        $widget = new WidgetInput('Ремонд ИД', 'repair_id');
+        $widget->setValue($repair->getId());
+        $widget->setValueType('hidden');
+        $widgetCollection->pushWidget($widget);
 
-            $widget = new WidgetInput('Ид', 'client_id', true);
-            $widget->setValue($repair->getClient()->getId());
-            $widget->setValueType('hidden');
-            $widgetCollection->pushWidget($widget);
-        }
+        $widget = new WidgetInput('Клиент ИД', 'client_id');
+        $widget->setValue($repair->getClient()->getId());
+        $widget->setValueType('hidden');
+        $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Фамилия', 'client_second_name', false);
         $widget->setValue($repair ? $repair->getClient()->getSecondName() : false);
@@ -235,6 +278,11 @@ class RepairController extends Controller
         $widget->setValue($repair ? $repair->getComment() : false);
         $widgetCollection->pushWidget($widget);
 
+        $widget = new WidgetSelect('Место приема заказа', 'reception_place_id', true);
+        $widget->setValue($repair ? $repair->getReceptionPlace() : false);
+        $widget->setSelectItems(ReceptionPlace::getAll());
+        $widgetCollection->pushWidget($widget);
+
         $widget = new WidgetSelect('Принял в ремонт', 'worker_id', true);
         $widget->setValue($repair ? $repair->getWorker() : false);
         $widget->setSelectItems(Worker::getAll());
@@ -292,8 +340,7 @@ class RepairController extends Controller
     {
         $currentRepair = RepairRepository::getRepairById($request->input('id'));
         $fileInfo = array(
-            'file_name' => 'Квитанция о приеме в ремонт № '.$currentRepair->getReceiptNumber(
-                ).' от '.$currentRepair->getCreatedForPrintDate(),
+            'file_name' => 'Квитанция о приеме в ремонт № ' . $currentRepair->getReceiptNumber() . ' от ' . $currentRepair->getCreatedForPrintDate(),
             'list_name' => 'Квитанция о приеме в ремонт',
         );
         $orgInfo = array(

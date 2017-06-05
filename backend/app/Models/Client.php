@@ -9,6 +9,7 @@ use App\Traits\GetSet\IdTrait;
 use App\Traits\Relations\BelongTo\CityTrait;
 use App\Traits\Relations\BelongTo\CityTypeTrait;
 use App\Traits\Relations\BelongTo\OrganizationTrait;
+use App\Traits\Relations\HasMany\RepairsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,6 +24,7 @@ class Client extends Model
     use IdTrait;
     use CityTrait;
     use CreatedAtTrait;
+    use RepairsTrait;
 
     protected $guarded = array();
 

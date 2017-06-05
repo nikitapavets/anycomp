@@ -17,7 +17,7 @@ class ClientRepository
      */
     public static function getClients()
     {
-        return Client::orderBy('id', 'second_name')->get();
+        return Client::orderBy('second_name')->get();
     }
 
     /**
@@ -32,7 +32,7 @@ class ClientRepository
     public static function auth($email, $password)
     {
         $client = self::getClientByEmail($email);
-        if($client && $client->checkPassword($password)) {
+        if ($client && $client->checkPassword($password)) {
             return $client;
         }
         return $email;
@@ -132,6 +132,7 @@ class ClientRepository
             'second_name' => $client->getSecondName(),
             'first_name' => $client->getFirstName(),
             'father_name' => $client->getFatherName(),
+            'full_name' => $client->getFullName(),
             'organization' => $client->getOrganization()->getName(),
             'mobile_phone' => $client->getMobilePhoneOnNativeFormat(),
             'home_phone' => $client->getHomePhoneOnNativeFormat(),
@@ -140,8 +141,21 @@ class ClientRepository
             'address_city' => $client->getCity()->getName(),
             'address_street' => $client->getStreet(),
             'address_house' => $client->getHouse(),
-            'address_flat' => $client->getFlat()
+            'address_flat' => $client->getFlat(),
+            'address' => $client->getAddress(),
+            'repairs' => RepairRepository::repairsToArray($client->getRepairs()),
         ];
+    }
+
+    /**
+     * @param Client[] $clients
+     * @return array
+     */
+    public static function clientsToArray($clients)
+    {
+        return $clients->map(function ($item) {
+            return self::clientToArray($item);
+        });
     }
 
 

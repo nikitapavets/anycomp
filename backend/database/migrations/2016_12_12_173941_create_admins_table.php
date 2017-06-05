@@ -20,7 +20,7 @@ class CreateAdminsTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('second_name')->nullable();
             $table->string('father_name')->nullable();
-            $table->string('img')->nullable();
+            $table->string('images')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->timestamps();

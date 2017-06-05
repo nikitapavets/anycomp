@@ -8,6 +8,7 @@ use App\Traits\Relations\BelongTo\AdminTrait;
 use App\Traits\Relations\BelongTo\BrandTrait;
 use App\Traits\Relations\BelongTo\CategoryTrait;
 use App\Traits\Relations\BelongTo\ClientTrait;
+use App\Traits\Relations\BelongTo\ReceptionPlaceTrait;
 use App\Traits\Relations\BelongTo\WorkerTrait;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +21,7 @@ class Repair extends Model
     use BrandTrait;
     use CategoryTrait;
     use WorkerTrait;
+    use ReceptionPlaceTrait;
     use IdTrait;
     use CreatedAtTrait;
 
@@ -180,5 +182,17 @@ class Repair extends Model
         $date .= date(' Yг.', $this->created_at->getTimestamp());
 
         return $date;
+    }
+
+    public function getCompletedAt()
+    {
+        $time = Carbon::parse($this->completed_at);
+
+        return $time->timestamp > 0 ? date('d-m-Y', $time->timestamp) : '';
+    }
+
+    public function setCompletedAt()
+    {
+        $this->completed_at = Carbon::now();
     }
 }

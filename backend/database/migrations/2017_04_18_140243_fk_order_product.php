@@ -32,7 +32,7 @@ class FkOrderProduct extends Migration
             $table->dropForeign('order_id_foreign');
         });
         Schema::table('order_products', function ($table) {
-            $table->dropn('order_id');
+            $table->dropColumn('order_id');
         });
     }
 }
