@@ -42,22 +42,22 @@ class RepairController extends Controller
         $tableField = new TableField('', '50px', TableField::SORT_TYPE_NO_SORTABLE, TableField::CLASS_CHECKER);
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('№', '150px');
+        $tableField = new TableField('№', '80px');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Техника', '50%');
+        $tableField = new TableField('Техника');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Клиент', '50%');
+        $tableField = new TableField('Клиент');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Номер телефона', '150px');
+        $tableField = new TableField('Номер телефона', '115px');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Выдан', '80px', TableField::SORT_TYPE_SORTABLE);
+        $tableField = new TableField('Выдан', '75px', TableField::SORT_TYPE_SORTABLE);
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('', '150px', TableField::SORT_TYPE_NO_SORTABLE);
+        $tableField = new TableField('', '115px', TableField::SORT_TYPE_NO_SORTABLE);
         $tableFields->pushTableField($tableField);
 
         $table->setTableFields($tableFields);
