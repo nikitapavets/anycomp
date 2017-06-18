@@ -32,6 +32,8 @@ class AdminRepository
             'first_name' => $admin->getFirstName(),
             'father_name' => $admin->getFatherName(),
             'full_name' => $admin->getFullName(),
+            'sf_name' => $admin->getSFName(),
+            'short_name' => $admin->getShortName(),
             'email' => $admin->getEmail(),
             'image' => $admin->getImg(128),
             'phone' => $admin->getPhone(),

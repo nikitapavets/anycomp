@@ -125,14 +125,15 @@ class ClientRepository
         return $client;
     }
 
-    public static function clientToArray(Client $client)
+    public static function clientToArray(Client $client, $withRepairs = true)
     {
-        return [
+        $clientArray = [
             'id' => $client->getId(),
             'second_name' => $client->getSecondName(),
             'first_name' => $client->getFirstName(),
             'father_name' => $client->getFatherName(),
             'full_name' => $client->getFullName(),
+            'short_name' => $client->getShortName(),
             'organization' => $client->getOrganization()->getName(),
             'mobile_phone' => $client->getMobilePhone(),
             'mobile_phone_native' => $client->getMobilePhoneOnNativeFormat(),
@@ -144,9 +145,13 @@ class ClientRepository
             'address_street' => $client->getStreet(),
             'address_house' => $client->getHouse(),
             'address_flat' => $client->getFlat(),
-            'address' => $client->getAddress(),
-            'repairs' => RepairRepository::repairsToArray($client->getRepairs()),
+            'address' => $client->getAddress()
         ];
+        if($withRepairs) {
+            $clientArray['repairs'] = RepairRepository::repairsToArray($client->getRepairs());
+        }
+
+        return $clientArray;
     }
 
     /**

@@ -20,11 +20,18 @@ use Illuminate\Support\Facades\DB;
 class RepairRepository
 {
     /**
+     * @param int $size
+     * @param string $orderBy
      * @return Repair[]
      */
-    public static function getRepairs()
+    public static function getRepairs($size = 0, $orderBy = 'id')
     {
-        return Repair::orderBy('id', 'desc')->get();
+        $orderBy = $orderBy ?: 'id';
+        if($size) {
+            return Repair::orderBy($orderBy, 'desc')->paginate($size);
+        } else {
+            return Repair::orderBy($orderBy, 'desc')->get();
+        }
     }
 
     /**
@@ -244,6 +251,17 @@ class RepairRepository
         return [
             'id' => $repair->getId(),
             'receipt_number' => $repair->getReceiptNumber(),
+            'product_full_name' => $repair->getFullName(),
+            'product_code' => $repair->getCode(),
+            'product_title' => $repair->getTitle(),
+            'product_defect' => $repair->getDefect(),
+            'product_hash_code' => $repair->getHashCode(),
+            'product_set' => $repair->getSet(),
+            'product_appearance' => $repair->getAppearance(),
+            'product_comment' => $repair->getComment(),
+            'product_reception_place' => $repair->getReceptionPlace()->getName(),
+            'client' => ClientRepository::clientToArray($repair->getClient(), false),
+            'worker' => AdminRepository::adminToArray($repair->getWorker()),
             'created_at' => $repair->getCreatedAt()
         ];
     }

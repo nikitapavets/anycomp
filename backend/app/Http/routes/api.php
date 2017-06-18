@@ -10,4 +10,6 @@ Route::resource('users', 'UserController');
 Route::post('order/client', ['uses' => 'OrderController@client']);
 Route::post('order/products', ['uses' => 'OrderController@products']);
 
-Route::get('repairs', ['uses' => 'StatisticsController@repairs']);
+Route::resource('repairs', 'RepairController');
+
+Route::get('statistics/repairs', ['uses' => 'StatisticsController@repairs']);

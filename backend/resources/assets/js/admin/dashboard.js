@@ -1,6 +1,6 @@
 (() => {
 
-    $.getJSON('/api/repairs', (response) => {
+    $.getJSON('/api/statistics/repairs', (response) => {
 
         let data = [];
         $.each(response,  (year, months) => {
