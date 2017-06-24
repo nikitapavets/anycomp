@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableAction;
 use App\Classes\Table\TableField;
+use App\Classes\Table\TablePagination;
 use App\Classes\Table\TableTab;
 use App\Classes\Widget\WidgetInput;
 use App\Classes\Widget\WidgetSelect;
@@ -31,7 +32,7 @@ use App\Interfaces\ExcelDocument;
 
 class RepairController extends Controller
 {
-    public function repairList()
+    public function repairList(Request $request)
     {
 
         $table = new Table('Список техники в ремонте');
@@ -65,22 +66,34 @@ class RepairController extends Controller
         // Table tabs
         $tableTabs = new TableTabCollection();
 
-        $tableTab = new TableTab('В ремонте', TableTab::STATUS_ACTIVE);
+        $tableTab = new TableTab('В ремонте', !$request->input('tab') ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
+        $repairs = RepairRepository::getRepairsByStatus(Repair::STATUS_REPAIR);
+        $repairs->appends(['tab' => $request->input('tab')]);
         $tableTab->setRows(
-            RepairRepository::repairsToRows(RepairRepository::getRepairsByStatus(Repair::STATUS_REPAIR))
+            RepairRepository::repairsToRows($repairs)
         );
+        $tableTapPagination = new TablePagination($repairs);
+        $tableTab->setPagination($tableTapPagination);
         $tableTabs->pushTableTab($tableTab);
 
-        $tableTab = new TableTab('На выдаче');
+        $tableTab = new TableTab('На выдаче', $request->input('tab') == 1 ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
+        $repairs = RepairRepository::getRepairsByStatus(Repair::STATUS_COMPLETE);
+        $repairs->appends(['tab' => $request->input('tab')]);
         $tableTab->setRows(
-            RepairRepository::repairsToRows(RepairRepository::getRepairsByStatus(Repair::STATUS_COMPLETE))
+            RepairRepository::repairsToRows($repairs)
         );
+        $tableTapPagination = new TablePagination($repairs);
+        $tableTab->setPagination($tableTapPagination);
         $tableTabs->pushTableTab($tableTab);
 
-        $tableTab = new TableTab('У клиента');
+        $tableTab = new TableTab('У клиента', $request->input('tab') == 2 ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
+        $repairs = RepairRepository::getRepairsByStatus(Repair::STATUS_ISSUED);
+        $repairs->appends(['tab' => $request->input('tab')]);
         $tableTab->setRows(
-            RepairRepository::repairsToRows(RepairRepository::getRepairsByStatus(Repair::STATUS_ISSUED))
+            RepairRepository::repairsToRows($repairs)
         );
+        $tableTapPagination = new TablePagination($repairs);
+        $tableTab->setPagination($tableTapPagination);
         $tableTabs->pushTableTab($tableTab);
 
         $table->setTableTabs($tableTabs);

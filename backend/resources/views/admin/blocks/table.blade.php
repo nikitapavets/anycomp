@@ -1,7 +1,6 @@
 @extends ('layouts.admin_layout.right_side')
 
 @section('admin_content')
-
     <!-- Table actions -->
     @if($table['table_actions'])
         <div class="admin-panel__buttons" style="margin-top:0;">
@@ -40,9 +39,9 @@
                 {{ $table['title'] }}
             </div>
             <ul class="tabs">
-                @foreach($table['table_tabs'] as $tableTab)
+                @foreach($table['table_tabs'] as $tabIndex => $tableTab)
                     <li class="tab">
-                        <a href="javascript:;" class="{{$tableTab['tab_status']}}">
+                        <a href={{'/'.Request::path().'?tab='.$tabIndex}} class="{{$tableTab['tab_status']}}">
                             {{$tableTab['tab_name']}}
                         </a>
                     </li>
@@ -57,21 +56,21 @@
                         <input type="text">
                     </label>
                 </div>
-                <div class="data-count">
-                    <label for="">
-                        <span>Показать:</span>
-                        <div class="selector">
-                            <span>10</span>
-                            <select name="" id="">
-                                <option value="">15</option>
-                                <option value="">30</option>
-                                <option value="">50</option>
-                                <option value="">100</option>
-                                <option value="">Всё</option>
-                            </select>
-                        </div>
-                    </label>
-                </div>
+                {{--<div class="data-count">--}}
+                    {{--<label for="">--}}
+                        {{--<span>Показать:</span>--}}
+                        {{--<div class="selector">--}}
+                            {{--<span>10</span>--}}
+                            {{--<select name="" id="">--}}
+                                {{--<option value="">15</option>--}}
+                                {{--<option value="">30</option>--}}
+                                {{--<option value="">50</option>--}}
+                                {{--<option value="">100</option>--}}
+                                {{--<option value="">Всё</option>--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
+                    {{--</label>--}}
+                {{--</div>--}}
             </div>
             <div class="admin-form-table">
                 <table cellpadding="0" cellspacing="0" border="0" class="tabs responsive">
@@ -206,15 +205,28 @@
                 </table>
             </div>
             <div class="dynamic-table__stats tabs">
-                @foreach($table['table_rows'] as $key => $tableRows)
-                    @if($key == 0)
+                @foreach($table['table_paginations'] as $key => $pagination)
+                    @if($table['table_tabs'][$key]['tab_status'] == 'active')
                         <div class="dynamic-table__pagination tab">
                             @else
                                 <div class="dynamic-table__pagination tab hidden">
                                     @endif
-                                    @if(count($tableRows))
-                                        <div class="info">Показано {{ count($tableRows) }} из {{ count($tableRows) }}
+                                    @if($pagination['total'])
+                                        <div class="info">Показано {{ $pagination['range'] }} из {{ $pagination['total'] }}
                                             записей
+                                        </div>
+                                        <div class="pagination">
+                                            @if($pagination['currentPage'] - 1)
+                                            <a class="pagination__item pagination__item_first" href={{$pagination['firstPageUrl']}}>Первая</a>
+                                            <a class="pagination__item pagination__item_number" href={{$pagination['previousPageUrl']}}>Назад</a>
+                                            @endif
+                                            @foreach($pagination['pageNumbers'] as $pageNumber)
+                                                <a class="pagination__item {{$pageNumber['current'] ? 'pagination__item_current' : ''}}" href={{$pageNumber['path']}}>{{$pageNumber['index']}}</a>
+                                            @endforeach
+                                            @if($pagination['currentPage'] + 1 < $pagination['lastPage'])
+                                            <a class="pagination__item pagination__item_number" href={{$pagination['nextPageUrl']}}>Вперед</a>
+                                            <a class="pagination__item pagination__item_first" href={{$pagination['lastPageUrl']}}>Последняя</a>
+                                            @endif
                                         </div>
                                     @else
                                         <div class="nothing">Список пока пуст</div>

@@ -15,6 +15,7 @@ class TableTab
 
     private $_name;
     private $_status;
+    private $pagination;
     /**
      * @var TableRowsCollection
      */
@@ -29,6 +30,22 @@ class TableTab
     {
         $this->_name = $name;
         $this->_status = $status;
+    }
+
+    /**
+     * @param TablePagination $pagination
+     */
+    public function setPagination($pagination)
+    {
+        $this->pagination = $pagination;
+    }
+
+    /**
+     * @return TablePagination
+     */
+    public function getPagination()
+    {
+        return $this->pagination;
     }
 
     /**

@@ -43,6 +43,7 @@ class Table
             'title' => $this->getTitle(),
             'table_tabs' => $this->getTableTabs()->toArray(),
             'table_rows' => $this->getTableTabs()->toRowsArray(),
+            'table_paginations' => $this->getTableTabs()->toPaginationArray(),
             'table_fields' => $this->getTableFields()->toArray(),
             'table_actions' => $this->getTableActions()->toArray(),
         ];

@@ -44,14 +44,14 @@ class RepairRepository
 
     /**
      * @param $status
+     * @param int $size
      * @return Repair[]
      */
-    public static function getRepairsByStatus($status)
+    public static function getRepairsByStatus($status, $size = 15)
     {
-
         return Repair::where('current_status', '=', $status)
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate($size);
     }
 
     /**

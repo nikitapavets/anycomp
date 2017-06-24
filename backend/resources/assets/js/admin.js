@@ -712,30 +712,30 @@ $('document').ready(function () {
         return (typeof a == "object") && (a instanceof Array);
     }
 
-    $('ul.tabs a').click(function (e) {
-
-        tableTabs(this);
-    });
-
-    function tableTabs(el) {
-
-        var self = el;
-        self.pos = -1;
-
-        $('ul.tabs a').each(function (i) {
-
-            if (this == el) {
-                self.pos = i;
-            }
-        });
-
-        $('ul.tabs a').removeClass('active');
-        $(el).addClass('active');
-        $('table.tabs .tab').addClass('hidden');
-        $('table.tabs .tab').eq(self.pos).removeClass('hidden');
-        $('.dynamic-table__stats.tabs .tab').addClass('hidden');
-        $('.dynamic-table__stats.tabs .tab').eq(self.pos).removeClass('hidden');
-    }
+    // $('ul.tabs a').click(function (e) {
+    //
+    //     tableTabs(this);
+    // });
+    //
+    // function tableTabs(el) {
+    //
+    //     var self = el;
+    //     self.pos = -1;
+    //
+    //     $('ul.tabs a').each(function (i) {
+    //
+    //         if (this == el) {
+    //             self.pos = i;
+    //         }
+    //     });
+    //
+    //     $('ul.tabs a').removeClass('active');
+    //     $(el).addClass('active');
+    //     $('table.tabs .tab').addClass('hidden');
+    //     $('table.tabs .tab').eq(self.pos).removeClass('hidden');
+    //     $('.dynamic-table__stats.tabs .tab').addClass('hidden');
+    //     $('.dynamic-table__stats.tabs .tab').eq(self.pos).removeClass('hidden');
+    // }
 
 
     var Popup = {

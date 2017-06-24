@@ -65,4 +65,14 @@ class TableTabCollection
         }
         return $rowsArray;
     }
+
+    public function toPaginationArray()
+    {
+        $rowsArray = [];
+        foreach ($this->getTableTabs() as $tableTab) {
+            $pagination = $tableTab->getPagination();
+            $rowsArray[] = $pagination ? $pagination->toArray() : false;
+        }
+        return $rowsArray;
+    }
 }

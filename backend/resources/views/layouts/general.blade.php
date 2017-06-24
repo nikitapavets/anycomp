@@ -39,8 +39,8 @@
         <!-- Load Fonts CSS End -->
 
         <!-- Load Custom CSS Start -->
-        <link rel="stylesheet" href="{{ $page["css_header"] . '?v.2.14' }}">
-        <link rel="stylesheet" href="{{ $page["css"] . '??v.2.14' }}">
+        <link rel="stylesheet" href="{{ $page["css_header"] . '?v.2.17' }}">
+        <link rel="stylesheet" href="{{ $page["css"] . '?v.2.17' }}">
         <link rel="stylesheet" href="/styles/owl.carousel.css">
         <!-- Load Custom CSS End -->
 
@@ -51,7 +51,7 @@
         <!-- Load Custom CSS Compiled without JS Start -->
         <noscript>
             <link rel="stylesheet" href="/styles/fonts.min.css">
-            <link rel="stylesheet" href="{{ $page['css'] . '?v.2.14' }}">
+            <link rel="stylesheet" href="{{ $page['css'] . '?v.2.17' }}">
         </noscript>
         <!-- Load Custom CSS Compiled without JS End -->
 
@@ -73,9 +73,9 @@
         @yield('content')
         <a href="" id="upload_img" class="hidden"></a>
         <!-- Load Scripts Start -->
-        <script src="/scripts/libs.min.js?v.2.15"></script>
+        <script src="/scripts/libs.min.js?v.2.17"></script>
         <script src="/scripts/libs/ajax_upload.js"></script>
-        <script src="/scripts/admin.min.js?v.2.15"></script>
+        <script src="/scripts/admin.min.js?v.2.17"></script>
         <script>
 
             $(document).ready(function(){
