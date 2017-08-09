@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Classes\Table\TableCell;
+use App\Classes\Table\TableLinkCell;
 use App\Classes\Table\TablePopupCell;
 use App\Classes\Table\TablePopupInlineLinkItem;
 use App\Classes\Table\TablePopupItem;
@@ -88,7 +89,8 @@ class RepairRepository
             $tableCell->setClass(TableCell::CLASS_CHECKER);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($repair->getReceiptNumber());
+            $tableCell = new TableLinkCell($repair->getReceiptNumber());
+            $tableCell->setLinkHref($repair->getLinkHref());
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TablePopupCell($repair->getFullName());
@@ -266,7 +268,8 @@ class RepairRepository
             'product_reception_place' => $repair->getReceptionPlace()->getName(),
             'client' => ClientRepository::clientToArray($repair->getClient(), false),
             'worker' => AdminRepository::adminToArray($repair->getWorker()),
-            'created_at' => $repair->getCreatedAt()
+            'created_at' => $repair->getCreatedAtFull(),
+            'completed_at' => $repair->getCompletedAtFull()
         ];
     }
 

@@ -247,4 +247,9 @@ class Client extends Model
     {
         return Hash::check($password, $this->getPassword());
     }
+
+    public function getLinkHref()
+    {
+        return '/admin/client/'.$this->getId();
+    }
 }

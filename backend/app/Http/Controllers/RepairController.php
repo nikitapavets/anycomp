@@ -417,4 +417,33 @@ class RepairController extends Controller
             ]
         );
     }
+
+    public function show(Repair $repair)
+    {
+        $block = [];
+        $block['title'] = 'Техника';
+        $block['repair'] = RepairRepository::repairToArray($repair);
+
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+
+        $page = [
+            'title' => 'AnyComp | Панель управления - Ремонт техники: ' . $repair->getFullName(),
+            'css' => '/styles/admin.min.css',
+            'css_header' => '',
+            'sub_title' => 'Ремонт техники: ' . $repair->getFullName(),
+            'sub_descr' => 'Статистика добавленных квитанций.',
+            'view_system_name' => 'admin.repair_show',
+        ];
+
+        return view(
+            $page['view_system_name'],
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'block' => $block
+            ]
+        );
+    }
 }

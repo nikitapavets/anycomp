@@ -145,7 +145,8 @@ class ClientRepository
             'address_street' => $client->getStreet(),
             'address_house' => $client->getHouse(),
             'address_flat' => $client->getFlat(),
-            'address' => $client->getAddress()
+            'address' => $client->getAddress(),
+            'link' => $client->getLinkHref(),
         ];
         if($withRepairs) {
             $clientArray['repairs'] = RepairRepository::repairsToArray($client->getRepairs());

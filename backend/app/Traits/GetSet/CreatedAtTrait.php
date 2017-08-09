@@ -19,6 +19,16 @@ trait CreatedAtTrait
     /**
      * @return string
      */
+    public function getCreatedAtFull()
+    {
+        $time = Carbon::parse($this->created_at);
+
+        return date('d.m.Y H:i', $time->timestamp);
+    }
+
+    /**
+     * @return string
+     */
     public function getCreatedAtDay()
     {
         $time = Carbon::parse($this->created_at);

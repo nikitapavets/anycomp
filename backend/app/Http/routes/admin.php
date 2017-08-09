@@ -135,6 +135,10 @@ Route::group(
     }
 );
 
+Route::resource('repair', 'RepairController', ['only' => [
+    'show'
+]]);
+
 Route::group(
     ['prefix' => 'clients'],
     function () {

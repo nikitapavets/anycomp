@@ -211,8 +211,25 @@ class Repair extends Model
         return $time->timestamp > 0 ? date('d-m-Y', $time->timestamp) : '';
     }
 
+    public function getCompletedAtFull()
+    {
+        $time = Carbon::parse($this->completed_at);
+
+        return $time->timestamp > 0 ? date('d.m.Y H:i', $time->timestamp) : '';
+    }
+
     public function setCompletedAt()
     {
         $this->completed_at = Carbon::now();
+    }
+
+    public function getLinkHref()
+    {
+        return '/admin/repair/'.$this->getId();
+    }
+
+    public function isIssued()
+    {
+        return $this->getStatus() === self::STATUS_ISSUED;
     }
 }

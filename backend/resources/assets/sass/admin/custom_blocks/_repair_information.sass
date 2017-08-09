@@ -1,0 +1,111 @@
+@import '../../_vars'
+@import '../../_mixins'
+
+.repairInfo
+  .generalInfo
+    display: flex
+
+    @include respond-to(mobile)
+      display: block
+
+    &__block
+      margin-right: 30px
+
+      @include respond-to(mobile)
+        margin-right: 0
+
+    &__title
+      margin-top: 5px
+
+      line-height: 30px
+      font-size: $font_title
+      font-weight: bold
+
+      @include respond-to(mobile)
+        margin-top: 15px
+
+        text-align: center
+        font-size: $font_title_mobile
+
+    &__links
+      margin-top: 5px
+
+      text-align: center
+
+      a
+        display: inline-block
+        margin-left: 15px
+
+    &__date
+      font-size: 14px
+      padding: 5px
+      opacity: .75
+
+      @include respond-to(mobile)
+        text-align: center
+        font-size: 12px
+
+    &__client
+      margin-top: 45px
+      border: 1px solid $admin_white_b
+      padding: 10px
+
+      @include respond-to(mobile)
+        margin-top: 15px
+
+      .client
+
+        &__title
+          padding: 10px 0
+
+          font-size: $font_subTitle
+          font-weight: bold
+
+        &__field
+          display: block
+
+  .fullInfo
+    margin-top: 30px
+
+    @include respond-to(mobile)
+      margin-top: 15px
+
+    &__title
+      padding: 10px
+      border-bottom: 2px solid $admin_white_b
+
+      font-size: $font_subTitle
+      font-weight: bold
+
+      @include respond-to(mobile)
+        text-align: center
+        font-size: $font_subTitle_mobile
+
+  .image
+    width: 300px
+    border: 1px solid $admin_white_b
+
+    @include respond-to(mobile)
+      width: 100%
+    &__src
+      width: 100%
+
+  .infoField
+    display: flex
+    padding: 10px
+    border-bottom: 1px solid $admin_white_b
+
+    font-size: 14px
+
+    @include respond-to(mobile)
+      display: block
+
+    &:last-child
+      border-bottom: none
+
+    &__title
+      width: 300px
+      margin-right: 15px
+
+    &__value
+      font-weight: bold
