@@ -41,6 +41,16 @@ class Repair extends Model
         return $this->code;
     }
 
+    public function setApproximateCost($cost)
+    {
+        $this->approximate_cost = $cost;
+    }
+
+    public function getApproximateCost()
+    {
+        return $this->approximate_cost;
+    }
+
     public function getStatus()
     {
         return $this->current_status;

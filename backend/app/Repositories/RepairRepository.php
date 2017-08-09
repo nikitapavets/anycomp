@@ -105,6 +105,8 @@ class RepairRepository
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_COMMENT, $repair->getComment());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PRICE, $repair->getApproximateCost());
+            $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PLACE, $repair->getReceptionPlace()->getName());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_WORKER, $repair->getWorker()->getSFName());
@@ -224,6 +226,7 @@ class RepairRepository
                 $repair->setSet($request->product_set);
                 $repair->setAppearance($request->product_appearance);
                 $repair->setComment($request->product_comment);
+                $repair->setApproximateCost($request->product_approximate_cost);
                 $repair->setReceptionPlace($request->reception_place_id);
                 $repair->setWorker($request->worker_id);
 
@@ -259,6 +262,7 @@ class RepairRepository
             'product_set' => $repair->getSet(),
             'product_appearance' => $repair->getAppearance(),
             'product_comment' => $repair->getComment(),
+            'product_approximate_cost' => $repair->getApproximateCost(),
             'product_reception_place' => $repair->getReceptionPlace()->getName(),
             'client' => ClientRepository::clientToArray($repair->getClient(), false),
             'worker' => AdminRepository::adminToArray($repair->getWorker()),

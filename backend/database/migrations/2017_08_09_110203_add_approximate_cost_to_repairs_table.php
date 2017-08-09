@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterRepairsTableAddAppearance extends Migration
+class AddApproximateCostToRepairsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +14,7 @@ class AlterRepairsTableAddAppearance extends Migration
     public function up()
     {
         Schema::table('repairs', function (Blueprint $table) {
-            $table->string('appearance')->nullable();
+            $table->string('approximate_cost')->nullable();
         });
     }
 
@@ -24,8 +25,8 @@ class AlterRepairsTableAddAppearance extends Migration
      */
     public function down()
     {
-        Schema::table('repairs', function ($table) {
-            $table->dropColumn('appearance');
+        Schema::table('repairs', function (Blueprint $table) {
+            $table->dropColumn('approximate_cost');
         });
     }
 }

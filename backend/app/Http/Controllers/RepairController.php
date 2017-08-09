@@ -292,6 +292,10 @@ class RepairController extends Controller
         $widget->setValue($repair ? $repair->getComment() : false);
         $widgetCollection->pushWidget($widget);
 
+        $widget = new WidgetInput('Ориентировочная цена', 'product_approximate_cost', false);
+        $widget->setValue($repair ? $repair->getApproximateCost() : false);
+        $widgetCollection->pushWidget($widget);
+
         $widget = new WidgetSelect('Место приема заказа', 'reception_place_id', true);
         $widget->setValue($repair ? $repair->getReceptionPlace() : false);
         $widget->setSelectItems(ReceptionPlace::getAll());

@@ -25,6 +25,7 @@ class TablePopupItem
     const TYPE_STATUS = 'status';
     const TYPE_COMMENT = 'comment';
     const TYPE_PLACE = 'place';
+    const TYPE_PRICE = 'price';
 
     const FORM_TEXT = 'text';
 

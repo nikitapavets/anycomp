@@ -162,6 +162,8 @@
                                                                             <use xlink:href='#admin_place_595959'></use>
                                                                         @elseif($popupItem['popup_type'] == 'appearance')
                                                                             <use xlink:href='#admin_appearance_595959'></use>
+                                                                        @elseif($popupItem['popup_type'] == 'price')
+                                                                            <use xlink:href='#admin_price_595959'></use>
                                                                         @endif
                                                                     </svg>
                                                                 </span>
