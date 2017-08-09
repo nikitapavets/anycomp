@@ -266,6 +266,10 @@ class RepairRepository
             'product_comment' => $repair->getComment(),
             'product_approximate_cost' => $repair->getApproximateCost(),
             'product_reception_place' => $repair->getReceptionPlace()->getName(),
+            'status' => [
+                'name' => $repair->getStatusName(),
+                'number' => $repair->getStatus()
+            ],
             'client' => ClientRepository::clientToArray($repair->getClient(), false),
             'worker' => AdminRepository::adminToArray($repair->getWorker()),
             'created_at' => $repair->getCreatedAtFull(),

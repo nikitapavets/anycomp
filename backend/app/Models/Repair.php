@@ -26,8 +26,11 @@ class Repair extends Model
     use CreatedAtTrait;
 
     const STATUS_REPAIR = 0;
+    const STATUS_REPAIR_NAME = 'В ремонте';
     const STATUS_COMPLETE = 1;
+    const STATUS_COMPLETE_NAME = 'На выдаче';
     const STATUS_ISSUED = 2;
+    const STATUS_ISSUED_NAME = 'У клиента';
 
     protected $guarded = array();
 
@@ -59,6 +62,15 @@ class Repair extends Model
     public function setStatus($status)
     {
         $this->current_status = $status;
+    }
+
+    public function getStatusName()
+    {
+        switch ($this->getStatus()){
+            case self::STATUS_REPAIR: return self::STATUS_REPAIR_NAME;
+            case self::STATUS_COMPLETE: return self::STATUS_COMPLETE_NAME;
+            case self::STATUS_ISSUED: return self::STATUS_ISSUED_NAME;
+        }
     }
 
     public function getCode()

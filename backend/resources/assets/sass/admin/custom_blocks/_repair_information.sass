@@ -47,22 +47,17 @@
 
     &__client
       margin-top: 45px
-      border: 1px solid $admin_white_b
-      padding: 10px
 
       @include respond-to(mobile)
         margin-top: 15px
 
       .client
 
-        &__title
-          padding: 10px 0
-
-          font-size: $font_subTitle
-          font-weight: bold
-
         &__field
           display: block
+
+    &__changeStatus
+      margin-top: 15px
 
   .fullInfo
     margin-top: 30px
@@ -109,3 +104,8 @@
 
     &__value
       font-weight: bold
+
+  .infoBox
+    border: 1px solid $admin_white_b
+    padding: 10px
+

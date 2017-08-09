@@ -3,6 +3,7 @@
 @section('block_content')
 
     <div class="repairInfo">
+
         <div class="generalInfo">
             <div class="generalInfo__block">
                 <div class="image">
@@ -26,14 +27,25 @@
                         {{$block['repair']['completed_at']}}
                     @endif
                 </div>
-                <div class="generalInfo__client client">
+                <div class="generalInfo__client infoBox client">
                     <a class="client__field" href="{{$block['repair']['client']['link']}}">{{$block['repair']['client']['full_name']}}</a>
                     <a class="client__field" href="#">{{$block['repair']['client']['organization']}}</a>
                     <div class="client__field">{{$block['repair']['client']['mobile_phone_native']}}</div>
                     <div class="client__field">{{$block['repair']['client']['home_phone_native']}}</div>
                 </div>
+                <div class="generalInfo__changeStatus infoBox ">
+                    <div class="selector">
+                        <span>{{$block['repair']['status']['name']}}</span>
+                        <select class="inp_select">
+                            <option value="0" @if($block['repair']['status']['number'] == 0) selected @endif>В ремонте</option>
+                            <option value="1" @if($block['repair']['status']['number'] == 1) selected @endif>На выдаче</option>
+                            <option value="2" @if($block['repair']['status']['number'] == 2) selected @endif>У клиента</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="fullInfo">
             <div class="fullInfo__title">Полное описание</div>
             <div class="infoField">
