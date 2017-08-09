@@ -15,7 +15,9 @@
                 </div>
             </div>
             <div class="generalInfo__block">
-                <div class="generalInfo__title">{{$block['repair']['product_full_name']}}</div>
+                <div class="generalInfo__title">
+                    {{$block['repair']['product_full_name']}}
+                </div>
                 <div class="generalInfo__date">
                     @if($block['repair']['completed_at'])
                         <span>был</span>
@@ -33,21 +35,21 @@
                     <div class="client__field">{{$block['repair']['client']['mobile_phone_native']}}</div>
                     <div class="client__field">{{$block['repair']['client']['home_phone_native']}}</div>
                 </div>
-                <div class="generalInfo__changeStatus infoBox ">
-                    <div class="selector">
-                        <span>{{$block['repair']['status']['name']}}</span>
-                        <select class="inp_select">
-                            <option value="0" @if($block['repair']['status']['number'] == 0) selected @endif>В ремонте</option>
-                            <option value="1" @if($block['repair']['status']['number'] == 1) selected @endif>На выдаче</option>
-                            <option value="2" @if($block['repair']['status']['number'] == 2) selected @endif>У клиента</option>
-                        </select>
-                    </div>
-                </div>
+                {{--<div class="generalInfo__changeStatus infoBox ">--}}
+                    {{--<div class="selector">--}}
+                        {{--<span>{{$block['repair']['status']['name']}}</span>--}}
+                        {{--<select class="inp_select">--}}
+                            {{--<option value="0" @if($block['repair']['status']['number'] == 0) selected @endif>В ремонте</option>--}}
+                            {{--<option value="1" @if($block['repair']['status']['number'] == 1) selected @endif>На выдаче</option>--}}
+                            {{--<option value="2" @if($block['repair']['status']['number'] == 2) selected @endif>У клиента</option>--}}
+                        {{--</select>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
             </div>
         </div>
 
         <div class="fullInfo">
-            <div class="fullInfo__title">Полное описание</div>
+            <div class="fullInfo__title">Полное описание техники</div>
             <div class="infoField">
                 <div class="infoField__title">Номер квитанции</div>
                 <div class="infoField__value">{{$block['repair']['receipt_number']}}</div>
@@ -89,6 +91,53 @@
                 <div class="infoField__value">{{$block['repair']['worker']['sf_name']}}</div>
             </div>
         </div>
+
+        <div class="repairDescription">
+            <div class="repairDescription__title">Описание ремонта</div>
+            <table class="flexibleTable">
+                <thead>
+                    <tr>
+                        <th>Описание</th>
+                        <th style="width: 150px">Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="flexibleTable__currentValue">Описание</span>
+                            <input type="text" class="flexibleTable__editInput hidden">
+                            <a href="#" class="flexibleTable__editBtn hidden">
+                                <svg class="flexibleTable__svg">
+                                    <use xlink:href='#admin_edit_595959'/>
+                                </svg>
+                            </a>
+                        </td>
+                        <td>
+                            <span class="flexibleTable__currentValue">10.00</span>
+                            <input type="text" class="flexibleTable__editInput hidden">
+                            <a href="#" class="flexibleTable__editBtn hidden">
+                                <svg class="flexibleTable__svg">
+                                    <use xlink:href='#admin_edit_595959'/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Описание</td>
+                        <td>Цена</td>
+                    </tr>
+                    <tr>
+                        <td>Описание</td>
+                        <td>Цена</td>
+                    </tr>
+                    <tr>
+                        <td>Описание</td>
+                        <td>Цена</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
 @stop
