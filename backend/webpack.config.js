@@ -1,5 +1,8 @@
 module.exports = {
-    entry: './resources/assets/js/administrator',
+    entry: [
+        'babel-polyfill',
+        './resources/assets/js/administrator'
+    ],
     output: {
         path: `${__dirname}/public/scripts`,
         filename: 'administrator.min.js'
@@ -14,7 +17,10 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['env'],
-                        plugins: ['transform-runtime']
+                        plugins: [
+                            'transform-runtime',
+                            'transform-object-rest-spread'
+                        ]
                     }
                 }
             }

@@ -13,3 +13,6 @@ Route::post('order/products', ['uses' => 'OrderController@products']);
 Route::resource('repairs', 'RepairController');
 
 Route::get('statistics/repairs', ['uses' => 'StatisticsController@repairs']);
+
+
+Route::resource('repair_description', 'RepairDescriptionController');

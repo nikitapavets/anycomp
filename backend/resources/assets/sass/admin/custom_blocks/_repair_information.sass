@@ -126,36 +126,3 @@
     @include respond-to(mobile)
       margin-top: 15px
 
-    &__title
-      padding: 10px
-      border-bottom: 2px solid $admin_white_b
-
-      font-size: $font_subTitle
-      font-weight: bold
-
-      @include respond-to(mobile)
-        text-align: center
-        font-size: $font_subTitle_mobile
-
-    .field
-      display: flex
-      justify-content: space-between
-      border-bottom: 1px solid $admin_white_b
-
-      &:last-child
-        font-weight: bold
-        border-bottom: none
-
-        .field__price
-          border-left: 1px solid transparent
-
-      &__content
-        padding: 10px
-
-      &__price
-        width: 150px
-        padding: 10px
-        border-left: 1px solid $admin_white_b
-
-        font-weight: bold
-

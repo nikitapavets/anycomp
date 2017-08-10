@@ -39,8 +39,8 @@
         <!-- Load Fonts CSS End -->
 
         <!-- Load Custom CSS Start -->
-        <link rel="stylesheet" href="{{ $page["css_header"] . '?v.2.18' }}">
-        <link rel="stylesheet" href="{{ $page["css"] . '?v.2.18' }}">
+        <link rel="stylesheet" href="{{ $page["css_header"] . '?v.2.21' }}">
+        <link rel="stylesheet" href="{{ $page["css"] . '?v.2.21' }}">
         <link rel="stylesheet" href="/styles/owl.carousel.css">
         <!-- Load Custom CSS End -->
 

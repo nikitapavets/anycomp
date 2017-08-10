@@ -9,6 +9,34 @@
     position: relative
     border: 1px solid $admin_white_b
 
+    &:first-child
+      padding: 10px 10px 10px 10px
+
+  &__title
+    padding: 10px
+    border-bottom: 2px solid $admin_white_b
+    position: relative
+
+    font-size: $font_subTitle
+    font-weight: bold
+
+    @include respond-to(mobile)
+      text-align: center
+      font-size: $font_subTitle_mobile
+
+  &__Btns
+    position: absolute
+    right: 10px
+    top: 50%
+    transform: translateY(-50%)
+
+    a
+      display: inline-block
+      margin-left: 5px
+
+      &:hover
+        opacity: .75
+
   &__editBtn
     position: absolute
     right: 10px
@@ -29,6 +57,38 @@
     font-size: 14px
 
   &__svg
-    width: 15px
-    height: 15px
+    width: 16px
+    height: 16px
 
+  &__checker
+    position: relative
+
+  .checkers
+    position: absolute
+    left: 50%
+    top: 50%
+    margin: -12px 0 0 -8px
+
+    &__checker
+      width: 15px
+      height: 15px
+      position: relative
+      float: left
+
+    &__subChecker
+      background: transparent url(/images/admin/checkbox.png) no-repeat 0 0
+      vertical-align: middle
+      height: 15px
+      width: 15px
+      display: inline-block
+      text-align: center
+
+      &.checked
+        background-position: center bottom
+
+      input
+        opacity: 0
+        width: 15px
+        height: 15px
+        display: inline-block
+        background: 0 0

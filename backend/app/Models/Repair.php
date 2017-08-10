@@ -10,6 +10,7 @@ use App\Traits\Relations\BelongTo\CategoryTrait;
 use App\Traits\Relations\BelongTo\ClientTrait;
 use App\Traits\Relations\BelongTo\ReceptionPlaceTrait;
 use App\Traits\Relations\BelongTo\WorkerTrait;
+use App\Traits\Relations\HasMany\RepairDescriptionsTrait;
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
@@ -24,6 +25,7 @@ class Repair extends Model
     use ReceptionPlaceTrait;
     use IdTrait;
     use CreatedAtTrait;
+    use RepairDescriptionsTrait;
 
     const STATUS_REPAIR = 0;
     const STATUS_REPAIR_NAME = 'В ремонте';

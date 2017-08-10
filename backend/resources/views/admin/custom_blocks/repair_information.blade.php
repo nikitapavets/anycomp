@@ -93,47 +93,69 @@
         </div>
 
         <div class="repairDescription">
-            <div class="repairDescription__title">Описание ремонта</div>
-            <table class="flexibleTable">
+            <div class="flexibleTable__title">
+                Описание ремонта
+                <div class="flexibleTable__Btns">
+                    <a href="#" class="flexibleTable__addBtn">
+                        <svg class="flexibleTable__svg">
+                            <use xlink:href='#admin_add_595959'/>
+                        </svg>
+                    </a>
+                    <a href="#" class="flexibleTable__removeBtn">
+                        <svg class="flexibleTable__svg">
+                            <use xlink:href='#admin_remove_595959'/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <table class="flexibleTable" data-names='["value", "price"]' data-default-values='["Описание", "0.00"]' data-model-id="{{$block['repair']['id']}}">
                 <thead>
                     <tr>
+                        <th style="width: 50px">
+                            <div class="checkers checkers_main">
+                                <div class="checkers__checker">
+                                        <span class="checkers__subChecker">
+                                            <input type="checkbox">
+                                        </span>
+                                </div>
+                            </div>
+                        </th>
                         <th>Описание</th>
                         <th style="width: 150px">Цена</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <span class="flexibleTable__currentValue">Описание</span>
-                            <input type="text" class="flexibleTable__editInput hidden">
-                            <a href="#" class="flexibleTable__editBtn hidden">
-                                <svg class="flexibleTable__svg">
-                                    <use xlink:href='#admin_edit_595959'/>
-                                </svg>
-                            </a>
-                        </td>
-                        <td>
-                            <span class="flexibleTable__currentValue">10.00</span>
-                            <input type="text" class="flexibleTable__editInput hidden">
-                            <a href="#" class="flexibleTable__editBtn hidden">
-                                <svg class="flexibleTable__svg">
-                                    <use xlink:href='#admin_edit_595959'/>
-                                </svg>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Описание</td>
-                        <td>Цена</td>
-                    </tr>
-                    <tr>
-                        <td>Описание</td>
-                        <td>Цена</td>
-                    </tr>
-                    <tr>
-                        <td>Описание</td>
-                        <td>Цена</td>
-                    </tr>
+                    @foreach($block['repair']['descriptions'] as $description)
+                        <tr data-id="{{$description['id']}}">
+                            <td class="flexibleTable__checker">
+                                <div class="checkers">
+                                    <div class="checkers__checker">
+                                        <span class="checkers__subChecker">
+                                            <input type="checkbox">
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="flexibleTable__currentValue">{{$description['value']}}</span>
+                                <input type="text" class="flexibleTable__editInput hidden" name="value">
+                                <a href="#" class="flexibleTable__editBtn hidden">
+                                    <svg class="flexibleTable__svg">
+                                        <use xlink:href='#admin_edit_595959'/>
+                                    </svg>
+                                </a>
+                            </td>
+                            <td>
+                                <span class="flexibleTable__currentValue">{{$description['price']}}</span>
+                                <input type="text" class="flexibleTable__editInput hidden" name="price">
+                                <a href="#" class="flexibleTable__editBtn hidden">
+                                    <svg class="flexibleTable__svg">
+                                        <use xlink:href='#admin_edit_595959'/>
+                                    </svg>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
