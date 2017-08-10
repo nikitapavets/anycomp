@@ -63,23 +63,23 @@ class ExcelDocument implements Document
                                 17 => 25.5,
                                 19 => 25.5,
                                 21 => 25.5,
-                                27 => 25.5,
-                                28 => 9,
-                                29 => 18,
-                                30 => 18,
-                                31 => 18,
-                                32 => 9,
-                                33 => 9,
-                                34 => 18,
-                                35 => 18,
-                                36 => 9,
-                                37 => 18,
-                                38 => 9,
-                                39 => 9,
-                                40 => 18,
-                                41 => 18,
-                                42 => 9,
-                                43 => 9,
+                                27 => 21,
+                                28 => 7,
+                                29 => 14,
+                                30 => 14,
+                                31 => 14,
+                                32 => 7,
+                                33 => 7,
+                                34 => 14,
+                                35 => 14,
+                                36 => 7,
+                                37 => 14,
+                                38 => 7,
+                                39 => 7,
+                                40 => 14,
+                                41 => 14,
+                                42 => 7,
+                                43 => 7,
                                 45 => 18,
                             )
                         );
@@ -602,7 +602,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -616,7 +616,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -630,7 +630,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -640,11 +640,11 @@ class ExcelDocument implements Document
                             'A30',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '4. СЦ не несёт ответственности за дефекты, обнаруженные в процессе диагностики и ремонта, но неизвестные Заказчику или не заявленные Заказчиком выявленные незаявленные дефекты устраняются за дополнительную плату с согласия Заказчика.'
+                                    '4. СЦ не несёт ответственности за дефекты, обнаруженные в процессе диагностики и ремонта, но неизвестные Заказчику или не заявленные Заказчиком выявленные дефекты устраняются за дополнительную плату с согласия Заказчика.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -658,7 +658,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -672,7 +672,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -686,7 +686,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -700,7 +700,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -714,7 +714,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -728,7 +728,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -738,11 +738,11 @@ class ExcelDocument implements Document
                             'A37',
                             function ($cell) use ($currentRepair) {
                                 $cell->setValue(
-                                    '11. Исполнитель несёт ответственность за сохранность ТИ только в течении 3 месяцев с момента объявления о завершении работ заказчику. В случае отказа от ремонта ТИ после определения неисправности, Заказчик оплачивает стоимость диагностики в размере 10,00 рублей.'
+                                    '11. Исполнитель несёт ответственность за сохранность ТИ только в течении 3 месяцев с момента объявления о завершении работ заказчику. В случае отказа от ремонта ТИ после определения неисправности, Заказчик оплачивает стоимость диагностики в размере 10.00 рублей.'
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -756,7 +756,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -768,7 +768,7 @@ class ExcelDocument implements Document
                                 $cell->setValue('13. Исполнитель вправе привлечь для ремонта сторонние организации.');
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -782,7 +782,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -796,7 +796,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -810,7 +810,7 @@ class ExcelDocument implements Document
                                 );
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
@@ -822,7 +822,7 @@ class ExcelDocument implements Document
                                 $cell->setValue('17. СЦ в праве отказаться от ремонта без разъяснения причин.');
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
-                                $cell->setFontSize(6);
+                                $cell->setFontSize(5);
                             }
                         );
 
