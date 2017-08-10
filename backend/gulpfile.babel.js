@@ -55,7 +55,7 @@ gulp.task(cmd.clean, function () {
 
 gulp.task(cmd.scripts, function () {
     return gulp.src([
-        './resources/assets/js/**/*.js'
+        './resources/assets/js/old/*.js'
     ])
         .pipe(plumber())
         .pipe(filesize())
