@@ -13,7 +13,13 @@ trait CreatedAtTrait
     {
         $time = Carbon::parse($this->created_at);
 
-        return date('d-m-Y', $time->timestamp);
+        return date('d.m.Y', $time->timestamp);
+    }
+
+
+    public function getCreatedAtForInput()
+    {
+        return Carbon::parse($this->created_at);
     }
 
     /**

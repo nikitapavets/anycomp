@@ -5,7 +5,7 @@
     <div id="blockErrors"></div>
 
     <div class="blockForm">
-        {{ Form::open(array('url' => $form['url'], 'enctype' => 'multipart/form-data')) }}
+        {{ Form::open(['url' => $form['url'], 'method' => $form['method'] ?? 'post', 'enctype' => 'multipart/form-data']) }}
         @php
             $index = 0;
         @endphp
@@ -164,6 +164,11 @@
                                             </span>
                                         </div>
                                     </div>
+                                @elseif($row['item'] == 'datePicker')
+
+                                    <input type="text" class="widget__DatePicker"
+                                           value="{{ isset($row['value']) ? $row['value'] : '' }}"
+                                           name="{{ isset($row['name']) ? $row['name'] : '' }}">
                                 @elseif($row['item'] == 'chosen')
                                     <div class="admin-chosen">
                                         <ul class="admin-chosen__area">

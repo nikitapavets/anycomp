@@ -9,8 +9,8 @@
     <div class="admin-panel__right-side--content">
 
         <div class="content-title">
-            <div class="content-title__main-title">{{ $page['sub_title'] }}</div>
-            <div class="content-title__sub-title">{{ $page['sub_descr'] }}</div>
+            <div class="content-title__main-title">{{ $page->getTitle() }}</div>
+            <div class="content-title__sub-title">{{ $page->getDescription() }}</div>
         </div>
 
         <div class="admin-panel__content-sep"></div>

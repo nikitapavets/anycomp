@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\AdminSubMenu;
+use App\Repositories\SpareRepository;
 
 class AdminSubMenuSeeder extends Seeder
 {
@@ -32,10 +33,17 @@ class AdminSubMenuSeeder extends Seeder
 
         AdminSubMenu::create([
             'admin_menu_id' => 1,
+            'title' => 'Детали для ремонта',
+            'link' => SpareRepository::getLink(),
+            'pos' => 3
+        ]);
+
+        AdminSubMenu::create([
+            'admin_menu_id' => 1,
             'title' => 'Статистика',
             'link' => '/admin/repair/statistics',
 	        'system_name' => 'admin.repair.statistics',
-            'pos' => 3
+            'pos' => 4
         ]);
 
         AdminSubMenu::create([
@@ -308,6 +316,27 @@ class AdminSubMenuSeeder extends Seeder
             'link' => '/admin',
             'system_name' => 'admin',
             'pos' => 1,
+        ]);
+
+        AdminSubMenu::create([
+            'admin_menu_id' => 7,
+            'title' => 'Новый привоз',
+            'link' => '/admin/deliveries/create',
+            'pos' => 1,
+        ]);
+
+        AdminSubMenu::create([
+            'admin_menu_id' => 7,
+            'title' => 'Новая деталь',
+            'link' => sprintf('%s/create', SpareRepository::getLink()),
+            'pos' => 2,
+        ]);
+
+        AdminSubMenu::create([
+            'admin_menu_id' => 7,
+            'title' => 'Список привозов',
+            'link' => '/admin/deliveries',
+            'pos' => 3,
         ]);
     }
 }

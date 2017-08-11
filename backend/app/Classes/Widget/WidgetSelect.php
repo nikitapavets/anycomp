@@ -58,9 +58,6 @@ class WidgetSelect extends Widget
         $this->_select_gag_selected = $selectGagSelected;
     }
 
-    /**
-     * @param Database $dbItem
-     */
     public function setValue($dbItem)
     {
         if ($dbItem) {

@@ -55,5 +55,12 @@ class AdminMenusSeeder extends Seeder
             'title' => 'Главная',
             'pos' => 0
         ]);
+
+        AdminMenu::create([
+            'id' => 7,
+            'img' => '#admin_delivery_e0e0e0',
+            'title' => 'Привоз',
+            'pos' => 6
+        ]);
     }
 }

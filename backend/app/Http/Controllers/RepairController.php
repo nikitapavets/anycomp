@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Page\FormPage;
+use App\Classes\Page\Page;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableAction;
 use App\Classes\Table\TableField;
@@ -148,18 +150,9 @@ class RepairController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new Page('Поиск клиента', 'admin.create_repair_order');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Поиск клиента',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Поиск клиента',
-            'sub_descr' => 'Вам доступен поиск клиента или добавление нового клиента',
-            'view_system_name' => 'admin.create_repair_order',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
@@ -171,9 +164,6 @@ class RepairController extends Controller
 
     public function repairCreateUpdate(Request $request)
     {
-
-        $userAdmin = Admin::getAuthAdmin();
-        $menu = AdminMenu::getAdminMenu();
         /**
          * @var Repair $repair
          */
@@ -292,7 +282,7 @@ class RepairController extends Controller
         $widget->setValue($repair ? $repair->getComment() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Ориентировочная цена', 'product_approximate_cost', false);
+        $widget = new WidgetInput('Ориентировочная стоимость', 'product_approximate_cost', false);
         $widget->setValue($repair ? $repair->getApproximateCost() : false);
         $widgetCollection->pushWidget($widget);
 
@@ -313,17 +303,11 @@ class RepairController extends Controller
             'url' => '/admin/repair/save',
         );
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Добавление техники в ремонт',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Добавление техники в ремонт',
-            'sub_descr' => 'Будьте внимательны, заполняя поля формы.',
-            'view_system_name' => 'admin.blocks.form',
-        ];
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+        $page = new FormPage('Добавление техники в ремонт');
 
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
@@ -411,9 +395,9 @@ class RepairController extends Controller
                 'У клиента'
             ],
             [
-                RepairRepository::getRepairsByStatus(Repair::STATUS_REPAIR),
-                RepairRepository::getRepairsByStatus(Repair::STATUS_COMPLETE),
-                RepairRepository::getRepairsByStatus(Repair::STATUS_ISSUED)
+                RepairRepository::getRepairsByStatus(Repair::STATUS_REPAIR, false),
+                RepairRepository::getRepairsByStatus(Repair::STATUS_COMPLETE, false),
+                RepairRepository::getRepairsByStatus(Repair::STATUS_ISSUED, false)
             ]
         );
     }

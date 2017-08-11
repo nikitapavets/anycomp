@@ -50,9 +50,12 @@ class RepairRepository
      */
     public static function getRepairsByStatus($status, $size = 15)
     {
-        return Repair::where('current_status', '=', $status)
-            ->orderBy('id', 'desc')
-            ->paginate($size);
+        $repairs = Repair::where('current_status', '=', $status)
+            ->orderBy('id', 'desc');
+        if($size) {
+            return $repairs->paginate($size);
+        }
+        return $repairs->get();
     }
 
     /**

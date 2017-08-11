@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Page\FormPage;
+use App\Classes\Page\TablePage;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableAction;
 use App\Classes\Table\TableField;
@@ -223,18 +225,9 @@ class DatabaseController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new TablePage('Редактирование базы данных');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Редактирование базы данных',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Редактирование базы данных',
-            'sub_descr' => 'Вы можете добавлять, изменять и удалять элементы их списка элементов базы данных.',
-            'view_system_name' => 'admin.blocks.table',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,

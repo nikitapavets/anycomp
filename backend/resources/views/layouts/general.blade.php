@@ -6,9 +6,7 @@
 
         <meta charset="utf-8">
 
-        <title>{{ $page['title'] }}</title>
-        <meta name="keywords" content="{{ $page['keywords'] ?? '' }}">
-        <meta name="description" content="{{ $page['desc'] ?? '' }}">
+        <title>{{ config('titles.admin_page_title_template') . $page->getTitle() }}</title>
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -39,9 +37,7 @@
         <!-- Load Fonts CSS End -->
 
         <!-- Load Custom CSS Start -->
-        <link rel="stylesheet" href="{{ $page["css_header"] . '?v.2.22' }}">
-        <link rel="stylesheet" href="{{ $page["css"] . '?v.2.22' }}">
-        <link rel="stylesheet" href="/styles/owl.carousel.css">
+        <link rel="stylesheet" href="/styles/admin.min.css?ver=1.2">
         <!-- Load Custom CSS End -->
 
         <div style='height: 0; width: 0; position: absolute; visibility: hidden'>
@@ -51,7 +47,6 @@
         <!-- Load Custom CSS Compiled without JS Start -->
         <noscript>
             <link rel="stylesheet" href="/styles/fonts.min.css">
-            <link rel="stylesheet" href="{{ $page['css'] . '?v.2.18' }}">
         </noscript>
         <!-- Load Custom CSS Compiled without JS End -->
 
@@ -76,7 +71,7 @@
         <script src="/scripts/libs.min.js?v.2.22"></script>
         <script src="/scripts/libs/ajax_upload.js"></script>
         <script src="/scripts/admin.min.js?v.2.22"></script>
-        <script src="/scripts/administrator.min.js?v.2.22"></script>
+        <script src="/scripts/administrator.min.js?v.2.23"></script>
         <script>
 
             $(document).ready(function(){

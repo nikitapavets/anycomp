@@ -50,9 +50,9 @@ class WidgetCollection
             $row['name'] = $widget->getName();
             $row['class'] = $widget->getClass();
             $row['required'] = $widget->isRequired();
+            $row['value'] = $widget->getValue();
             if ($widget instanceof WidgetInput) {
                 $row['type'] = $widget->getValueType();
-                $row['value'] = $widget->getValue();
                 $row['validation_type'] = $widget->getValidationType();
             } elseif ($widget instanceof WidgetSelect) {
                 $row['select_gag'] = $widget->getSelectGag();
