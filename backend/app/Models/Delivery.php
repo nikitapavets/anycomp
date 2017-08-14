@@ -7,6 +7,7 @@ use App\Repositories\DeliveryRepository;
 use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
 use App\Traits\Relations\BelongTo\WorkerTrait;
+use App\Traits\Relations\HasMany\SparesTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model implements GeneralMobel
@@ -14,6 +15,7 @@ class Delivery extends Model implements GeneralMobel
     use IdTrait;
     use CreatedAtTrait;
     use WorkerTrait;
+    use SparesTrait;
 
     protected $guarded = [];
 
@@ -26,4 +28,6 @@ class Delivery extends Model implements GeneralMobel
     {
         return $this->getCreatedAt();
     }
+
+
 }

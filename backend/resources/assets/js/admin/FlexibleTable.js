@@ -22,98 +22,47 @@ const actionTypes = {
 
 export default class FlexibleTable extends Elements{
 
-    constructor(table) {
+    constructor(table, config = {}) {
         super();
 
+        this.config = config;
         this.table = table;
         this.modelId = table.dataset.modelId;
+        this.link = table.dataset.link;
+        this.cellsNames = JSON.parse(table.dataset.cellsNames);
+        this.buttons = {
+            add: table.parentNode.querySelector(classes.addButton),
+            remove: table.parentNode.querySelector(classes.removeButton)
+        };
         this.setEventListeners();
     }
 
     setEventListeners() {
-        Array.prototype.slice.call(this.table.querySelectorAll('td')).map(cell => {
-            let row = cell.parentNode;
-            let editBtn = cell.querySelector(classes.editButton);
-            let editInput = cell.querySelector(classes.editInput);
-            let currentValue = cell.querySelector(classes.currentValue);
-            if(editBtn) {
-                cell.onmouseenter =  () => {
-                    this.showElement(editBtn);
-                };
-                cell.onmouseleave =  () => {
-                    this.hideElement(editBtn)
-                };
-                editBtn.onclick = (event) => {
-                    if(editInput) {
-                        let actionType = editBtn.dataset.type || actionTypes.editField;
-                        if(actionType === actionTypes.editField) {
-                            this.openForEdit(editBtn, editInput, currentValue);
-                        } else if(actionType === actionTypes.saveField) {
-                            this.saveFromEdit(editBtn, editInput, currentValue);
-                            this.save(row);
-                        }
-                    }
-                    event.preventDefault();
-                };
-                editInput.onkeyup =  (event) => {
-                    if(event.keyCode === 13){
-                        this.saveFromEdit(editBtn, editInput, currentValue);
-                        this.save(row);
-                    }
-                };
-            }
-        });
-
-        let checkers = [].slice.call(this.table.querySelectorAll(classes.checker));
-        checkers.map(checker => {
+        this.checkers = [].slice.call(this.table.querySelectorAll(classes.checker));
+        this.checkers.map(checker => {
             checker.querySelector('input').onclick = () => {
                 checker.classList.toggle('checked');
-                let checkedCheckers = checkers.filter(checker =>
+                let checkedCheckers = this.checkers.filter(checker =>
                     ~checker.className.indexOf('checked') !== 0
                 );
                 if(!~checker.className.indexOf('checked')) {
                     mainChecker.querySelector(classes.checker).classList.remove('checked');
-                } else if(checkers.length - 1 === checkedCheckers.length) {
+                } else if(this.checkers.length - 1 === checkedCheckers.length) {
                     mainChecker.querySelector(classes.checker).classList.add('checked');
                 }
             };
         });
 
-        let mainChecker = this.table.querySelector(classes.mainChecker);
-        mainChecker.querySelector('input').onchange = () => {
+        this.mainChecker = this.table.querySelector(classes.mainChecker);
+        this.mainChecker.querySelector('input').onchange = () => {
             [].slice.call(this.table.querySelectorAll(classes.checker)).map(checker => {
-                if(~mainChecker.querySelector('span').className.indexOf('checked')) {
+                if(~this.mainChecker.querySelector('span').className.indexOf('checked')) {
                     checker.classList.add('checked');
                 } else {
                     checker.classList.remove('checked');
                 }
             });
         };
-
-        // $('.subChecker input').change(function (e) {
-        //
-        //     if ($('.subChecker.checked').length == $('.subChecker').length) {
-        //         $('.mainChecker').addClass('checked');
-        //     } else {
-        //         $('.mainChecker').removeClass('checked');
-        //     }
-        // });
-
-        let addButton = this.table.parentNode.querySelector(classes.addButton);
-        if(addButton) {
-            addButton.onclick = (event) => {
-                const cellNames = JSON.parse(this.table.dataset.names);
-                const cellDefaultValues = JSON.parse(this.table.dataset.defaultValues);
-                let row = this.makeNewRow(cellNames, cellDefaultValues);
-                let tbody = this.table.querySelector('tbody');
-                if(tbody) {
-                    tbody.append(row);
-                    mainChecker.querySelector(classes.checker).classList.remove('checked');
-                    this.setEventListeners();
-                }
-                event.preventDefault();
-            };
-        }
 
         let removeButton = this.table.parentNode.querySelector(classes.removeButton);
         if(removeButton) {
@@ -125,19 +74,21 @@ export default class FlexibleTable extends Elements{
                         this.destroy(rowId);
                     }
                 });
-                mainChecker.querySelector(classes.checker).classList.remove('checked');
+                this.mainChecker.querySelector(classes.checker).classList.remove('checked');
 
                 event.preventDefault();
             };
         }
     }
 
-    makeNewRow(cellNames, cellDefaultValues = []) {
-        let row = document.createElement('tr');
-
+    makeCell(innerHtml = '') {
         let cell = document.createElement('td');
-        cell.className = 'flexibleTable__checker';
-        cell.innerHTML = `
+        cell.innerHTML = innerHtml;
+        return cell;
+    }
+
+    makeCheckerCell() {
+        let checkersHtml = `
             <div class="checkers">
                 <div class="checkers__checker">
                     <span class="checkers__subChecker">
@@ -146,88 +97,41 @@ export default class FlexibleTable extends Elements{
                 </div>
             </div>
         `;
-        row.appendChild(cell);
+        let cell = this.makeCell(checkersHtml);
+        cell.className = 'flexibleTable__checker';
+        return cell;
+    }
 
-        cellNames.map((cellName, position) => {
-            let cell = document.createElement('td');
-
-            let description = document.createElement('span');
-            description.className = 'flexibleTable__currentValue hidden';
-            description.innerText = cellDefaultValues[position] || '';
-            cell.appendChild(description);
-
-            let value = document.createElement('input');
-            value.className = 'flexibleTable__editInput';
-            value.value = cellDefaultValues[position] || '';
-            value.setAttribute('name', cellName);
-            value.setAttribute('type', 'text');
-            cell.appendChild(value);
-
-            let editBtn = document.createElement('a');
-            editBtn.href = '/';
-            editBtn.className = 'flexibleTable__editBtn hidden';
-            editBtn.dataset.type = actionTypes.saveField;
-            editBtn.innerHTML = `
-                <svg class="flexibleTable__svg">
-                    <use xlink:href='${icons.save}'/>
-                </svg>
-            `;
-            cell.appendChild(editBtn);
-
-            row.appendChild(cell);
-        });
-
+    makeRow() {
+        let row = document.createElement('tr');
+        row.appendChild(this.makeCheckerCell());
         return row;
     }
 
-    openForEdit(editBtn, editInput, currentValue) {
-        editBtn.dataset.type = actionTypes.saveField;
-        editBtn.querySelector('use').setAttribute('xlink:href', icons.save);
-        editInput.value = currentValue.textContent;
-        this.showElement(editInput);
-        this.hideElement(currentValue)
-    }
-
-    saveFromEdit(editBtn, editInput, currentValue) {
-        editBtn.dataset.type = actionTypes.editField;
-        editBtn.querySelector('use').setAttribute('xlink:href', icons.edit);
-        currentValue.textContent = editInput.value;
-        this.showElement(currentValue);
-        this.hideElement(editInput);
-    }
-
-    save(row) {
-        const rowId = row.dataset.id;
-        let newValues = {};
-        [].map.call(row.querySelectorAll('input[type="text"]'), (input) => {
-            newValues[input.name] = input.value;
-        });
-
-        if(rowId) {
-            this.update(rowId, newValues);
-        } else {
-            this.store(newValues).then(newRowId => row.dataset.id = newRowId);
+    attachRow(row) {
+        let tbody = this.table.querySelector('tbody');
+        if(tbody) {
+            tbody.append(row);
+            this.mainChecker.querySelector(classes.checker).classList.remove('checked');
+            this.setEventListeners();
         }
     }
 
-    store(newValues) {
-        return fetch('/api/repair_description', {
+    store(data) {
+        return fetch(this.link, {
             method: "post",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                repair_id: this.modelId,
-                ...newValues
-            }),
+            body: JSON.stringify(data),
         })
             .then(response => response.json())
             .then(json => json.id);
     }
 
     update(id, newValues) {
-        return fetch(`/api/repair_description/${id}`, {
+        return fetch(`${this.link}/${id}`, {
             method: "put",
             headers: {
                 'Accept': 'application/json',
@@ -239,14 +143,12 @@ export default class FlexibleTable extends Elements{
             }),
         })
             .then(response => response.json())
-            // .then(json => console.log(json));
     }
 
     destroy(id) {
-        return fetch(`/api/repair_description/${id}`, {
+        return fetch(`${this.link}/${id}`, {
             method: "delete"
         })
             .then(response => response.json())
-            // .then(json => console.log(json));
     }
 }

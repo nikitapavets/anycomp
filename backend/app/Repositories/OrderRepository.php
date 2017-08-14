@@ -68,6 +68,7 @@ class OrderRepository
             $tableCell = new TableCell($order->getId());
             $tableCells->pushTableCell($tableCell);
 
+            dd($order->getClient());
             $tableCell = new TablePopupCell($order->getClient()->getShortName());
             $tablePopupItems = new TablePopupItemCollection();
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_FULL_NAME, $order->getClient()->getFullName());

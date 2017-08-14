@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Classes\Page\FormPage;
 use App\Classes\Page\Page;
+use App\Classes\Page\TablePage;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableAction;
 use App\Classes\Table\TableField;
@@ -121,18 +122,9 @@ class RepairController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new TablePage('Список техники в ремонте');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Список техники в ремонте',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Список техники в ремонте',
-            'sub_descr' => 'Можно добавлять, изменять и удалять элементы таблицы.',
-            'view_system_name' => 'admin.blocks.table',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
@@ -410,18 +402,9 @@ class RepairController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new Page(sprintf('Ремонт %s', $repair->getFullName()), 'admin.repair_show');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Ремонт техники: ' . $repair->getFullName(),
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Ремонт техники: ' . $repair->getFullName(),
-            'sub_descr' => 'Статистика добавленных квитанций.',
-            'view_system_name' => 'admin.repair_show',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,

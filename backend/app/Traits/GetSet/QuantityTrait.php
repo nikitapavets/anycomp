@@ -13,4 +13,21 @@ trait QuantityTrait
     {
         $this->quantity = $quantity;
     }
+
+    public function decrementQuantity()
+    {
+        $this->setQuantity($this->getQuantity() - 1);
+        $this->save();
+    }
+
+    public function incrementQuantity()
+    {
+        $this->setQuantity($this->getQuantity() + 1);
+        $this->save();
+    }
+
+    public function hasInStock()
+    {
+        return !!$this->getQuantity();
+    }
 }

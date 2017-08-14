@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Page\TablePage;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableField;
 use App\Classes\Table\TableTab;
@@ -62,18 +63,9 @@ class ClientController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new TablePage('Клиенты услуг ремонта');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Список клиентов услуг ремонта',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Список клиентов услуг ремонта',
-            'sub_descr' => 'Список клиентов, которые пользовались услугами ремонта.',
-            'view_system_name' => 'admin.blocks.table',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,

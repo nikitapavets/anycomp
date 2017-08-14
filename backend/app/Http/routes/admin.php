@@ -210,4 +210,4 @@ Route::resource('deliveries', 'DeliveriesController');
 Route::post('deliveries/delete', 'DeliveriesController@destroy');
 
 Route::resource('spares', 'SpareController');
-Route::post('deliveries/delete', 'SpareController@destroy');
+Route::post('spares/delete', 'SpareController@destroy');

@@ -14,6 +14,7 @@ use App\Collections\TableRowsCollection;
 use App\Interfaces\GeneralRepository;
 use App\Models\Delivery;
 use App\Models\Spare;
+use App\Models\Database\Brand;
 
 class SpareRepository implements GeneralRepository
 {
@@ -99,9 +100,21 @@ class SpareRepository implements GeneralRepository
         return $tableRows;
     }
 
-    public function store(Request $request)
+    public static function search($searchData)
     {
-
+        if($searchData) {
+            return Spare::with(['Brand', 'Category'])
+                ->where('quantity', '>', '0')
+                ->where(function($query) use ($searchData) {
+                $query->whereRaw(sprintf('MATCH (name) AGAINST ("%s*" IN BOOLEAN MODE)', $searchData));
+                $query->orWhereHas('brand', function ($query) use($searchData) {
+                    $query->whereRaw(sprintf('MATCH (name) AGAINST ("%s*" IN BOOLEAN MODE)', $searchData));
+                });
+                $query->orWhereHas('category', function ($query) use($searchData) {
+                    $query->whereRaw(sprintf('MATCH (name) AGAINST ("%s*" IN BOOLEAN MODE)', $searchData));
+                });
+            })->get();
+        }
     }
 
     public static function getLink()

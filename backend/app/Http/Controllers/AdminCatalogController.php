@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Page\FormPage;
+use App\Classes\Page\TablePage;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableAction;
 use App\Classes\Table\TableField;
@@ -114,18 +116,9 @@ class AdminCatalogController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new TablePage('Каталог телевизоров');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Каталог телевизоров',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Каталог телевизоров',
-            'sub_descr' => 'Можно добавлять, изменять и удалять элементы таблицы.',
-            'view_system_name' => 'admin.blocks.table',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
@@ -474,17 +467,11 @@ class AdminCatalogController extends Controller
             'url' => '/admin/catalog/tv/save',
         );
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Добавление телевизора в каталог',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Добавление телевизора в каталог',
-            'sub_descr' => 'Будьте внимательны, заполняя поля формы.',
-            'view_system_name' => 'admin.blocks.form',
-        ];
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+        $page = new FormPage('Добавление телевизора в каталог');
 
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
@@ -572,18 +559,9 @@ class AdminCatalogController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new TablePage('Каталог ноутбуков');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Каталог ноутбуков',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Каталог ноутбуков',
-            'sub_descr' => 'Можно добавлять, изменять и удалять элементы таблицы.',
-            'view_system_name' => 'admin.blocks.table',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
@@ -1088,17 +1066,11 @@ class AdminCatalogController extends Controller
             'url' => '/admin/catalog/notebook/save',
         );
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Добавление ноутбука в каталог',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Добавление ноутбука в каталог',
-            'sub_descr' => 'Будьте внимательны, заполняя поля формы.',
-            'view_system_name' => 'admin.blocks.form',
-        ];
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+        $page = new FormPage('Добавление ноутбука в каталог');
 
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,

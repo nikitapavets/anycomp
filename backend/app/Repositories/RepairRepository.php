@@ -276,6 +276,7 @@ class RepairRepository
             'client' => ClientRepository::clientToArray($repair->getClient(), false),
             'worker' => AdminRepository::adminToArray($repair->getWorker()),
             'descriptions' => $repair->getRepairDescriptions(),
+            'spares' => $repair->getSpares(),
             'created_at' => $repair->getCreatedAtFull(),
             'completed_at' => $repair->getCompletedAtFull()
         ];

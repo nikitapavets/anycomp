@@ -17,6 +17,8 @@ use App\Collections\TableTabCollection;
 use App\Collections\WidgetCollection;
 use App\Models\Admin;
 use App\Models\AdminMenu;
+use App\Models\Database\Brand;
+use App\Models\Database\Category;
 use App\Models\Database\Organization;
 use App\Models\Spare;
 use App\Repositories\DeliveryRepository;
@@ -28,7 +30,7 @@ class SpareController extends Controller
 {
     public function index(Request $request)
     {
-        $table = new Table('Список деталей на складе');
+        $table = new Table('Детали на складе');
 
         $tableFields = new TableFieldCollection();
 
@@ -88,7 +90,7 @@ class SpareController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
-        $page = new TablePage('Привоз деталей');
+        $page = new TablePage('Детали на складе');
 
         return view($page->getViewName(),
             [
@@ -100,11 +102,6 @@ class SpareController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         /**
@@ -127,7 +124,19 @@ class SpareController extends Controller
         $widget->setAllowAddName('new_organization');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Название детали', 'name', true);
+        $widget = new WidgetSelect('Категория', 'category_id', true);
+        $widget->setValue($spare ? $spare->getCategory() : false);
+        $widget->setSelectItems(Category::getAll());
+        $widget->setAllowAddName('new_category');
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetSelect('Бренд', 'brand_id', true);
+        $widget->setValue($spare ? $spare->getBrand() : false);
+        $widget->setSelectItems(Brand::getAll());
+        $widget->setAllowAddName('new_brand');
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetInput('Модель', 'name');
         $widget->setValue($spare ? $spare->getName() : false);
         $widgetCollection->pushWidget($widget);
 
@@ -144,7 +153,7 @@ class SpareController extends Controller
         $widget->setValue($spare ? $spare->getQuantity() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Цена', 'price', true);
+        $widget = new WidgetInput('Цена (руб.)', 'price', true);
         $widget->setValue($spare ? $spare->getPrice() : false);
         $widgetCollection->pushWidget($widget);
 
@@ -170,14 +179,16 @@ class SpareController extends Controller
         );
     }
 
-    /**
-     * @param SpareRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(SpareRequest $request)
     {
-        $spare = new Spare($request->except(['new_organization']));
+        $spare = new Spare($request->except([
+            'new_organization',
+            'new_category',
+            'new_brand'
+        ]));
         $spare->setOrganization($request->organization_id, $request->new_organization);
+        $spare->setOrganization($request->category_id, $request->new_category);
+        $spare->setOrganization($request->brand_id, $request->new_brand);
         $spare->save();
 
         return redirect()->action('SpareController@index');
@@ -195,36 +206,50 @@ class SpareController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
-        //
+        return redirect()->action('SpareController@create', ['id' => $id]);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param SpareRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(SpareRequest $request, $id)
     {
-        //
+        /**
+         * @var Spare $spare
+         */
+        $spare = Spare::find($id);
+        $spare->update($request->except([
+            'new_organization',
+            'new_category',
+            'new_brand'
+        ]));
+        $spare->setOrganization($request->organization_id, $request->new_organization);
+        $spare->setOrganization($request->category_id, $request->new_category);
+        $spare->setOrganization($request->brand_id, $request->new_brand);
+
+        return redirect()->action('SpareController@index');
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        SpareRepository::destroy($request->deleteItems);
+
+        return redirect()->action('SpareController@index');
+    }
+
+    public function search(Request $request)
+    {
+        return response()->json('test');
     }
 }

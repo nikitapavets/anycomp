@@ -1,0 +1,51 @@
+@import '../../vars'
+
+.searcher
+  width: 500px
+  height: 400px
+  margin: auto
+  border: 5px solid #585858
+
+  background-color: #fff
+
+  &__container
+    position: fixed
+    left: 0
+    top: 0
+    display: flex
+    width: 100vw
+    height: 100vh
+    z-index: 999999
+
+    background-color: rgba($admin_white_b, .50)
+
+  &__title
+    padding: 10px
+    cursor: move
+    border-bottom: 1px solid $admin_white_b
+    background: linear-gradient(to bottom, #fafafa 0%,#efefef 100%)
+
+  &__field
+    display: flex
+    padding: 10px
+
+    input
+      margin-right: 10px
+
+  &__results
+    padding: 10px
+
+    div
+      border-bottom: 1px solid $admin_white_b
+      padding: 5px
+      position: relative
+
+  &__addBtn
+    display: block
+    position: absolute
+    right: 10px
+    top: 7px
+    svg
+      width: 14px
+      height: 14px
+

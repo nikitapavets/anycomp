@@ -43,6 +43,9 @@ class DeliveriesController extends Controller
         $tableField = new TableField('Оформлял привоз');
         $tableFields->pushTableField($tableField);
 
+        $tableField = new TableField('Колличество деталей');
+        $tableFields->pushTableField($tableField);
+
         $tableField = new TableField('', '115px', TableField::SORT_TYPE_NO_SORTABLE);
         $tableFields->pushTableField($tableField);
 

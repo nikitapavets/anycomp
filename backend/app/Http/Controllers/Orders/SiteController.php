@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Orders;
 
+use App\Classes\Page\TablePage;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableAction;
 use App\Classes\Table\TableField;
@@ -47,7 +48,6 @@ class SiteController extends Controller
 
         // Table tabs
         $tableTabs = new TableTabCollection();
-
         $tableTab = new TableTab('Все', TableTab::STATUS_ACTIVE);
         $tableTab->setRows(OrderRepository::ordersToRows(OrderRepository::getOrders()));
         $tableTabs->pushTableTab($tableTab);
@@ -60,18 +60,9 @@ class SiteController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new TablePage('Заказы с сайта');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Список заказов с сайта',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Список заказов с сайта',
-            'sub_descr' => 'Можно просматривать заказы с сайта.',
-            'view_system_name' => 'admin.blocks.table',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,

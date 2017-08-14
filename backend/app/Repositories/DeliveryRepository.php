@@ -74,6 +74,9 @@ class DeliveryRepository implements GeneralRepository
             $tableCell = new TableCell($delivery->getWorker()->getName());
             $tableCells->pushTableCell($tableCell);
 
+            $tableCell = new TableCell($delivery->getSpares()->count());
+            $tableCells->pushTableCell($tableCell);
+
             $tableCell = new TablePopupCell('Действия');
             $tablePopupItems = new TablePopupItemCollection();
             $tablePopupItem = new TablePopupLinkItem(TablePopupItem::TYPE_EDIT, 'Изменить');

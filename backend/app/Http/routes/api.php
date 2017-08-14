@@ -14,5 +14,9 @@ Route::resource('repairs', 'RepairController');
 
 Route::get('statistics/repairs', ['uses' => 'StatisticsController@repairs']);
 
-
 Route::resource('repair_description', 'RepairDescriptionController');
+
+Route::get('spares/search', 'SpareController@search');
+
+Route::delete('spares/bind-to-repair', 'SpareController@unbindFromRepair');
+Route::post('spares/bind-to-repair', 'SpareController@bindToRepair');
