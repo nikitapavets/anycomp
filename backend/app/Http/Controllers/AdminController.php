@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Page\Page;
 use App\Models\AdminMenu;
 use App\Repositories\AdminRepository;
 use App\Repositories\ClientRepository;
@@ -20,18 +21,9 @@ class AdminController extends Controller {
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new Page('Статистика', 'admin.dashboard');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Статистика',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Статистика',
-            'sub_descr' => 'Статистика добавленных квитанций.',
-            'view_system_name' => 'admin.dashboard',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
@@ -43,15 +35,13 @@ class AdminController extends Controller {
 
     public function login() {
 
-        $page = [
-            'title' => 'AnyComp | Вход в панель управления',
-	        'css' => '/styles/admin.min.css',
-	        'css_header' => ''
-        ];
+        $page = new Page('Вход в панель управления', 'admin.login');
 
-        return view('admin.login', [
-            'page' => $page
-        ]);
+        return view($page->getViewName(),
+            [
+                'page' => $page
+            ]
+        );
     }
 
     public function check(Request $request, Admin $admin) {

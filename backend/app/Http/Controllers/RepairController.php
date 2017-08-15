@@ -355,18 +355,9 @@ class RepairController extends Controller
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
+        $page = new TablePage('Статистика');
 
-        $page = [
-            'title' => 'AnyComp | Панель управления - Статистика',
-            'css' => '/styles/admin.min.css',
-            'css_header' => '',
-            'sub_title' => 'Статистика',
-            'sub_descr' => 'Статистика добавленных квитанций.',
-            'view_system_name' => 'admin.custom_blocks.statistics',
-        ];
-
-        return view(
-            $page['view_system_name'],
+        return view($page->getViewName(),
             [
                 'admin' => $userAdmin,
                 'adminMenu' => $menu,
