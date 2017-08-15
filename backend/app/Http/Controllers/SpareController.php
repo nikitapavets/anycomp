@@ -187,8 +187,8 @@ class SpareController extends Controller
             'new_brand'
         ]));
         $spare->setOrganization($request->organization_id, $request->new_organization);
-        $spare->setOrganization($request->category_id, $request->new_category);
-        $spare->setOrganization($request->brand_id, $request->new_brand);
+        $spare->setCategory($request->category_id, $request->new_category);
+        $spare->setBrand($request->brand_id, $request->new_brand);
         $spare->save();
 
         return redirect()->action('SpareController@index');
