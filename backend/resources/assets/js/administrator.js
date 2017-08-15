@@ -1,17 +1,17 @@
 import FlexibleTableFlex from './admin/FlexibleTableFlex';
 import FlexibleTableSearch from './admin/FlexibleTableSearch';
-import Searcher from './admin/Searcher';
+import Sender from './admin/Sender';
 import flatpickr from 'flatpickr';
 import flatpickrRussianLocale from "flatpickr/dist/l10n/ru.js";
 import 'flatpickr/dist/themes/airbnb.css';
 
-let flexibleTablesFlex = Array.prototype.slice.call(document.querySelectorAll('.flexibleTable.flex'));
+let flexibleTablesFlex = [].slice.call(document.querySelectorAll('.flexibleTable.flex'));
 flexibleTablesFlex.map(table => {
     new FlexibleTableFlex(table);
 
 });
 
-let flexibleTablesSearch = Array.prototype.slice.call(document.querySelectorAll('.flexibleTable.search'));
+let flexibleTablesSearch = [].slice.call(document.querySelectorAll('.flexibleTable.search'));
 flexibleTablesSearch.map(table => {
     new FlexibleTableSearch(table, {
         searcher: {
@@ -20,7 +20,11 @@ flexibleTablesSearch.map(table => {
             link: '/api/spares/search',
         }
     });
+});
 
+let senders = [].slice.call(document.querySelectorAll('.sender'));
+senders.map(senderContainer => {
+    new Sender(senderContainer);
 });
 
 // new Searcher('searchSpare', {

@@ -17,4 +17,13 @@ class RepairController extends Controller
 
         return response()->json($repairs);
     }
+
+    public function updateStatus(Request $request)
+    {
+        $repair = RepairRepository::getRepairById($request->repairId);
+        $repair->setStatus($request->statusId);
+        $repair->save();
+
+        return response()->json($request->statusId);
+    }
 }

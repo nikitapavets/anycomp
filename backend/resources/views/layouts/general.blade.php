@@ -37,7 +37,7 @@
         <!-- Load Fonts CSS End -->
 
         <!-- Load Custom CSS Start -->
-        <link rel="stylesheet" href="/styles/admin.min.css?ver=1.8">
+        <link rel="stylesheet" href="/styles/admin.min.css?ver=1.11">
         <!-- Load Custom CSS End -->
 
         <div style='height: 0; width: 0; position: absolute; visibility: hidden'>
@@ -71,7 +71,7 @@
         <script src="/scripts/libs.min.js?v.2.22"></script>
         <script src="/scripts/libs/ajax_upload.js"></script>
         <script src="/scripts/admin.min.js?v.2.22"></script>
-        <script src="/scripts/administrator.min.js?v.2.28"></script>
+        <script src="/scripts/administrator.min.js?v.2.31"></script>
         <script>
 
             $(document).ready(function(){

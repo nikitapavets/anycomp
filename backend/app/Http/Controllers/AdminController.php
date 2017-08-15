@@ -42,6 +42,7 @@ class AdminController extends Controller {
                 'page' => $page
             ]
         );
+
     }
 
     public function check(Request $request, Admin $admin) {

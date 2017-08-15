@@ -35,16 +35,13 @@
                     <div class="client__field">{{$block['repair']['client']['mobile_phone_native']}}</div>
                     <div class="client__field">{{$block['repair']['client']['home_phone_native']}}</div>
                 </div>
-                {{--<div class="generalInfo__changeStatus infoBox ">--}}
-                    {{--<div class="selector">--}}
-                        {{--<span>{{$block['repair']['status']['name']}}</span>--}}
-                        {{--<select class="inp_select">--}}
-                            {{--<option value="0" @if($block['repair']['status']['number'] == 0) selected @endif>В ремонте</option>--}}
-                            {{--<option value="1" @if($block['repair']['status']['number'] == 1) selected @endif>На выдаче</option>--}}
-                            {{--<option value="2" @if($block['repair']['status']['number'] == 2) selected @endif>У клиента</option>--}}
-                        {{--</select>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
+                <div class="generalInfo__changeStatus infoBox">
+                    <div class="changeStatus sender" data-link="/api/repairs/updateStatus">
+                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['status']['number'] == 0 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="0">В ремонте</a>
+                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['status']['number'] == 1 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="1">На выдаче</a>
+                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['status']['number'] == 2 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="2">У клиента</a>
+                    </div>
+                </div>
             </div>
         </div>
 
