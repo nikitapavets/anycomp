@@ -1,35 +1,12 @@
-@import 'bourbon'
-@import "vars"
-
-*::-webkit-input-placeholder
-  color: $main_text
-  opacity: .5
-
-*:-moz-placeholder
-  color: $main_text
-  opacity: .5
-
-*::-moz-placeholder
-  color: $main_text
-  opacity: .5
-
-*:-ms-input-placeholder
-  color: $main_text
-  opacity: .5
-
-body input:focus:required:invalid,
-body textarea:focus:required:invalid
-  color: $main_text
-body input:required:valid,
-body textarea:required:valid
-  color: $main_text
+@import '~normalize.css/normalize.css'
+@import 'vars'
 
 body
   font-size: 14px
   min-width: 320px
   position: relative
   line-height: 22px
-  font-family: Roboto, $helvetica
+  font-family: Roboto, sans-serif
   overflow-x: hidden
   color: $main_text
 
@@ -37,14 +14,11 @@ body, html
   min-height: 100%
   width: 100%
 
-.hidden
-  display: none
-
-.invisible
-  opacity: 0
-
 a, a:hover, a:focus, a:active
   text-decoration: none
+
+div, input, textarea
+  box-sizing: border-box
 
 a
   color: $main_blue
@@ -63,11 +37,14 @@ h2
   @media only screen and (max-width : 480px)
     font-size: em(30px)
 
+.hidden
+  display: none!important
+
+.invisible
+  opacity: 0!important
+
 .row-margin
   margin: 30px 0
-
-.text-center
-  text-align: center
 
 .index-btn
   background-color: $main_orange

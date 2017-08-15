@@ -1,0 +1,116 @@
+@import '../vars'
+@import '../mixins'
+
+.widget
+
+  border: 1px solid #cdcdcd
+  border-radius: 3px
+  background: #f9f9f9
+
+  &__title
+    padding: 8px 12px 9px 12px
+
+    border-bottom: 1px solid #cdcdcd
+    border-radius: 3px 3px 0 0
+    background: linear-gradient(to bottom, #fafafa 0%, #efefef 100%)
+
+    font-size: 12px
+
+    @include respond-to(mobile)
+      text-align: center
+
+    //.tabs
+    //  .tab
+    //    float: left
+    //    border-left: 1px solid #D5D5D5
+    //    @media only screen and (max-width: 425px)
+    //      &:first-child
+    //        border-left: none
+    //    a
+    //      font-size: 12px
+    //      padding: 8px 12px 9px 12px
+    //      display: inline-block
+    //      color: $admin_text_dark
+    //      &:hover
+    //        color: #878787
+    //      &.active
+    //        background-color: #F7F7F7
+    //        color: $main_blue
+
+  &__row
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 15px
+
+    border-bottom: 1px solid #E2E2E2
+    border-top: 1px solid white
+
+    @include respond-to(mobile)
+      display: block
+
+    .cell
+      display: flex
+      align-items: center
+
+      &__name
+        display: block
+
+        @include respond-to(mobile)
+          margin-bottom: 5px
+
+      &__value
+        width: 80%
+
+        @include respond-to(mobile)
+          width: 100%
+
+    .admin-panel__buttons
+      margin: 0
+    .dual_selects
+      select
+        height: 300px
+        border: 1px solid #ddd
+        box-shadow: 0 0 0 2px #f4f4f4
+        width: 100%
+        padding: 5px
+        outline: none
+      &__left
+        width: 38%
+        max-width: 45%
+        @media only screen and (max-width: 768px)
+          width: 100%
+          float: none
+          min-width: 100%
+      &__right
+        width: 38%
+        max-width: 45%
+        @media only screen and (max-width: 768px)
+          width: 100%
+          float: none
+          min-width: 100%
+      &__control
+        text-align: center
+        width: 200px
+        margin: 150px 1px
+        position: absolute
+        left: 50%
+        transform: translate3D(-50%, -50%, 0)
+        @media only screen and (max-width: 768px)
+          position: static
+          width: 100%
+          transform: none
+          margin: 15px
+        &--group
+          text-align: center
+        button
+          border: 1px solid #cccccc
+          background: linear-gradient(to bottom, #fcfcfc 0%, #e7e7e7 100%)
+          width: 50px
+          height: 25px
+          margin: 5px
+
+    .required
+      color: red
+    &:last-child
+      border-bottom: none

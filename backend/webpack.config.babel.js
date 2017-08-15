@@ -1,9 +1,10 @@
+const Webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const Path = require('path');
+const path = require('path');
 
 const isProduction = process.env.NODE_ENV === 'production';
-const cssOutputPath = isProduction ? '/styles/administrator.min.css' : '/styles/administrator.min.css';
-const jsOutputPath = isProduction ? '/scripts/administrator.min.js' : '/scripts/administrator.min.js';
+const cssOutputPath = isProduction ? 'styles/administrator.min.css' : 'styles/administrator.min.css';
+const jsOutputPath = isProduction ? 'scripts/administrator.min.js' : 'scripts/administrator.min.js';
 
 const ExtractSASS = new ExtractTextPlugin(cssOutputPath);
 
@@ -14,12 +15,15 @@ let webpackConfig = {
         './resources/assets/sass/admin.sass'
     ],
     output: {
-        path: Path.join(__dirname, './public'),
+        path: path.resolve(__dirname, 'public'),
         filename: jsOutputPath
+    },
+    resolve: {
+        extensions: ['.sass', '.css', '.js']
     },
     watch: true,
     module: {
-        rules: [
+        loaders: [
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
@@ -33,31 +37,63 @@ let webpackConfig = {
                         ]
                     }
                 }
+            },
+            {
+                test: /\.(sass|scss)$/,
+                include: [
+                    path.resolve(__dirname, 'node_modules'),
+                    path.resolve(__dirname, 'resources/assets/sass'),
+                    path.resolve(__dirname, 'resources/assets/img')
+                ],
+                use: ExtractSASS.extract({
+                    use: [
+                        {
+                            loader: "css-loader",
+                            options: {
+                                sourceMap: true
+                            }
+                        },
+                        {
+                            loader: "sass-loader",
+                            options: {
+                                sourceMap: true
+                            }
+                        }
+                    ],
+                    fallback: "style-loader"
+                })
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.(png|jpg|gif|svg)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192
+                        }
+                    }
+                ]
             }
         ]
-    }
-};
-
-// ------------------------------------------
-// Module
-// ------------------------------------------
-isProduction
-    ? webpackConfig.module.loaders.push({
-        test: /\.(sass|scss)$/,
-        loader: ExtractSASS.extract(['css', 'sass']),
-    })
-    : webpackConfig.module.loaders.push({
-        test: /\.scss$/,
-        loaders: ['style', 'css', 'sass'],
-    });
-
-// ------------------------------------------
-// Plugins
-// ------------------------------------------
-isProduction
-    ? webpackConfig.plugins.push(
+    },
+    plugins: [
+        new Webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(isProduction ? 'production' : 'development'),
+            },
+        }),
+        new ExtractTextPlugin(path.resolve(__dirname, `public/${cssOutputPath}`), {
+            allChunks: true
+        }),
         ExtractSASS
-    )
-    : false;
+    ],
+};
 
 module.exports = webpackConfig;

@@ -3,15 +3,22 @@
 html
   background-image: url("/images/admin/bg/bg.jpg")
 
+// pages
+@import "pages/login"
+
+// widgets
+@import 'widgets/common'
+
 @import "layouts/admin_layout"
-@import "pages/admin/admin_login"
+
 @import "widgets/admin_chosen"
 @import "widgets/flexibleTable"
 
-// form styles
+// form elements
 @import "admin/form/input"
 @import "admin/form/button"
 @import "admin/form/table"
+@import "admin/form/checker"
 
 @import "admin/custom_blocks/choose_client"
 @import "admin/custom_blocks/admins"

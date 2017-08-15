@@ -2,9 +2,9 @@
 
 @section('content')
 
-    <div class="admin-panel__login">
+    <div class="login">
 
-        <div class="admin-panel">
+        <div class="login__inner">
 
             @if (session('status'))
                 <div class="admin-panel__notes fail">
@@ -12,50 +12,52 @@
                 </div>
             @endif
 
-            <div class="admin-panel__widget">
-                <div class="title">
-                    <div class="text">
-                        Вход в панель управления
-                    </div>
+            <div class="widget">
+                <div class="widget__title">
+                    Вход в панель управления
                 </div>
 
                 {{ Form::open(array('url' => '/check')) }}
 
-                <div class="widget-row row">
-                    <label for="login">Логин: <span class="required">*</span></label>
-                    <div class="widget-row__right">
-                        <input type="text" id="login" name="login">
+                <div class="widget__row">
+                    <label for="login" class="cell__name">
+                        <span>Логин:</span>
+                        <span class="required">*</span>
+                    </label>
+                    <div class="cell__value">
+                        <input type="text" id="login" name="login" class="admin-form-input">
                     </div>
                 </div>
-                <div class="widget-row row">
-                    <label for="password">Пароль: <span class="required">*</span></label>
-                    <div class="widget-row__right">
-                        <input type="password" id="password" name="password">
+
+                <div class="widget__row">
+                    <label for="login" class="cell__name">
+                        <span>Пароль:</span>
+                        <span class="required">*</span>
+                    </label>
+                    <div class="cell__value">
+                        <input type="password" id="password" name="password" class="admin-form-input">
                     </div>
                 </div>
-                <div class="widget-row row">
-                    <div class="admin-panel__checkers">
-                        <div class="admin-panel__checker">
-                            <span class="checked">
-                                <input type="checkbox" checked="checked" id="remember" name="remember">
-                            </span>
-                        </div>
+
+                <div class="widget__row">
+                    <div class="cell">
+                        <input class="checker" type="checkbox" checked="checked" id="remember" name="remember">
                         <label for="remember">Запомнить</label>
                     </div>
+
                     <div class="admin-panel__buttons">
-                        <button class="admin-panel__button red">Войти</button>
+                        <button class="admin-form-button admin-form-button--red">Войти</button>
                     </div>
                 </div>
 
                 {{ Form::close() }}
             </div>
 
-
-                <div class="admin-panel__logo">
-                    <svg class="tags-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <use xlink:href='#logo_dark'></use>
-                    </svg>
-                </div>
+            <div class="login__logo">
+                <svg class="tags-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <use xlink:href='#logo_dark'></use>
+                </svg>
+            </div>
 
         </div>
     </div>
