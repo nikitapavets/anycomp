@@ -9,11 +9,13 @@ const classes = {
     'searcherFieldInput': 'admin-form-input',
     'searcherFieldBtn': 'admin-form-button',
     'searcherAddBtn': 'searcher__addBtn',
+    'searcherGag': 'searcher__gag'
 };
 
 const defaultConfig = {
     'title': 'Поиск',
-    'sendButtonTitle': 'Поиск'
+    'sendButtonTitle': 'Поиск',
+    'searchGag': 'Ничего не найдено'
 };
 
 const icons = {
@@ -125,8 +127,20 @@ export default class Searcher extends Elements {
         return row;
     }
 
+    makeGag()
+    {
+        let gag = document.createElement('span');
+        gag.className = classes.searcherGag;
+        gag.innerText = this.config.searchGag || defaultConfig.searchGag;
+        return gag;
+    }
+
     fillResults(results) {
         this.results.innerHTML = '';
+
+        if(!results.length) {
+            this.results.appendChild(this.makeGag());
+        }
 
         results.map(result => {
             this.results.appendChild(this.makeResultRow(result));
