@@ -20,11 +20,12 @@ const actionTypes = {
     'editField': 'editField'
 };
 
-export default class FlexibleTable extends Elements{
+export default class FlexibleTable extends Elements {
 
     constructor(table, config = {}) {
         super();
 
+        this.classes = classes;
         this.config = config;
         this.table = table;
         this.modelId = table.dataset.modelId;
@@ -39,6 +40,7 @@ export default class FlexibleTable extends Elements{
 
     setEventListeners() {
         this.checkers = [].slice.call(this.table.querySelectorAll(classes.checker));
+        this.mainChecker = this.table.querySelector(classes.mainChecker);
         this.checkers.map(checker => {
             checker.querySelector('input').onclick = () => {
                 checker.classList.toggle('checked');
@@ -46,14 +48,13 @@ export default class FlexibleTable extends Elements{
                     ~checker.className.indexOf('checked') !== 0
                 );
                 if(!~checker.className.indexOf('checked')) {
-                    mainChecker.querySelector(classes.checker).classList.remove('checked');
+                    this.mainChecker.querySelector(classes.checker).classList.remove('checked');
                 } else if(this.checkers.length - 1 === checkedCheckers.length) {
-                    mainChecker.querySelector(classes.checker).classList.add('checked');
+                    this.mainChecker.querySelector(classes.checker).classList.add('checked');
                 }
             };
         });
 
-        this.mainChecker = this.table.querySelector(classes.mainChecker);
         this.mainChecker.querySelector('input').onchange = () => {
             [].slice.call(this.table.querySelectorAll(classes.checker)).map(checker => {
                 if(~this.mainChecker.querySelector('span').className.indexOf('checked')) {

@@ -29,8 +29,8 @@ export default class FlexibleTableSearch extends FlexibleTable {
         }
         if(this.buttons.remove) {
             this.buttons.remove.onclick = (event) => {
-                [].slice.call(this.table.querySelectorAll(`${classes.checker}.checked`)).map(checker => {
-                    if(!checker.closest(classes.mainChecker)) {
+                [].slice.call(this.table.querySelectorAll(`${this.classes.checker}.checked`)).map(checker => {
+                    if(!checker.closest(this.classes.mainChecker)) {
                         let rowId = checker.closest('tr').dataset.id;
                         checker.closest('tr').remove();
                         this.destroy({
@@ -39,7 +39,7 @@ export default class FlexibleTableSearch extends FlexibleTable {
                         });
                     }
                 });
-                this.mainChecker.querySelector(classes.checker).classList.remove('checked');
+                this.mainChecker.querySelector(this.classes.checker).classList.remove('checked');
 
                 event.preventDefault();
             };

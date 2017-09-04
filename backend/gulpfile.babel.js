@@ -134,7 +134,7 @@ gulp.task(cmd.svg, function () {
 
 gulp.task(cmd.watch, [cmd.connect], function () {
     gulp.watch('./resources/assets/sass/**/*.sass', [cmd.styles]);
-    gulp.watch('./resources/assets/js/**/*.js', [cmd.scripts], browsersync.reload);
+    // gulp.watch('./resources/assets/js/**/*.js', [cmd.scripts], browsersync.reload);
     gulp.watch('./resources/views/**/*.php', browsersync.reload);
 });
 

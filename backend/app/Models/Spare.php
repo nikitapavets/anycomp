@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Interfaces\GeneralMobel;
 use App\Repositories\SpareRepository;
+use App\Traits\GetSet\ConfigTrait;
 use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
 use App\Traits\GetSet\NameTrait;
@@ -28,9 +29,38 @@ class Spare extends Model implements GeneralMobel
     use SerialNumberTrait;
     use CategoryTrait;
     use BrandTrait;
+    use ConfigTrait;
 
-    protected $guarded = [];
-    protected $appends = ['full_name'];
+    protected $guarded = [
+        'delivery_id',
+        'organization_id',
+        'category_id',
+        'brand_id',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $fillable = [
+        'name',
+        'serial_number',
+        'quantity',
+        'price',
+        'owner_number',
+        'config',
+    ];
+
+    protected $hidden = [
+        'delivery_id',
+        'organization_id',
+        'category_id',
+        'brand_id',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $appends = [
+        'full_name'
+    ];
 
     public function getLink()
     {
@@ -55,5 +85,10 @@ class Spare extends Model implements GeneralMobel
     public function getFullNameAttribute()
     {
         return $this->getFullName();
+    }
+
+    public function getOwnerNumber()
+    {
+        return $this->owner_number;
     }
 }

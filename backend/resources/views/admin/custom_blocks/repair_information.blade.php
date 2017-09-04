@@ -202,7 +202,7 @@
                             </div>
                         </td>
                         <td>
-                            <span class="flexibleTable__currentValue">{{$spare['name']}}</span>
+                            <span class="flexibleTable__currentValue">{{$spare['full_name']}}</span>
                             <input type="text" class="flexibleTable__editInput hidden" name="value">
                             <a href="#" class="flexibleTable__editBtn hidden">
                                 <svg class="flexibleTable__svg">

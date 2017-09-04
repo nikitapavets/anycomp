@@ -144,6 +144,14 @@ class SpareController extends Controller
         $widget->setValue($spare ? $spare->getSerialNumber() : false);
         $widgetCollection->pushWidget($widget);
 
+        $widget = new WidgetInput('Конфигурация', 'config');
+        $widget->setValue($spare ? $spare->getConfig() : false);
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetInput('Номер у поставщика', 'owner_number');
+        $widget->setValue($spare ? $spare->getOwnerNumber() : false);
+        $widgetCollection->pushWidget($widget);
+
         $widget = new WidgetSelect('Дата привоза', 'delivery_id', true);
         $widget->setValue($spare ? $spare->getDelivery() : false);
         $widget->setSelectItems(DeliveryRepository::get());
@@ -181,14 +189,11 @@ class SpareController extends Controller
 
     public function store(SpareRequest $request)
     {
-        $spare = new Spare($request->except([
-            'new_organization',
-            'new_category',
-            'new_brand'
-        ]));
+        $spare = new Spare($request->all());
         $spare->setOrganization($request->organization_id, $request->new_organization);
         $spare->setCategory($request->category_id, $request->new_category);
         $spare->setBrand($request->brand_id, $request->new_brand);
+        $spare->setDelivery($request->delivery_id);
         $spare->save();
 
         return redirect()->action('SpareController@index');

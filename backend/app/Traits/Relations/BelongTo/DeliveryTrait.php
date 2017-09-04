@@ -15,11 +15,11 @@ trait DeliveryTrait
     }
 
     /**
-     * @param Delivery $delivery
+     * @param $deliveryId
      */
-    public function setDelivery(Delivery $delivery)
+    public function setDelivery($deliveryId)
     {
-        $this->delivery()->associate($delivery);
+        $this->delivery()->associate(Delivery::findOrFail($deliveryId));
     }
 
     /**
