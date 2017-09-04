@@ -54,7 +54,6 @@ class Spare extends Model implements GeneralMobel
         'organization_id',
         'category_id',
         'brand_id',
-        'created_at',
         'updated_at',
     ];
 
@@ -75,10 +74,21 @@ class Spare extends Model implements GeneralMobel
             $this->getName());
 
         if($this->getSerialNumber()) {
-            return sprintf('%s (%s)',
+            $name = sprintf('%s (%s)',
                 $name,
                 $this->getSerialNumber());
         }
+
+        $name = sprintf('%s %s',
+            $name,
+            $this->getConfig());
+
+        if($this->getOwnerNumber()) {
+            $name = sprintf('%s #%s',
+                $name,
+                $this->getOwnerNumber());
+        }
+
         return $name;
     }
 
