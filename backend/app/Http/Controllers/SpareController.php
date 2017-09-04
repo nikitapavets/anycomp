@@ -136,20 +136,20 @@ class SpareController extends Controller
         $widget->setAllowAddName('new_brand');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Модель', 'name');
-        $widget->setValue($spare ? $spare->getName() : false);
-        $widgetCollection->pushWidget($widget);
-
-        $widget = new WidgetInput('Серийный номер', 'serial_number');
-        $widget->setValue($spare ? $spare->getSerialNumber() : false);
+        $widget = new WidgetInput('Номер у поставщика', 'owner_number');
+        $widget->setValue($spare ? $spare->getOwnerNumber() : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Конфигурация', 'config');
         $widget->setValue($spare ? $spare->getConfig() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Номер у поставщика', 'owner_number');
-        $widget->setValue($spare ? $spare->getOwnerNumber() : false);
+        $widget = new WidgetInput('Модель', 'name');
+        $widget->setValue($spare ? $spare->getName() : false);
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetInput('Серийный номер', 'serial_number');
+        $widget->setValue($spare ? $spare->getSerialNumber() : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetSelect('Дата привоза', 'delivery_id', true);
