@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\NotebookRepository;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use App\Models\Catalog\Notebook;
 
 class NotebookController extends Controller
 {
     public function index()
     {
-        $notebooks = NotebookRepository::getNotebooksForFront();
+        $notebooks = Notebook::orderBy('id', 'desc')
+            ->take(5)
+            ->get();
 
         return response()->json($notebooks);
     }
