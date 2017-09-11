@@ -25,11 +25,11 @@ class AlterSparesTable extends Migration
      */
     public function down()
     {
-        Schema::table('spares', function (Blueprint $table) {
-            $table->dropColumn([
-                'owner_number',
-                'config',
-            ]);
-        });
+            Schema::table('spares', function (Blueprint $table) {
+                $table->dropColumn([
+                    'owner_number',
+                    'config',
+                ]);
+            });
     }
 }

@@ -30,9 +30,6 @@ trait SparesTrait
         return $this->spares()->detach($spareId);
     }
 
-    /**
-     * @return mixed
-     */
     public function spares()
     {
         return $this->belongsToMany('App\Models\Spare')->withPivot('id');

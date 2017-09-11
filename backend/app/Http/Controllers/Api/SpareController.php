@@ -91,7 +91,7 @@ class SpareController extends Controller
         $spare = Spare::findOrFail($request->spare_id);
         if($spare->hasInStock()) {
             $repair->addSpare($spare->id);
-            $spare->decrementQuantity();
+//            $spare->decrementQuantity();
         }
 
 
@@ -109,7 +109,7 @@ class SpareController extends Controller
          */
         $spare = Spare::findOrFail($request->spare_id);
         $repair->removeSpare($spare->id);
-        $spare->incrementQuantity();
+//        $spare->incrementQuantity();
 
         return response()->json($spare);
     }

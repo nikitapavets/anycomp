@@ -61,6 +61,22 @@ class Spare extends Model implements GeneralMobel
         'full_name'
     ];
 
+    /**-------- Relations --------*/
+
+    public function repairs()
+    {
+        return $this->belongsToMany('App\Models\Repair')->withPivot('id');
+    }
+
+    /**-------- Customs --------*/
+
+    /**
+     * @return Repair []
+     */
+    public function getRepairs() {
+        return $this->repairs;
+    }
+
     public function getLink()
     {
         return sprintf("%s/%s", SpareRepository::getLink(), $this->getId());
@@ -100,5 +116,13 @@ class Spare extends Model implements GeneralMobel
     public function getOwnerNumber()
     {
         return $this->owner_number;
+    }
+
+    public function hasInStock()
+    {
+        $repairsWithThisSpareCount = count($this->getRepairs());
+        $realQuantityInStock = $this->getQuantity() - $repairsWithThisSpareCount;
+
+        return !!$realQuantityInStock;
     }
 }

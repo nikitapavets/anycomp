@@ -25,9 +25,4 @@ trait QuantityTrait
         $this->setQuantity($this->getQuantity() + 1);
         $this->save();
     }
-
-    public function hasInStock()
-    {
-        return !!$this->getQuantity();
-    }
 }

@@ -103,7 +103,7 @@ class SpareRepository implements GeneralRepository
     public static function search($searchData)
     {
         if($searchData) {
-            return Spare::with(['Brand', 'Category'])
+            $spares = Spare::with(['Brand', 'Category'])
                 ->where('quantity', '>', '0')
                 ->where(function($query) use ($searchData) {
                 $query->whereRaw(sprintf('MATCH (name) AGAINST ("%s*" IN BOOLEAN MODE)', $searchData));
@@ -114,6 +114,13 @@ class SpareRepository implements GeneralRepository
                     $query->whereRaw(sprintf('MATCH (name) AGAINST ("%s*" IN BOOLEAN MODE)', $searchData));
                 });
             })->get();
+            $filteredSpares = [];
+            foreach ($spares as $spare) {
+                if($spare->hasInStock()) {
+                    $filteredSpares[] = $spare;
+                }
+            }
+            return $filteredSpares;
         }
     }
 
