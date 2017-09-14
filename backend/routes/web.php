@@ -1,7 +1,5 @@
 <?php
 
-Route::pattern('id', '[0-9]+');
-
 Route::group(
     ['prefix' => 'dev'],
     function () {

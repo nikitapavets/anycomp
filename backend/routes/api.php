@@ -1,5 +1,10 @@
 <?php
 
+Route::post('/authenticate', 'AuthController@authenticate')
+    ->name('authenticate');
+Route::post('/register', 'AuthController@register')
+    ->name('register');
+
 Route::get('notebooks/search', ['uses' => 'NotebookController@search']);
 Route::resource('notebooks', 'NotebookController');
 

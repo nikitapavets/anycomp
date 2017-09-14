@@ -13,10 +13,11 @@ class DatabaseSeeder extends Seeder
     {
 //        $this->call(RepairStatusesTableSeeder::class);
 //        $this->call(CategoryTableSeeder::class);
-        $this->call(AdminMenusSeeder::class);
-        $this->call(AdminSubMenuSeeder::class);
+//        $this->call(AdminMenusSeeder::class);
+//        $this->call(AdminSubMenuSeeder::class);
 //        $this->call(BrandsTableSeeder::class);
 //         $this->call(CityTypesSeeder::class);
-        $this->call(SetNoSelectedDatabaseSeeder::class);
+//        $this->call(SetNoSelectedDatabaseSeeder::class);
+        $this->call(UserTableSeeder::class);
     }
 }

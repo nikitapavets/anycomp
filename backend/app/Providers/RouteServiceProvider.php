@@ -56,25 +56,42 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the "api" routes for the application.
-     *
-     * These routes are typically stateless.
+     * Define the "admin" routes for the application.
      *
      * @return void
      */
-    protected function mapApiRoutes()
-    {
-        Route::middleware('api')
-            ->namespace($this->namespaceApi)
-            ->prefix('prefix')
-            ->group(base_path('routes/api.php'));
-    }
-
     protected function mapAdminRoutes()
     {
         Route::middleware('admin')
             ->namespace($this->namespace)
             ->prefix('admin')
             ->group(base_path('routes/admin.php'));
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     */
+    protected function mapApiRoutes()
+    {
+        Route::middleware('api')
+            ->namespace($this->namespaceApi)
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "api" routes that requires authentication\
+     *
+     * @return void
+     */
+    protected function mapApiRequireAuthRoutes()
+    {
+        Route::middleware(['api', 'jwt.auth.refresh'])
+            ->namespace($this->namespaceApi)
+            ->prefix('api')
+            ->group(base_path('routes/require-auth/api.php'));
     }
 }

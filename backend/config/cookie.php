@@ -1,5 +1,5 @@
 <?php
 
 return [
-	'guid' => 'ac_guid',
+    'guid' => 'ac_guid',
 ];

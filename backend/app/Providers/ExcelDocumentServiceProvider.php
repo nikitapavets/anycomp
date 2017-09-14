@@ -13,10 +13,12 @@ class ExcelDocumentServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-	    $this->app->singleton('App\Classes\ExcelDocument', function($app)
-	    {
-		    return new Connection($app['config']['ExcelDocument']);
-	    });
+        $this->app->singleton(
+            'App\Classes\ExcelDocument',
+            function ($app) {
+                return new Connection($app['config']['ExcelDocument']);
+            }
+        );
     }
 
     /**
