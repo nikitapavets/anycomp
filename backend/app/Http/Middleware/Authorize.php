@@ -26,20 +26,22 @@ class Authorize extends BaseMiddleware
      */
     public function handle($request, \Closure $next)
     {
-        $response = $next($request);
+        $response = null;
         try {
             $this->authenticate($request);
             $response = $next($request);
         } catch (UnauthorizedHttpException $e) {
-            $newToken = $this->auth->parseToken()->refresh();
-            $this->auth->parseToken()->authenticate();
+            if ($e->getMessage() === 'Token has expired') {
+                $newToken = $this->auth->parseToken()->refresh();
+                $this->auth->parseToken()->authenticate();
 
-            // set the new token to the response headers
-            $response = $next($request);
-            $response->headers->set('Access-Control-Expose-Headers', 'Authorization');
-            $response->headers->set('Authorization', 'Bearer ' . $newToken);
-        } catch (JWTException $e) {
-            return response()->error('token_invalid', $e->getStatusCode());
+                // set the new token to the response headers
+                $response = $next($request);
+                $response->headers->set('Access-Control-Expose-Headers', 'Authorization');
+                $response->headers->set('Authorization', 'Bearer '.$newToken);
+            } else {
+                return response()->error($e->getMessage(), $e->getStatusCode());
+            }
         }
 
         return $response;

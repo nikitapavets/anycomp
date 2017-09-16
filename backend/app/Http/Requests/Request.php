@@ -20,7 +20,8 @@ abstract class Request extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json($validator->errors(), ResponseServiceProvider::HTTP_RESPONSE_BAD_REQUEST));
+        throw new HttpResponseException(response()
+            ->json($validator->errors(), ResponseServiceProvider::HTTP_RESPONSE_BAD_REQUEST));
     }
 
     public function messages()

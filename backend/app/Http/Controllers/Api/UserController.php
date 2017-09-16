@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Models\User;
 use App\Repositories\ClientRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,11 +17,9 @@ class UserController extends Controller
         return response()->json(ClientRepository::clientToArray($client));
     }
 
-    public function show($userId)
+    public function show(User $user)
     {
-        $client = ClientRepository::getClientById($userId);
-
-        return response()->json($client ? ClientRepository::clientToArray($client) : false);
+        return response()->success($user);
     }
 
     public function post(Request $request)
