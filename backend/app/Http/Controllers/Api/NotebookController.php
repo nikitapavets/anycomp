@@ -14,6 +14,7 @@ class NotebookController extends Controller
         $notebooks = Notebook::orderBy('id', 'desc')
             ->take(5)
             ->get();
+        $notebooks->makeVisible(['id']);
 
         return response()->json($notebooks);
     }

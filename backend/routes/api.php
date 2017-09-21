@@ -6,7 +6,6 @@ Route::post('/register', 'AuthController@register')
     ->name('register');
 
 Route::get('notebooks/search', ['uses' => 'NotebookController@search']);
-Route::resource('notebooks', 'NotebookController');
 
 Route::get('tvs/search', ['uses' => 'TvController@search']);
 Route::resource('tvs', 'TvController');
