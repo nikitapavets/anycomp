@@ -32,10 +32,7 @@ use App\Traits\Relations\BelongToMany\MemoryCardsTrait;
 use App\Traits\Relations\BelongToMany\TvTunersTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * Class Notebook
- * @package App\Models\Catalog
- */
+
 class Notebook extends Catalog
 {
     use SoftDeletes;
@@ -70,6 +67,17 @@ class Notebook extends Catalog
     const PRODUCT_TITLE = "Ноутбук";
     const SYSTEM_NAME = 'notebooks';
     const ORDER_TYPE = 1;
+
+    protected $appends = [
+        'title',
+        'description',
+    ];
+
+    protected $visible = [
+        'id',
+        'title',
+        'description',
+    ];
 
     protected $casts = [
         'transformer' => 'boolean',
@@ -122,6 +130,18 @@ class Notebook extends Catalog
 
     protected $dates = ['deleted_at'];
 
+    /** ------ ATTRIBUTES ------ */
+
+    public function getTitleAttribute()
+    {
+        return $this->getFullName();
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return $this->getDescription();
+    }
+
     /**
      * @param string $config
      */
@@ -131,7 +151,7 @@ class Notebook extends Catalog
     }
 
     /**
-     * @param int $productType
+     * @param int  $productType
      * @param bool $isGeneralImage
      * @return Image[]
      */
