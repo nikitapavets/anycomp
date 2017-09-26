@@ -77,6 +77,7 @@ class Notebook extends Catalog
         'id',
         'title',
         'description',
+        'price',
     ];
 
     protected $casts = [
