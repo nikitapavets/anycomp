@@ -386,8 +386,10 @@ class RepairController extends Controller
         );
     }
 
-    public function show(Repair $repair)
+    public function show($id)
     {
+        $repair = Repair::find($id);
+
         $block = [];
         $block['title'] = 'Техника';
         $block['repair'] = RepairRepository::repairToArray($repair);
