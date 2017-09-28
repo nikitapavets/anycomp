@@ -19,7 +19,10 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return response()->success($user);
+        return response()->success('s');
+//        if($user) {
+//            return response()->success($user);
+//        }
     }
 
     public function post(Request $request)

@@ -13,30 +13,10 @@ use App\Http\Requests;
 
 class CatalogController extends Controller
 {
-    public function popular()
+    public function dayOffer()
     {
-        $popular = [];
-        foreach (NotebookRepository::getPopularNotebooks() as $notebook) {
-            $popular[] = [
-                'title' => $notebook->getName(),
-                'brand' => Notebook::PRODUCT_TITLE.' '.$notebook->getBrand()->getName(),
-                'model' => $notebook->getModel(),
-                'link' => $notebook->getLink(),
-                'image' => $notebook->getBigImage(),
-                'price' => $notebook->getPrice(),
-            ];
-        }
-        foreach (TvRepository::getPopularTvs() as $tv) {
-            $popular[] = [
-                'title' => $tv->getName(),
-                'brand' => Tv::PRODUCT_TITLE.' '.$tv->getBrand()->getName(),
-                'model' => $tv->getModel(),
-                'link' => $tv->getLink(),
-                'image' => $tv->getBigImage(),
-                'price' => $tv->getPrice(),
-            ];
-        }
+        $dayOffer = Notebook::first();
 
-        return response()->json($popular);
+        return response()->success($dayOffer);
     }
 }

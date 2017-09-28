@@ -76,7 +76,6 @@ class Notebook extends Catalog
     protected $visible = [
         'id',
         'title',
-        'description',
         'price',
     ];
 

@@ -15,7 +15,7 @@ class NotebookController extends Controller
             ->take(5)
             ->get();
 
-        return response()->json($notebooks);
+        return response()->success($notebooks);
     }
 
     public function show($id)
