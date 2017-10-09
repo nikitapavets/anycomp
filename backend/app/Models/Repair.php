@@ -36,6 +36,7 @@ class Repair extends SearchableModel
     const STATUS_ISSUED_NAME = 'У клиента';
 
     const SEARCH = [
+        'receipt_number^200',
         'title^50',
         'category.name',
         'brand.name',
