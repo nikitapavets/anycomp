@@ -8,8 +8,11 @@ Route::post('register', 'AuthController@register')
 Route::get('day-offer', 'CatalogController@dayOffer')
     ->name('day-offer');
 
-Route::get('notebooks/search', ['uses' => 'NotebookController@search']);
 Route::resource('notebooks', 'NotebookController');
+
+Route::get('notebooks/search', ['uses' => 'NotebookController@search']);
+
+Route::get('clients/search', 'ClientController@search');
 
 Route::get('tvs/search', ['uses' => 'TvController@search']);
 Route::resource('tvs', 'TvController');

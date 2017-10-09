@@ -51,10 +51,14 @@
         <div class="widget__dynamic-table">
             <div class="dynamic-table__filters">
                 <div class="search">
-                    <label for="">
-                        <span>Поиск:</span>
-                        <input type="text">
-                    </label>
+                    <form action="">
+                        <label for="searchField">
+                            <span>Поиск:</span>
+                            <input type="text" id="searchField" name="search" value="{{app('request')->input('search')}}">
+                            <input type="hidden" id="tab" name="tab" value="{{app('request')->input('tab')}}">
+                            <input type="hidden" id="tab" name="size" value="{{app('request')->input('size')}}">
+                        </label>
+                    </form>
                 </div>
                 {{--<div class="data-count">--}}
                     {{--<label for="">--}}
@@ -93,7 +97,10 @@
                         @endforeach
                     </tr>
                     </thead>
-                    @foreach($table['table_rows'] as $tabNumber => $tabRows)
+                    @php(
+                        $tabRows = $table['table_rows'][0]
+                    )
+                    @foreach($table['table_rows'] as $tabNumber => $val)
                         @if($table['table_tabs'][$tabNumber]['tab_status'] == 'active')
                             <tbody class="tab">
                         @else
@@ -207,7 +214,10 @@
                 </table>
             </div>
             <div class="dynamic-table__stats tabs">
-                @foreach($table['table_paginations'] as $key => $pagination)
+                @php(
+                    $pagination = $table['table_paginations'][0]
+                )
+                @foreach($table['table_paginations'] as $key => $val)
                     @if($table['table_tabs'][$key]['tab_status'] == 'active')
                         <div class="dynamic-table__pagination tab">
                             @else

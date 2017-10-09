@@ -61,7 +61,7 @@ class TableTabCollection
     {
         $rowsArray = [];
         foreach ($this->getTableTabs() as $tableTab) {
-            $rowsArray[] = $tableTab->getRows()->toArray();
+            $rowsArray[] = $tableTab->getRows() ? $tableTab->getRows()->toArray() : [];
         }
         return $rowsArray;
     }

@@ -12,11 +12,10 @@ use App\Traits\Relations\BelongTo\ReceptionPlaceTrait;
 use App\Traits\Relations\BelongTo\WorkerTrait;
 use App\Traits\Relations\BelongToMany\SparesTrait;
 use App\Traits\Relations\HasMany\RepairDescriptionsTrait;
-use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
 
-class Repair extends Model
+class Repair extends SearchableModel
 {
     use ClientTrait;
     use AdminTrait;
@@ -36,7 +35,39 @@ class Repair extends Model
     const STATUS_ISSUED = 2;
     const STATUS_ISSUED_NAME = 'У клиента';
 
-    protected $guarded = array();
+    const SEARCH = [
+        'title^50',
+        'category.name',
+        'brand.name',
+        'receptionPlace.name',
+        'client.first_name',
+        'client.second_name',
+        'client.mobile_phone^100',
+        'client.city.name',
+        'client.organization.name',
+    ];
+
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $hidden = [
+        'client_id',
+        'admin_id',
+        'brand_id',
+        'category_id',
+        'worker_id',
+        'reception_place_id',
+    ];
+
+    protected $with = [
+        'category',
+        'brand',
+        'receptionPlace',
+        'client',
+    ];
 
     public function setHashCode($code)
     {

@@ -166,13 +166,13 @@ return [
         /*
          * Package Service Providers...
          */
-
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Roumen\Sitemap\SitemapServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Cviebrock\LaravelElasticsearch\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -184,6 +184,7 @@ return [
         App\Providers\ExcelDocumentServiceProvider::class,
         App\Providers\ResponseServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ObserversServiceProvider::class,
     ],
 
     /*
@@ -238,7 +239,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        Illuminate\Support\Facades\Notification::class
+        'Elasticsearch' => Cviebrock\LaravelElasticsearch\Facade::class,
 
     ],
 

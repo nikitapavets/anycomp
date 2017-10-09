@@ -10,14 +10,37 @@ use App\Traits\Relations\BelongTo\CityTrait;
 use App\Traits\Relations\BelongTo\CityTypeTrait;
 use App\Traits\Relations\BelongTo\OrganizationTrait;
 use App\Traits\Relations\HasMany\RepairsTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
-class Client extends Model
+class Client extends SearchableModel
 {
     const CLIENT_UNKNOWN = 'Неизвестный';
     const RANG_NO_REGISTERED = '1';
     const RANG_REGISTERED = '2';
+
+    const SEARCH = [
+        'first_name',
+        'second_name',
+        'mobile_phone^100',
+        'city.name',
+        'organization.name',
+    ];
+
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $hidden = [
+        'organization_id',
+        'city_id',
+    ];
+
+    protected $with = [
+        'organization',
+        'city',
+    ];
 
     use OrganizationTrait;
     use CityTypeTrait;
@@ -25,8 +48,6 @@ class Client extends Model
     use CityTrait;
     use CreatedAtTrait;
     use RepairsTrait;
-
-    protected $guarded = array();
 
     public function setFirstName($firstName)
     {
@@ -101,15 +122,15 @@ class Client extends Model
         if ($this->getSecondName()) {
             $fullName = $this->getSecondName();
             if ($this->getFirstName()) {
-                $fullName .= ' '.$this->getFirstName();
+                $fullName .= ' ' . $this->getFirstName();
                 if ($this->getFatherName()) {
-                    $fullName .= ' '.$this->getFatherName();
+                    $fullName .= ' ' . $this->getFatherName();
                 }
             }
         } elseif ($this->getFirstName()) {
             $fullName = $this->getFirstName();
             if ($this->getFatherName()) {
-                $fullName .= ' '.$this->getFatherName();
+                $fullName .= ' ' . $this->getFatherName();
             }
         } elseif ($this->getOrganization()) {
             $fullName = $this->getOrganization()->getName();
@@ -143,9 +164,9 @@ class Client extends Model
         if ($this->getSecondName()) {
             $shortName .= $this->getSecondName();
             if ($firstName) {
-                $shortName .= ' '.$firstName.'.';
+                $shortName .= ' ' . $firstName . '.';
                 if ($fatherName) {
-                    $shortName .= ' '.$fatherName.'.';
+                    $shortName .= ' ' . $fatherName . '.';
                 }
             }
         } elseif ($this->getFirstName()) {
@@ -164,19 +185,19 @@ class Client extends Model
         $address = '';
 
         if ($this->getCityType()->getShortName()) {
-            $address .= $this->getCityType()->getShortName().' ';
+            $address .= $this->getCityType()->getShortName() . ' ';
         }
         if ($this->getCity()->getName()) {
             $address .= $this->getCity()->getName();
         }
         if ($this->address_street) {
-            $address .= ', ул. '.$this->address_street;
+            $address .= ', ул. ' . $this->address_street;
         }
         if ($this->address_house) {
-            $address .= ', д. '.$this->address_house;
+            $address .= ', д. ' . $this->address_house;
         }
         if ($this->address_flat) {
-            $address .= ', кв. '.$this->address_flat;
+            $address .= ', кв. ' . $this->address_flat;
         }
 
         return $address;
@@ -187,11 +208,11 @@ class Client extends Model
         $phones = '';
         if ($this->getMobilePhone() && $this->getHomePhone()) {
             $phones .= $this->getMobilePhoneOnNativeFormat();
-            $phones .= ', '.$this->getHomePhoneOnNativeFormat();
+            $phones .= ', ' . $this->getHomePhoneOnNativeFormat();
         } elseif ($this->getMobilePhone() && !$this->getHomePhone()) {
-            $phones .= $this->getMobilePhoneOnNativeFormat().' (моб.)';
+            $phones .= $this->getMobilePhoneOnNativeFormat() . ' (моб.)';
         } elseif (!$this->getMobilePhone() && $this->getHomePhone()) {
-            $phones .= $this->getHomePhoneOnNativeFormat().' (дом.)';
+            $phones .= $this->getHomePhoneOnNativeFormat() . ' (дом.)';
         }
 
         return $phones;
@@ -238,7 +259,7 @@ class Client extends Model
 
     public function setPassword($password)
     {
-        if($password) {
+        if ($password) {
             $this->password = Hash::make($password);
         }
     }
@@ -250,6 +271,6 @@ class Client extends Model
 
     public function getLinkHref()
     {
-        return '/admin/client/'.$this->getId();
+        return '/admin/client/' . $this->getId();
     }
 }

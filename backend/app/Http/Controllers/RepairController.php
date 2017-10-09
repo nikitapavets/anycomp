@@ -23,6 +23,8 @@ use App\Models\Worker;
 use App\Repositories\AdminRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\RepairRepository;
+use App\Services\ElasticSearchService;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
 use App\Models\Repair;
 use App\Models\Database\CityType;
@@ -32,11 +34,20 @@ use App\Models\Database\Brand;
 use App\Models\Database\Organization;
 use App\Models\Database\City;
 use App\Interfaces\ExcelDocument;
+use Illuminate\Support\Collection;
 
 class RepairController extends Controller
 {
     public function repairList(Request $request)
     {
+        $elasticsearchRepairService = new ElasticSearchService(new Repair);
+        $tab = $request->tab ?? 0;
+        $search = [
+            'current_status' => $tab,
+            'search' => $request->search ?? '',
+            'page' => $request->page ?? 1,
+            'size' => $request->size ?? 15,
+        ];
 
         $table = new Table('Список техники в ремонте');
 
@@ -69,34 +80,23 @@ class RepairController extends Controller
         // Table tabs
         $tableTabs = new TableTabCollection();
 
-        $tableTab = new TableTab('В ремонте', !$request->input('tab') ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
-        $repairs = RepairRepository::getRepairsByStatus(Repair::STATUS_REPAIR);
-        $repairs->appends(['tab' => $request->input('tab')]);
-        $tableTab->setRows(
-            RepairRepository::repairsToRows($repairs)
-        );
+        $tableTab = new TableTab('В ремонте', $tab == Repair::STATUS_REPAIR ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
+        if($search['search']) {
+            $repairs = new PaginationService($elasticsearchRepairService->search($search), $search);
+            $repairs->setPath($request->getBasePath());
+        } else {
+            $repairs = RepairRepository::getRepairsByStatus($search['current_status']);
+        }
+        $repairs->appends(['tab' => $tab]);
+        $tableTab->setRows(RepairRepository::repairsToRows($repairs));
         $tableTapPagination = new TablePagination($repairs);
         $tableTab->setPagination($tableTapPagination);
         $tableTabs->pushTableTab($tableTab);
 
-        $tableTab = new TableTab('На выдаче', $request->input('tab') == 1 ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
-        $repairs = RepairRepository::getRepairsByStatus(Repair::STATUS_COMPLETE);
-        $repairs->appends(['tab' => $request->input('tab')]);
-        $tableTab->setRows(
-            RepairRepository::repairsToRows($repairs)
-        );
-        $tableTapPagination = new TablePagination($repairs);
-        $tableTab->setPagination($tableTapPagination);
+        $tableTab = new TableTab('На выдаче', $tab == Repair::STATUS_COMPLETE ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
         $tableTabs->pushTableTab($tableTab);
 
-        $tableTab = new TableTab('У клиента', $request->input('tab') == 2 ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
-        $repairs = RepairRepository::getRepairsByStatus(Repair::STATUS_ISSUED);
-        $repairs->appends(['tab' => $request->input('tab')]);
-        $tableTab->setRows(
-            RepairRepository::repairsToRows($repairs)
-        );
-        $tableTapPagination = new TablePagination($repairs);
-        $tableTab->setPagination($tableTapPagination);
+        $tableTab = new TableTab('У клиента', $tab == Repair::STATUS_ISSUED ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
         $tableTabs->pushTableTab($tableTab);
 
         $table->setTableTabs($tableTabs);
