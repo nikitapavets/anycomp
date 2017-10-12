@@ -29,7 +29,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('elastic:repairs')->hourly();
+         $schedule->command('elastic:repairs')
+             ->daily()
+             ->sendOutputTo(storage_path('logs/elastic.log'));
     }
 
     /**

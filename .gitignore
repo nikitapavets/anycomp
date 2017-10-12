@@ -21,3 +21,6 @@
 
 # logs
 *.log
+
+# dump
+/anycomp.sql.2017-09-21_22:44.gz
