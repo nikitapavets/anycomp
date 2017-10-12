@@ -250,31 +250,31 @@ class RepairController extends Controller
         $widget->setAllowAddName('product_brand_new');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Название', 'product_title', false);
+        $widget = new WidgetInput('Название', 'title', false);
         $widget->setValue($repair ? $repair->getTitle() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Заводской номер', 'product_code', false);
+        $widget = new WidgetInput('Заводской номер', 'code', false);
         $widget->setValue($repair ? $repair->getHashCode() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('В комплекте', 'product_set', false);
+        $widget = new WidgetInput('В комплекте', 'set', false);
         $widget->setValue($repair ? $repair->getSet() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Неисправность', 'product_defect', false);
+        $widget = new WidgetInput('Неисправность', 'defect', false);
         $widget->setValue($repair ? $repair->getDefect() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Внешний вид', 'product_appearance', false);
+        $widget = new WidgetInput('Внешний вид', 'appearance', false);
         $widget->setValue($repair ? $repair->getAppearance() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Комментарий', 'product_comment', false);
+        $widget = new WidgetInput('Комментарий', 'comment', false);
         $widget->setValue($repair ? $repair->getComment() : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Ориентировочная стоимость', 'product_approximate_cost', false);
+        $widget = new WidgetInput('Ориентировочная стоимость', 'approximate_cost', false);
         $widget->setValue($repair ? $repair->getApproximateCost() : false);
         $widgetCollection->pushWidget($widget);
 

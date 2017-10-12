@@ -50,8 +50,25 @@ class Repair extends SearchableModel
 
     protected $guarded = [
         'id',
+        'client_id',
+        'admin_id',
+        'brand_id',
+        'category_id',
+        'worker_id',
+        'reception_place_id',
         'created_at',
         'updated_at',
+    ];
+
+    protected $fillable = [
+        'title',
+        'code',
+        'set',
+        'defect',
+        'appearance',
+        'comment',
+        'approximate_cost',
+        'current_status',
     ];
 
     protected $hidden = [

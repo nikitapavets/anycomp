@@ -182,7 +182,7 @@ class RepairRepository
     public static function updateRepairStatus($repair, $newStatus)
     {
         if ($repair instanceof Repair) {
-            $repair->setStatus($newStatus);
+            $repair->update(['current_status' => $newStatus]);
             if ($newStatus == Repair::STATUS_ISSUED) {
                 $repair->setCompletedAt();
             }
@@ -225,17 +225,10 @@ class RepairRepository
                 $repair->setCode();
                 $repair->setCategory($request->product_category_id, $request->product_category_new);
                 $repair->setBrand($request->product_brand_id, $request->product_brand_new);
-                $repair->setTitle($request->product_title);
-                $repair->setDefect($request->product_defect);
-                $repair->setHashCode($request->product_code);
-                $repair->setSet($request->product_set);
-                $repair->setAppearance($request->product_appearance);
-                $repair->setComment($request->product_comment);
-                $repair->setApproximateCost($request->product_approximate_cost);
                 $repair->setReceptionPlace($request->reception_place_id);
                 $repair->setWorker($request->worker_id);
-
                 $repair->save();
+                $repair->update($request->all());
             }
         );
     }
