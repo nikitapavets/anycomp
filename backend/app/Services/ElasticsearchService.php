@@ -159,6 +159,6 @@ class ElasticSearchService
 
     public static function escapeString($source)
     {
-        return addcslashes($source, '/');
+        return str_replace(['/'], '', $source);
     }
 }

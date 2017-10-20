@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ElasticSearchService;
 use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
 use App\Traits\Relations\BelongTo\AdminTrait;
@@ -86,6 +87,14 @@ class Repair extends SearchableModel
         'receptionPlace',
         'client',
     ];
+
+    public function toSearchArray()
+    {
+        $searchArray = $this->toArray();
+        $searchArray['receipt_number'] = ElasticSearchService::escapeString($searchArray['receipt_number']);
+
+        return $searchArray;
+    }
 
     public function setHashCode($code)
     {
