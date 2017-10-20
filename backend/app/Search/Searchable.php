@@ -4,6 +4,7 @@ namespace App\Search;
 
 use App\Observers\ElasticsearchClientObserver;
 use App\Observers\ElasticsearchRepairObserver;
+use App\Services\ElasticSearchService;
 
 trait Searchable
 {
@@ -22,6 +23,9 @@ trait Searchable
 
     public function toSearchArray()
     {
-        return $this->toArray();
+        $searchData = $this->toArray();
+        $searchData['receipt_number'] = ElasticSearchService::escapeString($searchData['receipt_number']);
+
+        return $searchData;
     }
 }
