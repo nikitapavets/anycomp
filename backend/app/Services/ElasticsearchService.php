@@ -111,7 +111,9 @@ class ElasticSearchService
         $filter = [];
         foreach ($query as $key => $value) {
             if ($value !== '') {
-                $key = strpos($key, '_id') !== false ? str_replace('_id', '.id', $key) : $key;
+                $key = strpos($key, '_id') !== false
+                    ? str_replace('_id', '.id', $key)
+                    : $key;
                 $filter[] = [
                     'match' => [
                         $key => $value,
