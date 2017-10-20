@@ -31,7 +31,7 @@ class ElasticSearchService
      */
     public function search($query = '')
     {
-        $items = $this->searchOnElasticsearch($query);
+        $items = $this->searchOnElasticsearch(addslashes($query));
         return $this->buildCollection($items);
     }
 
