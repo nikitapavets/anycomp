@@ -44,7 +44,7 @@ class ElasticSearchService
         $searchString = $query['search'] ?? '';
         unset($query['search']);
 
-        $elasticQuery = $this->parseQueryToElastic(addslashes($searchString));
+        $elasticQuery = $this->parseQueryToElastic(addcslashes($searchString, '/'));
 
         $this->page = $query['page'] ?? self::DEFAULT_START_PAGE;
         unset($query['page']);
