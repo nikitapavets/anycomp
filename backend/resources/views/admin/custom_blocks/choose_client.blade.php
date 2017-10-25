@@ -10,7 +10,7 @@
                         <input type="text" class="admin-form-input" id="chooseClientField"/>
                     </div>
                     <div class="find__btn">
-                        {{link_to_route('admin.repair.create', 'Добавить клиента', [], ['class' => 'admin-form-button admin-form-button_slim admin-form-button_blue'])}}
+                        {{link_to_route('repairs.create', 'Добавить клиента', [], ['class' => 'admin-form-button admin-form-button_slim admin-form-button_blue'])}}
                     </div>
                 </div>
                 <div class="choose-client__clientsList">
@@ -20,14 +20,12 @@
                              data-first_name="{{$client['first_name']}}"
                              data-second_name="{{$client['second_name']}}"
                              data-father_name="{{$client['father_name']}}"
-                             data-organization="{{$client['organization']}}"
                              data-mobile_phone="{{$client['mobile_phone']}}"
                              data-mobile_phone_native="{{$client['mobile_phone_native']}}"
                              data-home_phone="{{$client['home_phone']}}"
                              data-home_phone_native="{{$client['home_phone_native']}}"
-                             data-address="{{$client['address']}}"
-                             data-repairs="{{count($client['repairs'])}}"
-                             data-last-repair="{{$client['repairs'][count($client['repairs']) - 1]['receipt_number'] ?? ''}}">
+                             data-organization="{{$client['organization']['name']}}"
+                             data-address="{{$client['address']}}">
                             {{$client['full_name']}}
                         </div>
                     @endforeach
@@ -55,7 +53,7 @@
                     <div class="client-info__row">
                         <div class="client-info__type">Организация:</div>
                         <div class="client-info__value"
-                             id="clientInfoOrganization">{{$block['clients'][0]['organization'] ? $block['clients'][0]['organization'] : '-'}}</div>
+                             id="clientInfoOrganization">{{$block['clients'][0]['organization']['name'] ? $block['clients'][0]['organization']['name'] : '-'}}</div>
                     </div>
                     <div class="client-info__row">
                         <div class="client-info__type">Мобильный телефон:</div>
@@ -72,18 +70,18 @@
                         <div class="client-info__value"
                              id="clientInfoAddress">{{$block['clients'][0]['address'] ? $block['clients'][0]['address'] : '-'}}</div>
                     </div>
-                    <div class="client-info__row">
-                        <div class="client-info__type">Колличество заказов:</div>
-                        <div class="client-info__value"
-                             id="clientInfoRepairs">{{count($block['clients'][0]['repairs'])}}</div>
-                    </div>
-                    <div class="client-info__row">
-                        <div class="client-info__type">Последний заказ:</div>
-                        <div class="client-info__value"
-                             id="clientInfoLastRepair">{{$block['clients'][0]['repairs'] ? $block['clients'][0]['repairs'][count($block['clients'][0]['repairs']) - 1]['receipt_number'] : '-'}}</div>
-                    </div>
+                    {{--<div class="client-info__row">--}}
+                        {{--<div class="client-info__type">Колличество заказов:</div>--}}
+                        {{--<div class="client-info__value"--}}
+                             {{--id="clientInfoRepairs">{{count($block['clients'][0]['repairs'])}}</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="client-info__row">--}}
+                        {{--<div class="client-info__type">Последний заказ:</div>--}}
+                        {{--<div class="client-info__value"--}}
+                             {{--id="clientInfoLastRepair">{{$block['clients'][0]['repairs'] ? $block['clients'][0]['repairs'][count($block['clients'][0]['repairs']) - 1]['receipt_number'] : '-'}}</div>--}}
+                    {{--</div>--}}
                     <div class="client-info__btn">
-                        {{link_to_route('admin.repair.create', 'Добавить заказ', ['client_id' => $block['clients'][0]['id']], ['class' => 'admin-form-button admin-form-button_blue', 'id' => 'chooseClientAddOrder'])}}
+                        {{link_to_route('repairs.create', 'Добавить заказ', ['client_id' => $block['clients'][0]['id']], ['class' => 'admin-form-button admin-form-button_blue', 'id' => 'chooseClientAddOrder'])}}
                     </div>
                 </div>
             </div>

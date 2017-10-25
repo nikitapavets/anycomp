@@ -21,6 +21,15 @@ class Admin extends Model
     const SKILL_WORKER = 'worker';
     const SKILL_MANAGER = 'manager';
 
+    protected $appends = [
+        'sf_name',
+    ];
+
+    public function getSfNameAttribute()
+    {
+        return $this->second_name . ' ' . $this->first_name;
+    }
+
     /**
      * @return Admin
      */
@@ -53,18 +62,18 @@ class Admin extends Model
 
     public function getSFName()
     {
-        return $this->getSecondName() . ' ' . $this->getFirstName();
+        return $this->second_name . ' ' . $this->first_name;
     }
 
     public function getFullName()
     {
-        return $this->getSecondName() . ' ' . $this->getFirstName() . ' ' . $this->getFatherName();
+        return $this->second_name . ' ' . $this->first_name . ' ' . $this->father_name;
     }
 
     public function getShortName()
     {
-        $second_name = $this->getSecondName();
-        $initials = mb_substr($this->getFirstName(), 0, 1) . ". " . mb_substr($this->getFatherName(), 0, 1) . ".";
+        $second_name = $this->second_name;
+        $initials = mb_substr($this->first_name, 0, 1) . ". " . mb_substr($this->father_name, 0, 1) . ".";
         $shortName = $second_name . ' ' . $initials;
 
         return $shortName;
@@ -83,31 +92,6 @@ class Admin extends Model
 
             return $image_scr;
         }
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    public function getFirstName()
-    {
-        return $this->first_name;
-    }
-
-    public function getSecondName()
-    {
-        return $this->second_name;
-    }
-
-    public function getFatherName()
-    {
-        return $this->father_name;
     }
 
     public function getSkill()

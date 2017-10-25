@@ -90,54 +90,31 @@ Route::group(
     }
 );
 
-Route::group(
-    ['prefix' => 'repair'],
-    function () {
+Route::group(['prefix' => 'repairs'], function () {
+    Route::get('choose_client', 'RepairController@chooseClient')
+        ->name('admin.repairs.choose_client');
+    Route::get('print-doc', 'RepairController@printDoc')
+        ->name('admin.repairs.print_doc');
+    Route::post(
+        '/delete',
+        ['as' => 'admin.repair.delete', 'uses' => 'RepairController@repairDelete']
+    );
+    Route::post(
+        '/update_status',
+        ['as' => 'admin.repair.update_status', 'uses' => 'RepairController@updateStatus']
+    );
+    Route::get(
+        '/statistics',
+        ['as' => 'admin.repair.statistics', 'uses' => 'RepairController@statistics']
+    );
+    Route::get(
+        '/statistics/print',
+        ['as' => 'admin.repair.statistics.print', 'uses' => 'RepairController@statisticsPrint']
+    );
+});
 
-        Route::get('/list', ['as' => 'admin.repair.list', 'uses' => 'RepairController@repairList']);
-        Route::get(
-            '/create',
-            ['as' => 'admin.repair.create', 'uses' => 'RepairController@repairCreateUpdate']
-        );
-        Route::post(
-            '/save',
-            ['as' => 'admin.repair.create.save', 'uses' => 'RepairController@repairSave']
-        );
-        Route::post(
-            '/delete',
-            ['as' => 'admin.repair.delete', 'uses' => 'RepairController@repairDelete']
-        );
-        Route::get(
-            '/{repair_id}/update',
-            ['as' => 'admin.repair.update', 'uses' => 'RepairController@repairCreateUpdate']
-        );
-        Route::get(
-            '/print_doc',
-            ['as' => 'admin.repair.print_doc', 'uses' => 'RepairController@printDoc']
-        );
-        Route::post(
-            '/update_status',
-            ['as' => 'admin.repair.update_status', 'uses' => 'RepairController@updateStatus']
-        );
-        Route::get(
-            '/statistics',
-            ['as' => 'admin.repair.statistics', 'uses' => 'RepairController@statistics']
-        );
-        Route::get(
-            '/statistics/print',
-            ['as' => 'admin.repair.statistics.print', 'uses' => 'RepairController@statisticsPrint']
-        );
-        Route::get(
-            '/choose_client',
-            ['as' => 'admin.repair.choose_client', 'uses' => 'RepairController@chooseClient']
-        );
-
-    }
-);
-
-Route::resource('repair', 'RepairController', ['only' => [
-    'show'
-]]);
+Route::resource('repairs', 'RepairController');
+Route::resource('clients', 'ClientController');
 
 Route::group(
     ['prefix' => 'clients'],

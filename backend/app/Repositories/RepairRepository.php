@@ -92,38 +92,38 @@ class RepairRepository
             $tableCell->setClass(TableCell::CLASS_CHECKER);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableLinkCell($repair->getReceiptNumber());
-            $tableCell->setLinkHref($repair->getLinkHref());
+            $tableCell = new TableLinkCell($repair->receipt_number);
+            $tableCell->setLinkHref($repair->link);
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TablePopupCell($repair->getFullName());
             $tablePopupItems = new TablePopupItemCollection();
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_BOX, $repair->getFullName());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_SET, $repair->getSet());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_SET, $repair->set);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_DEFECT, $repair->getDefect());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_DEFECT, $repair->defect);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_HASH, $repair->getHashCode());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_HASH, $repair->code);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_APPEARANCE, $repair->getAppearance());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_APPEARANCE, $repair->appearance);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_COMMENT, $repair->getComment());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_COMMENT, $repair->comment);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PRICE, $repair->getApproximateCost());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PRICE, $repair->approximate_cost);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PLACE, $repair->getReceptionPlace()->getName());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_WORKER, $repair->getWorker()->getSFName());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_CODE, $repair->getCode());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_CODE, $repair->token);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tableCell->setTablePopupItems($tablePopupItems);
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TablePopupCell($repair->getClient()->getShortName());
             $tablePopupItems = new TablePopupItemCollection();
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_FULL_NAME, $repair->getClient()->getFullName());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_FULL_NAME, $repair->getClient()->full_name);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(
                 TablePopupItem::TYPE_ORGANIZATION,
@@ -132,20 +132,20 @@ class RepairRepository
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(
                 TablePopupItem::TYPE_PHONE,
-                $repair->getClient()->getMobilePhoneOnNativeFormat()
+                $repair->getClient()->mobile_phone_native
             );
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(
                 TablePopupItem::TYPE_PHONE_HOME,
-                $repair->getClient()->getHomePhoneOnNativeFormat()
+                $repair->getClient()->home_phone_native
             );
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_ADDRESS, $repair->getClient()->getAddress());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_ADDRESS, $repair->getClient()->address);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tableCell->setTablePopupItems($tablePopupItems);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($repair->getClient()->getMobilePhoneOnNativeFormat());
+            $tableCell = new TableCell($repair->getClient()->mobile_phone_native);
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TableCell($repair->getCompletedAt());
@@ -154,16 +154,10 @@ class RepairRepository
             $tableCell = new TablePopupCell('Действия');
             $tablePopupItems = new TablePopupItemCollection();
             $tablePopupItem = new TablePopupLinkItem(TablePopupItem::TYPE_EDIT, 'Изменить');
-            $tablePopupItem->setLinkHref('/admin/repair/' . $repair->getId() . '/update');
-            $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupInlineLinkItem(TablePopupItem::TYPE_STATUS, 'Статус');
-            $tablePopupItem->setClass(TablePopupInlineLinkItem::CLASS_REPAIR_STATUS);
-            $tablePopupItem->setDataAction('/admin/repair/update_status');
-            $tablePopupItem->setDataId($repair->getId());
-            $tablePopupItem->setDataSelected($repair->getStatus());
+            $tablePopupItem->setLinkHref(route('repairs.edit', ['id' => $repair->getId()]));
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupLinkItem(TablePopupItem::TYPE_XLS, 'Квитанция');
-            $tablePopupItem->setLinkHref('/admin/repair/print_doc?id=' . $repair->getId());
+            $tablePopupItem->setLinkHref(route('admin.repairs.print_doc', ['id' => $repair->id]));
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tableCell->setTablePopupItems($tablePopupItems);
             $tableCells->pushTableCell($tableCell);
@@ -190,100 +184,18 @@ class RepairRepository
         }
     }
 
-    /**
-     * @param Request $request
-     */
-    public static function saveRepair(Request $request)
-    {
-        DB::transaction(
-            function () use ($request) {
-                /**
-                 * @var Client $client
-                 */
-                $client = Client::firstOrNew(['id' => $request->client_id ?? 0]);
-                $client->setSecondName($request->client_second_name);
-                $client->setFirstName($request->client_first_name);
-                $client->setFatherName($request->client_father_name);
-                $client->setOrganization($request->client_organization_id, $request->client_organization_new);
-                $client->setMobilePhone($request->client_mobile_phone);
-                $client->setHomePhone($request->client_home_phone);
-                $client->setCity($request->client_city_type_id, $request->client_city_type_new);
-                $client->setCityType($request->client_city_type_id, $request->client_city_type_new);
-                $client->setCity($request->client_city_id, $request->client_city_new);
-                $client->setStreet($request->client_street);
-                $client->setStreet($request->client_street);
-                $client->setHouse($request->client_house);
-                $client->setFlat($request->client_flat);
-                $client->save();
-                /**
-                 * @var Repair $repair
-                 */
-                $repair = Repair::firstOrNew(['id' => $request->repair_id ?? 0]);
-                $repair->setClient($client);
-                $repair->setAdmin(Admin::getAuthAdmin());
-                $repair->setReceiptNumber(RepairRepository::makeReceiptNumber());
-                $repair->setCode();
-                $repair->setCategory($request->product_category_id, $request->product_category_new);
-                $repair->setBrand($request->product_brand_id, $request->product_brand_new);
-                $repair->setReceptionPlace($request->reception_place_id);
-                $repair->setWorker($request->worker_id);
-                $repair->save();
-                $repair->update($request->all());
-            }
-        );
-    }
-
     public static function makeReceiptNumber()
     {
         $lastRepair = RepairRepository::getLastRepair();
         $nextReceiptNumber = 'AC' . date('dmy/1');
         if ($lastRepair) {
-            if (substr($lastRepair->getReceiptNumber(), 2, 6) == date('dmy')) {
-                $nextReceiptNumber = (int)substr($lastRepair->getReceiptNumber(), 9) + 1;
+            if (substr($lastRepair->receipt_number, 2, 6) == date('dmy')) {
+                $nextReceiptNumber = (int)substr($lastRepair->receipt_number, 9) + 1;
                 $nextReceiptNumber = 'AC' . date('dmy/') . $nextReceiptNumber;
             }
         }
 
         return $nextReceiptNumber;
-    }
-
-    public static function repairToArray(Repair $repair)
-    {
-        return [
-            'id' => $repair->getId(),
-            'receipt_number' => $repair->getReceiptNumber(),
-            'product_full_name' => $repair->getFullName(),
-            'product_code' => $repair->getCode(),
-            'product_title' => $repair->getTitle(),
-            'product_defect' => $repair->getDefect(),
-            'product_hash_code' => $repair->getHashCode(),
-            'product_set' => $repair->getSet(),
-            'product_appearance' => $repair->getAppearance(),
-            'product_comment' => $repair->getComment(),
-            'product_approximate_cost' => $repair->getApproximateCost(),
-            'product_reception_place' => $repair->getReceptionPlace()->getName(),
-            'status' => [
-                'name' => $repair->getStatusName(),
-                'number' => $repair->getStatus()
-            ],
-            'client' => ClientRepository::clientToArray($repair->getClient(), false),
-            'worker' => AdminRepository::adminToArray($repair->getWorker()),
-            'descriptions' => $repair->getRepairDescriptions(),
-            'spares' => $repair->getSpares(),
-            'created_at' => $repair->getCreatedAtFull(),
-            'completed_at' => $repair->getCompletedAtFull()
-        ];
-    }
-
-    /**
-     * @param Repair[] $repairs
-     * @return array
-     */
-    public static function repairsToArray($repairs)
-    {
-        return $repairs->map(function ($item) {
-            return self::repairToArray($item);
-        });
     }
 
     /**

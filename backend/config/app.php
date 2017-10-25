@@ -173,6 +173,7 @@ return [
         Roumen\Sitemap\SitemapServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Cviebrock\LaravelElasticsearch\ServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -240,7 +241,6 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Elasticsearch' => Cviebrock\LaravelElasticsearch\Facade::class,
-
     ],
 
 ];

@@ -11,13 +11,13 @@ trait ReceptionPlaceTrait
      */
     public function getReceptionPlace()
     {
-        return $this->receptionPlace;
+        return $this->reception_place;
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function receptionPlace()
+    public function reception_place()
     {
         return $this->belongsTo('App\Models\Database\ReceptionPlace', 'reception_place_id');
     }
@@ -31,6 +31,6 @@ trait ReceptionPlaceTrait
         $color = $newReceptionPlace
             ? ReceptionPlace::firstOrCreate(['name' => $newReceptionPlace])
             : ReceptionPlace::find($receptionPlaceId);
-        $this->receptionPlace()->associate($color);
+        $this->reception_place()->associate($color);
     }
 }

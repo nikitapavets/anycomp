@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Client;
 use App\Models\Repair;
 use App\Observers\ElasticsearchRepairObserver;
+use App\Observers\RepairObserver;
 use Elasticsearch\ClientBuilder;
 use App\Observers\ElasticsearchClientObserver;
 use Illuminate\Support\ServiceProvider;
@@ -15,6 +16,7 @@ class ObserversServiceProvider extends ServiceProvider
     {
         Client::observe(ElasticsearchClientObserver::class);
         Repair::observe(ElasticsearchRepairObserver::class);
+        Repair::observe(RepairObserver::class);
     }
 
     public function register()

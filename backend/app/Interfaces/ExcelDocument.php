@@ -124,7 +124,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I3',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getReceiptNumber());
+                                $cell->setValue($currentRepair->receipt_number);
                                 $cell->setAlignment('center');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setBorder(
@@ -196,7 +196,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I5',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getClient()->getFullName());
+                                $cell->setValue($currentRepair->getClient()->full_name);
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setBorder(
@@ -304,7 +304,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I11',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getClient()->getAddress());
+                                $cell->setValue($currentRepair->getClient()->address);
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setBorder(
@@ -340,7 +340,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I13',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getFullName());
+                                $cell->setValue($currentRepair->full_name);
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setBorder(
@@ -376,7 +376,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I15',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue('S/N '.$currentRepair->getHashCode());
+                                $cell->setValue('S/N '.$currentRepair->code);
                                 $cell->setAlignment('left');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setBorder(
@@ -415,7 +415,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I17',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getDefect());
+                                $cell->setValue($currentRepair->defect);
                                 $cell->setAlignment('left');
                                 $cell->setValignment('top');
                                 $cell->setFontFamily('Verdana');
@@ -454,7 +454,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I19',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getSet());
+                                $cell->setValue($currentRepair->set);
                                 $cell->setAlignment('left');
                                 $cell->setValignment('top');
                                 $cell->setFontFamily('Verdana');
@@ -493,7 +493,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I21',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getAppearance());
+                                $cell->setValue($currentRepair->appearance);
                                 $cell->setAlignment('left');
                                 $cell->setValignment('top');
                                 $cell->setFontFamily('Verdana');
@@ -1100,14 +1100,14 @@ class ExcelDocument implements Document
                                 $sheet->cell(
                                     'A'.($iRepair + 2),
                                     function ($cell) use ($repair) {
-                                        $cell->setValue($repair->getReceiptNumber());
+                                        $cell->setValue($repair->receipt_number);
                                     }
                                 );
 
                                 $sheet->cell(
                                     'B'.($iRepair + 2),
                                     function ($cell) use ($repair) {
-                                        $cell->setValue($repair->getFullName());
+                                        $cell->setValue($repair->full_name);
                                     }
                                 );
 
@@ -1121,7 +1121,7 @@ class ExcelDocument implements Document
                                 $sheet->cell(
                                     'D'.($iRepair + 2),
                                     function ($cell) use ($repair) {
-                                        $cell->setValue($repair->getClient()->getFullName());
+                                        $cell->setValue($repair->getClient()->full_name);
                                     }
                                 );
 

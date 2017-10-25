@@ -24,19 +24,6 @@
                     <input type="hidden" name="itemId" id="editItemId">
                     {{ Form::close() }}
                 </div>
-                <div class="form select">
-                    {{ Form::open(array('url' => '', 'id' => 'selectItemsForm')) }}
-                    <input type="hidden" name="selectItemId" id="selectItemId">
-                    <div class="selector">
-                        <span>В ремонте</span>
-                        <select name="status" class="inp_select">
-                            <option value="0">В ремонте</option>
-                            <option value="1">На выдаче</option>
-                            <option value="2">У клиента</option>
-                        </select>
-                    </div>
-                    {{ Form::close() }}
-                </div>
             </div>
             <div class="buttons">
                 <div class="admin-panel__buttons delete">
@@ -48,9 +35,6 @@
                 </div>
                 <div class="admin-panel__buttons edit">
                     <button class="admin-panel__button" type="submit" form="editItemsForm">Ок</button>
-                </div>
-                <div class="admin-panel__buttons select">
-                    <button class="admin-panel__button" type="submit" form="selectItemsForm">Ок</button>
                 </div>
             </div>
         </div>

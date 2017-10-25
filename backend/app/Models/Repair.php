@@ -57,6 +57,8 @@ class Repair extends SearchableModel
         'category_id',
         'worker_id',
         'reception_place_id',
+        'token',
+        'receipt_number',
         'created_at',
         'updated_at',
     ];
@@ -84,9 +86,33 @@ class Repair extends SearchableModel
     protected $with = [
         'category',
         'brand',
-        'receptionPlace',
+        'reception_place',
         'client',
+        'worker',
+        'repairDescriptions',
+        'spares',
     ];
+
+    protected $appends = [
+        'link',
+        'name',
+        'full_name',
+    ];
+
+    public function getLinkAttribute()
+    {
+        return route('repairs.show', ['id' => $this->id]);
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->getBrand()->getName().' '.$this->title;
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->getCategory()->getName().' '.$this->name;
+    }
 
     public function toSearchArray()
     {
@@ -96,127 +122,13 @@ class Repair extends SearchableModel
         return $searchArray;
     }
 
-    public function setHashCode($code)
-    {
-        $this->code = $code;
-    }
-
-    public function getHashCode()
-    {
-        return $this->code;
-    }
-
-    public function setApproximateCost($cost)
-    {
-        $this->approximate_cost = $cost;
-    }
-
-    public function getApproximateCost()
-    {
-        return $this->approximate_cost;
-    }
-
-    public function getStatus()
-    {
-        return $this->current_status;
-    }
-
-    public function setStatus($status)
-    {
-        $this->current_status = $status;
-    }
-
     public function getStatusName()
     {
-        switch ($this->getStatus()){
+        switch ($this->status){
             case self::STATUS_REPAIR: return self::STATUS_REPAIR_NAME;
             case self::STATUS_COMPLETE: return self::STATUS_COMPLETE_NAME;
             case self::STATUS_ISSUED: return self::STATUS_ISSUED_NAME;
         }
-    }
-
-    public function getCode()
-    {
-        return $this->token;
-    }
-
-    public function setCode()
-    {
-        if (!$this->getCode()) {
-            $this->token = substr(md5(time()), -8, 8);;
-        }
-    }
-
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    public function getReceiptNumber()
-    {
-        return $this->receipt_number;
-    }
-
-    public function setReceiptNumber($receiptNumber)
-    {
-        if (!$this->getReceiptNumber()) {
-            $this->receipt_number = $receiptNumber;
-        }
-    }
-
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-    }
-
-    public function getSet()
-    {
-        return $this->set;
-    }
-
-    public function setSet($set)
-    {
-        $this->set = $set;
-    }
-
-    public function getDefect()
-    {
-        return $this->defect;
-    }
-
-    public function setDefect($defect)
-    {
-        $this->defect = $defect;
-    }
-
-    public function getAppearance()
-    {
-        return $this->appearance;
-    }
-
-    public function setAppearance($appearance)
-    {
-        $this->appearance = $appearance;
-    }
-
-    public function getFullName()
-    {
-        return $this->getCategory()->getName().' '.$this->getName();
-    }
-
-    public function getName()
-    {
-        return $this->getBrand()->getName().' '.$this->getTitle();
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     public function getCreatedForPrintDate()
@@ -297,13 +209,8 @@ class Repair extends SearchableModel
         $this->completed_at = Carbon::now();
     }
 
-    public function getLinkHref()
-    {
-        return '/admin/repair/'.$this->getId();
-    }
-
     public function isIssued()
     {
-        return $this->getStatus() === self::STATUS_ISSUED;
+        return $this->status === self::STATUS_ISSUED;
     }
 }

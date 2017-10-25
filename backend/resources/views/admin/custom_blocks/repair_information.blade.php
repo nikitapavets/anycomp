@@ -16,7 +16,7 @@
             </div>
             <div class="generalInfo__block">
                 <div class="generalInfo__title">
-                    {{$block['repair']['product_full_name']}}
+                    {{$block['repair']['full_name']}}
                 </div>
                 <div class="generalInfo__date">
                     @if($block['repair']['completed_at'])
@@ -31,7 +31,7 @@
                 </div>
                 <div class="generalInfo__client infoBox client">
                     <a class="client__field" href="{{$block['repair']['client']['link']}}">{{$block['repair']['client']['full_name']}}</a>
-                    <a class="client__field" href="#">{{$block['repair']['client']['organization']}}</a>
+                    <a class="client__field" href="#">{{$block['repair']['client']['organization']['name']}}</a>
                     <div class="client__field">{{$block['repair']['client']['mobile_phone_native']}}</div>
                     <div class="client__field">{{$block['repair']['client']['home_phone_native']}}</div>
                 </div>
@@ -53,35 +53,35 @@
             </div>
             <div class="infoField">
                 <div class="infoField__title">Название</div>
-                <div class="infoField__value">{{$block['repair']['product_full_name']}}</div>
+                <div class="infoField__value">{{$block['repair']['full_name']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">Серийный номер</div>
-                <div class="infoField__value">{{$block['repair']['product_hash_code']}}</div>
+                <div class="infoField__value">{{$block['repair']['code']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">Неисправность</div>
-                <div class="infoField__value">{{$block['repair']['product_defect']}}</div>
+                <div class="infoField__value">{{$block['repair']['defect']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">Внешний вид</div>
-                <div class="infoField__value">{{$block['repair']['product_appearance']}}</div>
+                <div class="infoField__value">{{$block['repair']['appearance']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">В комплекте</div>
-                <div class="infoField__value">{{$block['repair']['product_set']}}</div>
+                <div class="infoField__value">{{$block['repair']['set']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">Комментарий</div>
-                <div class="infoField__value">{{$block['repair']['product_comment']}}</div>
+                <div class="infoField__value">{{$block['repair']['comment']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">Ориентировочная стоимость</div>
-                <div class="infoField__value">{{$block['repair']['product_approximate_cost']}}</div>
+                <div class="infoField__value">{{$block['repair']['approximate_cost']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">Место приема товара</div>
-                <div class="infoField__value">{{$block['repair']['product_reception_place']}}</div>
+                <div class="infoField__value">{{$block['repair']['reception_place']['name']}}</div>
             </div>
             <div class="infoField">
                 <div class="infoField__title">Принял в ремонт</div>
@@ -122,7 +122,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($block['repair']['descriptions'] as $description)
+                    @foreach($block['repair']['repairDescriptions'] as $description)
                         <tr data-id="{{$description['id']}}">
                             <td class="flexibleTable__checker">
                                 <div class="checkers">

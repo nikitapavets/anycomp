@@ -35,10 +35,11 @@ use App\Models\Database\Organization;
 use App\Models\Database\City;
 use App\Interfaces\ExcelDocument;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class RepairController extends Controller
 {
-    public function repairList(Request $request)
+    public function index(Request $request)
     {
         $elasticsearchRepairService = new ElasticSearchService(new Repair);
         $tab = $request->tab ?? 0;
@@ -114,7 +115,7 @@ class RepairController extends Controller
         $tableAction = new TableAction(
             TableAction::TYPE_CREATE,
             TableAction::FORM_EXTERNAL,
-            '/admin/repair/choose_client'
+            route('admin.repairs.choose_client')
         );
         $tableActions->pushTableAction($tableAction);
 
@@ -138,7 +139,7 @@ class RepairController extends Controller
     {
         $block = [];
         $block['title'] = 'Поиск клиента';
-        $block['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
+        $block['clients'] = Client::all()->toArray();
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
@@ -154,16 +155,130 @@ class RepairController extends Controller
         );
     }
 
-    public function repairCreateUpdate(Request $request)
+    public function create(Request $request)
     {
-        /**
-         * @var Repair $repair
-         */
-        $repair = Repair::firstOrNew(['id' => $request->repair_id ?? 0]);
-        if($request->client_id && !$request->repair_id) {
-            $repair->setClient(Client::find($request->client_id));
-        }
+        $repair = new Repair();
+        $client = Client::findOrNew($request->client_id);
+        $repair->setClient($client);
 
+        $widgets = $this->generateView($repair);
+
+        $form = array(
+            'widgets' => $widgets,
+            'url' => route('repairs.store'),
+        );
+
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+        $page = new FormPage('Прием техники в ремонт');
+
+        return view($page->getViewName(),
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'form' => $form,
+            ]
+        );
+    }
+
+    public function store(Request $request)
+    {
+        DB::transaction(function() use ($request) {
+            $client = Client::find($request->client_id);
+            $client->fill($request->all());
+            $client->setOrganization($request->organization_id, $request->organization_new);
+            $client->setCity($request->city_id, $request->city_new);
+            $client->setCityType($request->city_type_id, $request->city_type_new);
+            $client->save();
+
+            $repair = new Repair($request->all());
+            $repair->setClient($client);
+            $repair->setAdmin(Admin::getAuthAdmin());
+            $repair->setCategory($request->category_id, $request->category_new);
+            $repair->setBrand($request->brand_id, $request->brand_new);
+            $repair->setReceptionPlace($request->reception_place_id);
+            $repair->setWorker($request->worker_id);
+            $repair->save();
+        });
+
+        return redirect()->route('repairs.index');
+    }
+
+    public function show($id)
+    {
+        $repair = Repair::find($id);
+
+//        dd($repair->toArray());
+        $block = [];
+        $block['title'] = 'Техника';
+        $block['repair'] = $repair;
+
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+        $page = new Page(sprintf('Ремонт %s', $repair->full_name), 'admin.repair_show');
+
+        return view($page->getViewName(),
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'block' => $block
+            ]
+        );
+    }
+
+    public function edit($id)
+    {
+        $repair = Repair::find($id);
+        $widgets = $this->generateView($repair);
+
+        $form = array(
+            'widgets' => $widgets,
+            'method' => 'put',
+            'url' => route('repairs.update', ['id' => $repair->id]),
+        );
+
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+        $page = new FormPage('Изменение техники находящийся в ремонт');
+
+        return view($page->getViewName(),
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'form' => $form,
+            ]
+        );
+    }
+
+    public function update(Request $request, $id)
+    {
+        $repair = Repair::find($id);
+
+        DB::transaction(function() use ($request, $repair) {
+            $client = Client::find($request->client_id);
+            $client->fill($request->all());
+            $client->setOrganization($request->organization_id, $request->organization_new);
+            $client->setCity($request->city_id, $request->city_new);
+            $client->setCityType($request->city_type_id, $request->city_type_new);
+            $client->save();
+
+            $repair->fill($request->all());
+            $repair->setAdmin(Admin::getAuthAdmin());
+            $repair->setCategory($request->category_id, $request->category_new);
+            $repair->setBrand($request->brand_id, $request->brand_new);
+            $repair->setReceptionPlace($request->reception_place_id);
+            $repair->setWorker($request->worker_id);
+            $repair->save();
+        });
+
+        return redirect()->route('repairs.index');
+    }
+
+    private function generateView(Repair $repair)
+    {
         $widgets = [];
 
         // Section 1 (about client)
@@ -179,58 +294,58 @@ class RepairController extends Controller
         $widget->setValueType('hidden');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Фамилия', 'client_second_name', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getSecondName() : false);
+        $widget = new WidgetInput('Фамилия', 'second_name', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->second_name : false);
         $widget->setValidationType(WidgetInput::VALIDATION_TYPE_ONLY_RUS);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Имя', 'client_first_name', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getFirstName() : false);
+        $widget = new WidgetInput('Имя', 'first_name', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->first_name : false);
         $widget->setValidationType(WidgetInput::VALIDATION_TYPE_ONLY_RUS);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Отчество', 'client_father_name', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getFatherName() : false);
+        $widget = new WidgetInput('Отчество', 'father_name', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->father_name : false);
         $widget->setValidationType(WidgetInput::VALIDATION_TYPE_ONLY_RUS);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetSelect('Организация', 'client_organization_id', false);
+        $widget = new WidgetSelect('Организация', 'organization_id', false);
         $widget->setValue($repair->getClient() ? $repair->getClient()->getOrganization() : false);
         $widget->setSelectItems(Organization::getAll());
         $widget->setAllowAddName('client_organization_new');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Мобильный телефон', 'client_mobile_phone', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getMobilePhone() : false);
+        $widget = new WidgetInput('Мобильный телефон', 'mobile_phone', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->mobile_phone : false);
         $widget->setValueType(WidgetInput::VALUE_TYPE_PHONE);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Домашний телефон', 'client_home_phone', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getHomePhone() : false);
+        $widget = new WidgetInput('Домашний телефон', 'home_phone', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->home_phone : false);
         $widget->setValueType(WidgetInput::VALUE_TYPE_HOME_PHONE);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetSelect('Тип населённого пункта', 'client_city_type_id', false);
+        $widget = new WidgetSelect('Тип населённого пункта', 'city_type_id', false);
         $widget->setValue($repair->getClient() ? $repair->getClient()->getCityType() : false);
         $widget->setSelectItems(CityType::getAll());
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetSelect('Населённый пункт', 'client_city_id', false);
+        $widget = new WidgetSelect('Населённый пункт', 'city_id', false);
         $widget->setValue($repair->getClient() ? $repair->getClient()->getCity() : false);
         $widget->setSelectItems(City::getAll());
         $widget->setAllowAddName('client_city_new');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Улица', 'client_street', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getStreet() : false);
+        $widget = new WidgetInput('Улица', 'address_street', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->address_street : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Дом', 'client_house', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getHouse() : false);
+        $widget = new WidgetInput('Дом', 'address_house', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->address_house : false);
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetInput('Квартира', 'client_flat', false);
-        $widget->setValue($repair->getClient() ? $repair->getClient()->getFlat() : false);
+        $widget = new WidgetInput('Квартира', 'address_flat', false);
+        $widget->setValue($repair->getClient() ? $repair->getClient()->address_flat : false);
         $widgetCollection->pushWidget($widget);
 
         $widgets[] = $widgetCollection->toArray();
@@ -238,44 +353,44 @@ class RepairController extends Controller
         // Section 2 (about product)
         $widgetCollection = new WidgetCollection('Информация о технике');
 
-        $widget = new WidgetSelect('Категория', 'product_category_id', true);
+        $widget = new WidgetSelect('Категория', 'category_id', true);
         $widget->setValue($repair ? $repair->getCategory() : false);
         $widget->setSelectItems(Category::getAll());
         $widget->setAllowAddName('product_category_new');
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetSelect('Бренд', 'product_brand_id', true);
+        $widget = new WidgetSelect('Бренд', 'brand_id', true);
         $widget->setValue($repair ? $repair->getBrand() : false);
         $widget->setSelectItems(Brand::getAll());
         $widget->setAllowAddName('product_brand_new');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Название', 'title', false);
-        $widget->setValue($repair ? $repair->getTitle() : false);
+        $widget->setValue($repair->title);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Заводской номер', 'code', false);
-        $widget->setValue($repair ? $repair->getHashCode() : false);
+        $widget->setValue($repair ? $repair->code : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('В комплекте', 'set', false);
-        $widget->setValue($repair ? $repair->getSet() : false);
+        $widget->setValue($repair ? $repair->set : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Неисправность', 'defect', false);
-        $widget->setValue($repair ? $repair->getDefect() : false);
+        $widget->setValue($repair ? $repair->defect : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Внешний вид', 'appearance', false);
-        $widget->setValue($repair ? $repair->getAppearance() : false);
+        $widget->setValue($repair ? $repair->appearance : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Комментарий', 'comment', false);
-        $widget->setValue($repair ? $repair->getComment() : false);
+        $widget->setValue($repair ? $repair->comment : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Ориентировочная стоимость', 'approximate_cost', false);
-        $widget->setValue($repair ? $repair->getApproximateCost() : false);
+        $widget->setValue($repair ? $repair->approximate_cost : false);
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetSelect('Место приема заказа', 'reception_place_id', true);
@@ -290,31 +405,7 @@ class RepairController extends Controller
 
         $widgets[] = $widgetCollection->toArray();
 
-        $form = array(
-            'widgets' => $widgets,
-            'url' => '/admin/repair/save',
-        );
-
-        $userAdmin = Admin::getAuthAdmin();
-        $menu = AdminMenu::getAdminMenu();
-        $page = new FormPage('Добавление техники в ремонт');
-
-        return view($page->getViewName(),
-            [
-                'admin' => $userAdmin,
-                'adminMenu' => $menu,
-                'page' => $page,
-                'form' => $form,
-            ]
-        );
-        //todo-pavet
-    }
-
-    public function repairSave(Request $request)
-    {
-        RepairRepository::saveRepair($request);
-
-        return redirect()->route('admin.repair.list');
+        return $widgets;
     }
 
     public function repairDelete(Request $request)
@@ -335,7 +426,7 @@ class RepairController extends Controller
     {
         $currentRepair = RepairRepository::getRepairById($request->input('id'));
         $fileInfo = array(
-            'file_name' => 'Квитанция о приеме в ремонт № ' . $currentRepair->getReceiptNumber() . ' от ' . $currentRepair->getCreatedForPrintDate(),
+            'file_name' => 'Квитанция о приеме в ремонт № ' . $currentRepair->receipt_number . ' от ' . $currentRepair->getCreatedForPrintDate(),
             'list_name' => 'Квитанция о приеме в ремонт',
         );
         $orgInfo = array(
@@ -382,28 +473,6 @@ class RepairController extends Controller
                 RepairRepository::getRepairsByStatus(Repair::STATUS_REPAIR, false),
                 RepairRepository::getRepairsByStatus(Repair::STATUS_COMPLETE, false),
                 RepairRepository::getRepairsByStatus(Repair::STATUS_ISSUED, false)
-            ]
-        );
-    }
-
-    public function show($id)
-    {
-        $repair = Repair::find($id);
-
-        $block = [];
-        $block['title'] = 'Техника';
-        $block['repair'] = RepairRepository::repairToArray($repair);
-
-        $userAdmin = Admin::getAuthAdmin();
-        $menu = AdminMenu::getAdminMenu();
-        $page = new Page(sprintf('Ремонт %s', $repair->getFullName()), 'admin.repair_show');
-
-        return view($page->getViewName(),
-            [
-                'admin' => $userAdmin,
-                'adminMenu' => $menu,
-                'page' => $page,
-                'block' => $block
             ]
         );
     }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Services\StringTransformator;
-use App\Services\StringValidator;
 use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
 use App\Traits\Relations\BelongTo\CityTrait;
@@ -14,6 +13,13 @@ use Illuminate\Support\Facades\Hash;
 
 class Client extends SearchableModel
 {
+    use OrganizationTrait;
+    use CityTypeTrait;
+    use IdTrait;
+    use CityTrait;
+    use CreatedAtTrait;
+    use RepairsTrait;
+
     const CLIENT_UNKNOWN = 'Неизвестный';
     const RANG_NO_REGISTERED = '1';
     const RANG_REGISTERED = '2';
@@ -28,159 +34,61 @@ class Client extends SearchableModel
 
     protected $guarded = [
         'id',
+        'organization_id',
+        'city_id',
+        'city_type_id',
+        'email',
+        'password',
         'created_at',
         'updated_at',
+    ];
+
+    protected $fillable = [
+      'second_name',
+      'first_name',
+      'father_name',
+      'mobile_phone',
+      'home_phone',
+      'address_street',
+      'address_house',
+      'address_flat',
     ];
 
     protected $hidden = [
         'organization_id',
         'city_id',
+        'city_type_id',
     ];
 
     protected $with = [
         'organization',
         'city',
+        'cityType',
     ];
 
-    use OrganizationTrait;
-    use CityTypeTrait;
-    use IdTrait;
-    use CityTrait;
-    use CreatedAtTrait;
-    use RepairsTrait;
+    protected $appends = [
+        'full_name',
+        'mobile_phone_native',
+        'home_phone_native',
+        'address',
+        'link',
+    ];
 
-    public function setFirstName($firstName)
-    {
-        $this->first_name = StringValidator::validateStr($firstName, $this->first_name);
-    }
-
-    public function setFatherName($fatherName)
-    {
-        $this->father_name = StringValidator::validateStr($fatherName, $this->father_name);
-    }
-
-    public function setSecondName($secondName)
-    {
-        $this->second_name = StringValidator::validateStr($secondName, $this->second_name);
-    }
-
-    public function setMobilePhone($mobilePhone)
+    public function getMobilePhoneNativeAttribute()
     {
         $stringTransformator = new StringTransformator();
-        $this->mobile_phone = StringValidator::validateStr($stringTransformator->clearPhone($mobilePhone), $this->mobile_phone);
+
+        return $stringTransformator->transformToNativePhoneFormat($this->mobile_phone);
     }
 
-    public function setHomePhone($homePhone)
+    public function getHomePhoneNativeAttribute()
     {
         $stringTransformator = new StringTransformator();
-        $this->home_phone = StringValidator::validateStr($stringTransformator->clearPhone($homePhone), $this->home_phone);
+
+        return $stringTransformator->transformToNativePhoneFormat($this->home_phone);
     }
 
-    public function getStreet()
-    {
-        return $this->address_street;
-    }
-
-    public function setStreet($street)
-    {
-        $this->address_street = StringValidator::validateStr($street, $this->address_street);
-    }
-
-    public function getHouse()
-    {
-        return $this->address_house;
-    }
-
-    public function setHouse($house)
-    {
-        $this->address_house = StringValidator::validateStr($house, $this->address_house);
-    }
-
-    public function getFlat()
-    {
-        return $this->address_flat;
-    }
-
-    public function setFlat($flat)
-    {
-        $this->address_flat = StringValidator::validateStr($flat, $this->address_flat);
-    }
-
-    public function getRang()
-    {
-        return $this->rang;
-    }
-
-    public function setRang($rang)
-    {
-        $this->rang = StringValidator::validateStr($rang, $this->rang);
-    }
-
-    public function getFullName()
-    {
-        $fullName = '';
-        if ($this->getSecondName()) {
-            $fullName = $this->getSecondName();
-            if ($this->getFirstName()) {
-                $fullName .= ' ' . $this->getFirstName();
-                if ($this->getFatherName()) {
-                    $fullName .= ' ' . $this->getFatherName();
-                }
-            }
-        } elseif ($this->getFirstName()) {
-            $fullName = $this->getFirstName();
-            if ($this->getFatherName()) {
-                $fullName .= ' ' . $this->getFatherName();
-            }
-        } elseif ($this->getOrganization()) {
-            $fullName = $this->getOrganization()->getName();
-        } else {
-            $fullName = self::CLIENT_UNKNOWN;
-        }
-
-        return $fullName;
-    }
-
-    public function getSecondName()
-    {
-        return $this->second_name;
-    }
-
-    public function getFirstName()
-    {
-        return $this->first_name;
-    }
-
-    public function getFatherName()
-    {
-        return $this->father_name;
-    }
-
-    public function getShortName()
-    {
-        $firstName = $this->getFirstName() ? mb_substr($this->getFirstName(), 0, 1) : '';
-        $fatherName = $this->getFatherName() ? mb_substr($this->getFatherName(), 0, 1) : '';
-        $shortName = '';
-        if ($this->getSecondName()) {
-            $shortName .= $this->getSecondName();
-            if ($firstName) {
-                $shortName .= ' ' . $firstName . '.';
-                if ($fatherName) {
-                    $shortName .= ' ' . $fatherName . '.';
-                }
-            }
-        } elseif ($this->getFirstName()) {
-            $shortName = $this->getFirstName();
-        } elseif ($this->getOrganization()) {
-            $shortName = $this->getOrganization()->getName();
-        } else {
-            $shortName = self::CLIENT_UNKNOWN;
-        }
-
-        return $shortName;
-    }
-
-    public function getAddress()
+    public function getAddressAttribute()
     {
         $address = '';
 
@@ -203,58 +111,85 @@ class Client extends SearchableModel
         return $address;
     }
 
+    public function getFullNameAttribute()
+    {
+        $fullName = '';
+        if ($this->second_name) {
+            $fullName = $this->second_name;
+            if ($this->first_name) {
+                $fullName .= ' ' . $this->first_name;
+                if ($this->father_name) {
+                    $fullName .= ' ' . $this->father_name;
+                }
+            }
+        } elseif ($this->first_name) {
+            $fullName = $this->first_name;
+            if ($this->father_name) {
+                $fullName .= ' ' . $this->father_name;
+            }
+        } elseif ($this->getOrganization()) {
+            $fullName = $this->getOrganization()->getName();
+        } else {
+            $fullName = self::CLIENT_UNKNOWN;
+        }
+
+        return $fullName;
+    }
+
+    public function getLinkAttribute()
+    {
+        return route('clients.show', ['id' => $this->id]);
+    }
+
+    public function setMobilePhoneAttribute($value)
+    {
+        $stringTransformator = new StringTransformator();
+        $this->attributes['mobile_phone'] = $stringTransformator->clearPhone($value);
+    }
+
+    public function setHomePhoneAttribute($value)
+    {
+        $stringTransformator = new StringTransformator();
+        $this->attributes['home_phone'] = $stringTransformator->clearPhone($value);
+    }
+
+    public function getShortName()
+    {
+        $firstName = $this->first_name ? mb_substr($this->first_name, 0, 1) : '';
+        $fatherName = $this->father_name ? mb_substr($this->father_name, 0, 1) : '';
+        $shortName = '';
+        if ($this->second_name) {
+            $shortName .= $this->second_name;
+            if ($firstName) {
+                $shortName .= ' ' . $firstName . '.';
+                if ($fatherName) {
+                    $shortName .= ' ' . $fatherName . '.';
+                }
+            }
+        } elseif ($this->first_name) {
+            $shortName = $this->first_name;
+        } elseif ($this->getOrganization()) {
+            $shortName = $this->getOrganization()->getName();
+        } else {
+            $shortName = self::CLIENT_UNKNOWN;
+        }
+
+        return $shortName;
+    }
+
     public function getAllPhonesOnNativeFormat()
     {
         $phones = '';
-        if ($this->getMobilePhone() && $this->getHomePhone()) {
-            $phones .= $this->getMobilePhoneOnNativeFormat();
-            $phones .= ', ' . $this->getHomePhoneOnNativeFormat();
-        } elseif ($this->getMobilePhone() && !$this->getHomePhone()) {
-            $phones .= $this->getMobilePhoneOnNativeFormat() . ' (моб.)';
-        } elseif (!$this->getMobilePhone() && $this->getHomePhone()) {
-            $phones .= $this->getHomePhoneOnNativeFormat() . ' (дом.)';
+        if ($this->mobile_phone && $this->home_phone) {
+            $phones .= $this->mobile_phone_native;
+            $phones .= ', ' . $this->home_phone_native;
+        } elseif ($this->mobile_phone && !$this->home_phone) {
+            $phones .= $this->mobile_phone_native . ' (моб.)';
+        } elseif (!$this->mobile_phone && $this->home_phone) {
+            $phones .= $this->home_phone_native . ' (дом.)';
         }
 
         return $phones;
-    }
-
-    public function getMobilePhone()
-    {
-        return $this->mobile_phone;
-    }
-
-    public function getHomePhone()
-    {
-        return $this->home_phone;
-    }
-
-    public function getMobilePhoneOnNativeFormat()
-    {
-        $stringTransformator = new StringTransformator();
-
-        return $stringTransformator->transformToNativePhoneFormat($this->getMobilePhone());
-    }
-
-    public function getHomePhoneOnNativeFormat()
-    {
-        $stringTransformator = new StringTransformator();
-
-        return $stringTransformator->transformToNativeHomePhoneFormat($this->getHomePhone());
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function setEmail($email)
-    {
-        $this->email = StringValidator::validateStr($email, $this->email);
-    }
-
-    public function getPassword()
-    {
-        return $this->password;
     }
 
     public function setPassword($password)
@@ -266,11 +201,6 @@ class Client extends SearchableModel
 
     public function checkPassword($password)
     {
-        return Hash::check($password, $this->getPassword());
-    }
-
-    public function getLinkHref()
-    {
-        return '/admin/client/' . $this->getId();
+        return Hash::check($password, $this->password);
     }
 }

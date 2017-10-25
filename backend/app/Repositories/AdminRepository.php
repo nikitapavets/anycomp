@@ -28,9 +28,9 @@ class AdminRepository
     {
         return [
             'id' => $admin->getId(),
-            'second_name' => $admin->getSecondName(),
-            'first_name' => $admin->getFirstName(),
-            'father_name' => $admin->getFatherName(),
+            'second_name' => $admin->second_name,
+            'first_name' => $admin->first_name,
+            'father_name' => $admin->father_name,
             'full_name' => $admin->getFullName(),
             'sf_name' => $admin->getSFName(),
             'short_name' => $admin->getShortName(),

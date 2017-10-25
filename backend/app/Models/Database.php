@@ -6,18 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Database extends Model
 {
-	const NO_SELECTED = 1;
+    const NO_SELECTED = 1;
 
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-    ];
+    protected $guarded
+        = [
+            'id',
+            'created_at',
+            'updated_at',
+        ];
 
-    protected $fillable = [
-        'name',
-    ];
-
+    protected $fillable
+        = [
+            'name',
+        ];
 
 
     public static function storeDb($name)
@@ -26,99 +27,112 @@ class Database extends Model
         $st = new $className;
         $st->name = $name;
         $st->save();
+
         return $st;
     }
 
-	/**
-	 * @param $id
-	 * @return self
-	 */
-	public static function getById($id) {
+    /**
+     * @param $id
+     *
+     * @return self
+     */
+    public static function getById($id)
+    {
 
-		return self::find($id);
-	}
+        return self::find($id);
+    }
 
-	/**
-	 * @param $name
-	 * @return self
-	 */
-	public static function getByName($name) {
+    /**
+     * @param $name
+     *
+     * @return self
+     */
+    public static function getByName($name)
+    {
 
-		return self::where('name', '=', $name)->first();
-	}
+        return self::where('name', '=', $name)->first();
+    }
 
-	/**
-	 * @return self[]
-	 */
-	public static function getAll() {
+    /**
+     * @return self[]
+     */
+    public static function getAll()
+    {
 
-		return self::where('id', '!=', self::NO_SELECTED)
-			->orderBy('name')
-			->get();
-	}
+        return self::where('id', '!=', self::NO_SELECTED)
+            ->orderBy('name')
+            ->get();
+    }
 
-	/**
-	 * @param int $id
-	 * @param string $name
-	 * @return self
-	 */
-	public static function updateDb($id, $name)
-	{
-		/**
-		 * @var self $st
-		 */
-		$st = self::find($id);
-		$st->name = $name;
-		$st->save();
-		return $st;
-	}
+    /**
+     * @param int    $id
+     * @param string $name
+     *
+     * @return self
+     */
+    public static function updateDb($id, $name)
+    {
+        /**
+         * @var self $st
+         */
+        $st = self::find($id);
+        $st->name = $name;
+        $st->save();
 
-	/**
-	 * @param string $stringIds
-	 */
-	public static function unsetDb($stringIds) {
+        return $st;
+    }
 
-		$arrayIds = explode(',', $stringIds);
+    /**
+     * @param string $stringIds
+     */
+    public static function unsetDb($stringIds)
+    {
 
-		foreach ($arrayIds as $id) {
-			self::find($id)->delete();
-		}
-	}
+        $arrayIds = explode(',', $stringIds);
 
-	/**
-	 * @return int
-	 */
-	public function getId() {
+        foreach ($arrayIds as $id) {
+            self::find($id)->delete();
+        }
+    }
 
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
 
-	/**
-	 * @param bool $details
-	 * @return string
-	 */
-	public function getName($details = false) {
+        return $this->id;
+    }
 
-		if($this->isSelected()) {
-			return $this->name;
-		} else {
-			return $details ? 'Выбор' : '';
-		}
-	}
+    /**
+     * @param bool $details
+     *
+     * @return string
+     */
+    public function getName($details = false)
+    {
 
-	/**
-	 * @param string $name
-	 */
-	public function setName($name)
+        if ($this->isSelected()) {
+            return $this->name;
+        } else {
+            return $details ? 'Выбор' : '';
+        }
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
     {
         $this->name = $name;
-	}
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isSelected() {
+    /**
+     * @return bool
+     */
+    public function isSelected()
+    {
 
-		return $this->getId() != self::NO_SELECTED;
-	}
+        return $this->getId() != self::NO_SELECTED;
+    }
 }
