@@ -9,17 +9,18 @@ namespace App\Classes\Table;
 class TableLinkCell extends TableCell
 {
     const TYPE_LINK = 'link';
+    const TARGET_SELF = '_self';
     const TARGET_BLANK = '_blank';
 
     private $_link_href;
     private $_link_target;
     private $_link_class;
 
-    function __construct($value, $type = self::TYPE_LINK)
+    function __construct($value, $target = self::TARGET_BLANK, $type = self::TYPE_LINK)
     {
         parent::__construct($value, $type);
 
-        $this->_link_target = self::TARGET_BLANK;
+        $this->_link_target = $target;
     }
 
     /**

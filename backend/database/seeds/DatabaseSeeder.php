@@ -11,13 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        $this->call(RepairStatusesTableSeeder::class);
 //        $this->call(CategoryTableSeeder::class);
 //        $this->call(AdminMenusSeeder::class);
-//        $this->call(AdminSubMenuSeeder::class);
+        $this->call(AdminSubMenuSeeder::class);
 //        $this->call(BrandsTableSeeder::class);
 //         $this->call(CityTypesSeeder::class);
 //        $this->call(SetNoSelectedDatabaseSeeder::class);
-        $this->call(UserTableSeeder::class);
+//        $this->call(UserTableSeeder::class);
     }
 }

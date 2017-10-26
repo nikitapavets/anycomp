@@ -12,43 +12,60 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-	    DB::table('categories')->delete();
+        DB::table('categories')->delete();
 
-	    Category::create([
-		    'category' => 'Компьютер'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Компьютер',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Ноутбук'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Ноутбук',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Планшет'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Планшет',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Телефон'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Телефон',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Навигатор'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Навигатор',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Принтер'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Принтер',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Клавиатура'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Клавиатура',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Мышь'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Мышь',
+            ]
+        );
 
-	    Category::create([
-		    'category' => 'Блок питания'
-	    ]);
+        Category::create(
+            [
+                'category' => 'Блок питания',
+            ]
+        );
     }
 }
-

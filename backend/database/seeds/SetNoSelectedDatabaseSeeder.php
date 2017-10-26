@@ -30,99 +30,137 @@ class SetNoSelectedDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        TvTuner::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        TvTuner::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        Year::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        Year::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-	    ProcessorCore::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        ProcessorCore::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-	    CityType::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        CityType::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        ComputerType::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        ComputerType::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        ProcessorStage::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        ProcessorStage::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        Processor::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        Processor::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        Material::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        Material::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        ScreenSurface::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        ScreenSurface::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        RamType::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        RamType::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        HddType::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        HddType::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        MemoryCard::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        MemoryCard::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        GraphicCard::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        GraphicCard::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        GraphicCardType::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        GraphicCardType::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        CursorControlType::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        CursorControlType::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        Complect::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        Complect::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        City::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        City::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        StorageSize::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        StorageSize::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
 
-        ReceptionPlace::firstOrCreate([
-            'id' => '1',
-            'name' => 'No selected'
-        ]);
+        ReceptionPlace::firstOrCreate(
+            [
+                'id'   => '1',
+                'name' => 'No selected',
+            ]
+        );
     }
 }

@@ -108,7 +108,7 @@ class RepairController extends Controller
         $tableAction = new TableAction(
             TableAction::TYPE_DELETE,
             TableAction::FORM_INLINE,
-            '/admin/repair/delete'
+            route('admin.repairs.delete')
         );
         $tableActions->pushTableAction($tableAction);
 
@@ -165,7 +165,7 @@ class RepairController extends Controller
 
         $form = array(
             'widgets' => $widgets,
-            'url' => route('repairs.store'),
+            'url' => route('admin.repairs.store'),
         );
 
         $userAdmin = Admin::getAuthAdmin();
@@ -185,7 +185,7 @@ class RepairController extends Controller
     public function store(Request $request)
     {
         DB::transaction(function() use ($request) {
-            $client = Client::find($request->client_id);
+            $client = Client::findOrNew($request->client_id);
             $client->fill($request->all());
             $client->setOrganization($request->organization_id, $request->organization_new);
             $client->setCity($request->city_id, $request->city_new);
@@ -202,14 +202,13 @@ class RepairController extends Controller
             $repair->save();
         });
 
-        return redirect()->route('repairs.index');
+        return redirect()->route('admin.repairs.index');
     }
 
     public function show($id)
     {
         $repair = Repair::find($id);
 
-//        dd($repair->toArray());
         $block = [];
         $block['title'] = 'Техника';
         $block['repair'] = $repair;
@@ -236,7 +235,7 @@ class RepairController extends Controller
         $form = array(
             'widgets' => $widgets,
             'method' => 'put',
-            'url' => route('repairs.update', ['id' => $repair->id]),
+            'url' => route('admin.repairs.update', ['id' => $repair->id]),
         );
 
         $userAdmin = Admin::getAuthAdmin();
@@ -274,7 +273,15 @@ class RepairController extends Controller
             $repair->save();
         });
 
-        return redirect()->route('repairs.index');
+        return redirect()->route('admin.repairs.index');
+    }
+
+    public function delete(Request $request)
+    {
+        $repairIds = explode(',', $request->deleteItems);
+        Repair::destroy($repairIds);
+
+        return redirect()->route('admin.repairs.index');
     }
 
     private function generateView(Repair $repair)
@@ -408,13 +415,6 @@ class RepairController extends Controller
         return $widgets;
     }
 
-    public function repairDelete(Request $request)
-    {
-        RepairRepository::removeRepairs($request->deleteItems);
-
-        return redirect()->route('admin.repair.list');
-    }
-
     public function updateStatus(Request $request)
     {
         RepairRepository::updateRepairStatus(RepairRepository::getRepairById($request->selectItemId), $request->status);
@@ -424,19 +424,7 @@ class RepairController extends Controller
 
     public function printDoc(Request $request)
     {
-        $currentRepair = RepairRepository::getRepairById($request->input('id'));
-        $fileInfo = array(
-            'file_name' => 'Квитанция о приеме в ремонт № ' . $currentRepair->receipt_number . ' от ' . $currentRepair->getCreatedForPrintDate(),
-            'list_name' => 'Квитанция о приеме в ремонт',
-        );
-        $orgInfo = array(
-            'org_name' => 'ЧТУП "ЭниКомп"',
-            'org_address' => 'г. Лепель, ул. Ленинская, д. 9, каб. 1',
-            'org_phone' => '8-02132-4-62-62',
-        );
-
-        $excel = new ExcelDocument();
-        $excel->create($fileInfo, $orgInfo, $currentRepair);
+        RepairRepository::printReceipt(Repair::find($request->id));
     }
 
     public function statistics(Request $request)

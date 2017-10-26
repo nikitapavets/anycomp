@@ -21,7 +21,7 @@ Route::post('users/auth', ['uses' => 'UserController@post']);
 Route::post('order/client', ['uses' => 'OrderController@client']);
 Route::post('order/products', ['uses' => 'OrderController@products']);
 
-Route::post('repairs/updateStatus', 'RepairController@updateStatus');
+Route::post('repairs/update-status', 'RepairController@updateStatus');
 Route::resource('repairs', 'RepairController');
 
 Route::get('statistics/repairs', ['uses' => 'StatisticsController@repairs']);

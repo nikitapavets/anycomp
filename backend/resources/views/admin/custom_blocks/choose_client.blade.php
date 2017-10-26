@@ -10,7 +10,7 @@
                         <input type="text" class="admin-form-input" id="chooseClientField"/>
                     </div>
                     <div class="find__btn">
-                        {{link_to_route('repairs.create', 'Добавить клиента', [], ['class' => 'admin-form-button admin-form-button_slim admin-form-button_blue'])}}
+                        {{link_to_route('admin.repairs.create', 'Добавить клиента', [], ['class' => 'admin-form-button admin-form-button_slim admin-form-button_blue'])}}
                     </div>
                 </div>
                 <div class="choose-client__clientsList">
@@ -81,7 +81,7 @@
                              {{--id="clientInfoLastRepair">{{$block['clients'][0]['repairs'] ? $block['clients'][0]['repairs'][count($block['clients'][0]['repairs']) - 1]['receipt_number'] : '-'}}</div>--}}
                     {{--</div>--}}
                     <div class="client-info__btn">
-                        {{link_to_route('repairs.create', 'Добавить заказ', ['client_id' => $block['clients'][0]['id']], ['class' => 'admin-form-button admin-form-button_blue', 'id' => 'chooseClientAddOrder'])}}
+                        {{link_to_route('admin.repairs.create', 'Добавить заказ', ['client_id' => $block['clients'][0]['id']], ['class' => 'admin-form-button admin-form-button_blue', 'id' => 'chooseClientAddOrder'])}}
                     </div>
                 </div>
             </div>

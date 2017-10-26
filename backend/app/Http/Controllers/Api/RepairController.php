@@ -20,7 +20,7 @@ class RepairController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $repair = RepairRepository::getRepairById($request->repairId);
+        $repair = Repair::find($request->repairId);
         $repair->setStatus($request->statusId);
         $repair->save();
 

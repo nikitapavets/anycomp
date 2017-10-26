@@ -11,6 +11,7 @@
     "barryvdh/laravel-ide-helper": "^2.4",
     "bukashk0zzz/yml-generator": "^1.0",
     "cviebrock/laravel-elasticsearch": "^2.0",
+    "doctrine/dbal": "^2.6",
     "geoip2/geoip2": "^2.4",
     "intervention/image": "^2.3",
     "laravel/framework": "5.5.*",

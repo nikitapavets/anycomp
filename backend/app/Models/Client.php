@@ -138,7 +138,7 @@ class Client extends SearchableModel
 
     public function getLinkAttribute()
     {
-        return route('clients.show', ['id' => $this->id]);
+        return route('admin.clients.show', ['id' => $this->id]);
     }
 
     public function setMobilePhoneAttribute($value)

@@ -14,20 +14,26 @@ class CityTypesSeeder extends Seeder
     {
         DB::table('city_types')->delete();
 
-        CityType::create([
-            'name' => 'Город',
-            'short_name' => 'г.'
-        ]);
+        CityType::create(
+            [
+                'name'       => 'Город',
+                'short_name' => 'г.',
+            ]
+        );
 
-        CityType::create([
-            'name' => 'Деревня',
-            'short_name' => 'д.'
-        ]);
+        CityType::create(
+            [
+                'name'       => 'Деревня',
+                'short_name' => 'д.',
+            ]
+        );
 
-        CityType::create([
-            'name' => 'Городской посёлок',
-            'short_name' => 'г/п'
-        ]);
+        CityType::create(
+            [
+                'name'       => 'Городской посёлок',
+                'short_name' => 'г/п',
+            ]
+        );
 
     }
 }

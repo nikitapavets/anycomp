@@ -10,8 +10,8 @@
                     <img src="/images/repair/no-image.png" alt="No image" title="No image" class="image__src">
                 </div>
                 <div class="generalInfo__links">
-                    <a href="/admin/repair/{{$block['repair']['id']}}/update">Изменить</a>
-                    <a href="/admin/repair/print_doc?id={{$block['repair']['id']}}">Распечатать</a>
+                    <a href="{{route('admin.repairs.edit', ['id' => $block['repair']['id']])}}">Изменить</a>
+                    <a href="{{route('admin.repairs.print_doc', ['id' => $block['repair']['id']])}}">Распечатать</a>
                 </div>
             </div>
             <div class="generalInfo__block">
@@ -19,14 +19,14 @@
                     {{$block['repair']['full_name']}}
                 </div>
                 <div class="generalInfo__date">
-                    @if($block['repair']['completed_at'])
+                    @if($block['repair']['issued_at'])
                         <span>был</span>
                     @endif
                     <span>в ремонте с</span>
                     {{$block['repair']['created_at']}}
-                    @if($block['repair']['completed_at'])
+                    @if($block['repair']['issued_at'])
                         <span>по</span>
-                        {{$block['repair']['completed_at']}}
+                        {{$block['repair']['issued_at']}}
                     @endif
                 </div>
                 <div class="generalInfo__client infoBox client">
@@ -36,10 +36,10 @@
                     <div class="client__field">{{$block['repair']['client']['home_phone_native']}}</div>
                 </div>
                 <div class="generalInfo__changeStatus infoBox">
-                    <div class="changeStatus sender" data-link="/api/repairs/updateStatus">
-                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['status']['number'] == 0 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="0">В ремонте</a>
-                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['status']['number'] == 1 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="1">На выдаче</a>
-                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['status']['number'] == 2 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="2">У клиента</a>
+                    <div class="changeStatus sender" data-link="/api/repairs/update-status">
+                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['current_status'] == 0 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="0">В ремонте</a>
+                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['current_status'] == 1 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="1">На выдаче</a>
+                        <a href="#" class="changeStatus__item sender__push {{$block['repair']['current_status'] == 2 ? 'active' : ''}}" data-repair-id="{{$block['repair']['id']}}" data-status-id="2">У клиента</a>
                     </div>
                 </div>
             </div>

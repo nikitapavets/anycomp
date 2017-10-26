@@ -14,21 +14,29 @@ class BrandsTableSeeder extends Seeder
     {
         DB::table('brands')->delete();
 
-        Brand::create([
-            'name' => 'Asus'
-        ]);
+        Brand::create(
+            [
+                'name' => 'Asus',
+            ]
+        );
 
-        Brand::create([
-            'name' => 'Acer'
-        ]);
+        Brand::create(
+            [
+                'name' => 'Acer',
+            ]
+        );
 
-        Brand::create([
-            'name' => 'Samsung'
-        ]);
+        Brand::create(
+            [
+                'name' => 'Samsung',
+            ]
+        );
 
-        Brand::create([
-            'name' => 'Lenovo'
-        ]);
+        Brand::create(
+            [
+                'name' => 'Lenovo',
+            ]
+        );
 
     }
 }

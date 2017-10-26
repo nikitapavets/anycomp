@@ -74,4 +74,63 @@ class StringTransformator
 
         return $clearPhone;
     }
+
+    public static function dateToString($date)
+    {
+        $dateSting = '';
+        $dateSting .= date('d ', $date->getTimestamp());
+        switch (date('n', $date->getTimestamp())) {
+            case 1: {
+                $dateSting .= "января";
+                break;
+            }
+            case 2: {
+                $dateSting .= "февраля";
+                break;
+            }
+            case 3: {
+                $dateSting .= "марта";
+                break;
+            }
+            case 4: {
+                $dateSting .= "апреля";
+                break;
+            }
+            case 5: {
+                $dateSting .= "мая";
+                break;
+            }
+            case 6: {
+                $dateSting .= "июня";
+                break;
+            }
+            case 7: {
+                $dateSting .= "июля";
+                break;
+            }
+            case 8: {
+                $dateSting .= "августа";
+                break;
+            }
+            case 9: {
+                $dateSting .= "сентября";
+                break;
+            }
+            case 10: {
+                $dateSting .= "октября";
+                break;
+            }
+            case 11: {
+                $dateSting .= "ноября";
+                break;
+            }
+            case 12: {
+                $dateSting .= "декабря";
+                break;
+            }
+        }
+        $dateSting .= date(' Yг.', $date->getTimestamp());
+
+        return $dateSting;
+    }
 }

@@ -20,6 +20,11 @@ class Database extends Model
             'name',
         ];
 
+    public function getNameAttribute($name)
+    {
+        return $this->isSelected() ? $name : '';
+    }
+
 
     public static function storeDb($name)
     {

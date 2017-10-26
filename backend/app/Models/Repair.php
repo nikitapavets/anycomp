@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\ElasticSearchService;
+use App\Services\StringTransformator;
 use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
 use App\Traits\Relations\BelongTo\AdminTrait;
@@ -59,6 +60,7 @@ class Repair extends SearchableModel
         'reception_place_id',
         'token',
         'receipt_number',
+        'current_status',
         'created_at',
         'updated_at',
     ];
@@ -71,7 +73,6 @@ class Repair extends SearchableModel
         'appearance',
         'comment',
         'approximate_cost',
-        'current_status',
     ];
 
     protected $hidden = [
@@ -97,11 +98,21 @@ class Repair extends SearchableModel
         'link',
         'name',
         'full_name',
+        'created_at_native',
     ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'completed_at',
+        'issued_at'
+    ];
+
+    /** ********* Accessors & Mutators ********* */
 
     public function getLinkAttribute()
     {
-        return route('repairs.show', ['id' => $this->id]);
+        return route('admin.repairs.show', ['id' => $this->id]);
     }
 
     public function getNameAttribute()
@@ -114,6 +125,25 @@ class Repair extends SearchableModel
         return $this->getCategory()->getName().' '.$this->name;
     }
 
+    public function getCreatedAtNativeAttribute()
+    {
+        return StringTransformator::dateToString($this->created_at);
+    }
+
+    public function getCompletedAtAttribute($date)
+    {
+        return Carbon::parse($date)->timestamp > 0 ?
+            Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y') : '';
+    }
+
+    public function getIssuedAtAttribute($date)
+    {
+        return Carbon::parse($date)->timestamp > 0 ?
+            Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y') : '';
+    }
+
+    /** ********* Transformators ********* */
+
     public function toSearchArray()
     {
         $searchArray = $this->toArray();
@@ -122,95 +152,50 @@ class Repair extends SearchableModel
         return $searchArray;
     }
 
-    public function getStatusName()
+    /** ********* Getters & Setters ********* */
+
+    public function setStatus($status)
     {
-        switch ($this->status){
-            case self::STATUS_REPAIR: return self::STATUS_REPAIR_NAME;
-            case self::STATUS_COMPLETE: return self::STATUS_COMPLETE_NAME;
-            case self::STATUS_ISSUED: return self::STATUS_ISSUED_NAME;
+        $this->current_status = $status;
+
+        if($this->isComplete()) {
+            $this->completing();
+        } elseif($this->isIssued()) {
+            $this->issuing();
         }
     }
 
-    public function getCreatedForPrintDate()
-    {
-        $date = '';
-        $date .= date('d ', $this->created_at->getTimestamp());
-        switch (date('n', $this->created_at->getTimestamp())) {
-            case 1: {
-                $date .= "января";
-                break;
-            }
-            case 2: {
-                $date .= "февраля";
-                break;
-            }
-            case 3: {
-                $date .= "марта";
-                break;
-            }
-            case 4: {
-                $date .= "апреля";
-                break;
-            }
-            case 5: {
-                $date .= "мая";
-                break;
-            }
-            case 6: {
-                $date .= "июня";
-                break;
-            }
-            case 7: {
-                $date .= "июля";
-                break;
-            }
-            case 8: {
-                $date .= "августа";
-                break;
-            }
-            case 9: {
-                $date .= "сентября";
-                break;
-            }
-            case 10: {
-                $date .= "октября";
-                break;
-            }
-            case 11: {
-                $date .= "ноября";
-                break;
-            }
-            case 12: {
-                $date .= "декабря";
-                break;
-            }
-        }
-        $date .= date(' Yг.', $this->created_at->getTimestamp());
+    /** ********* Additional ********* */
 
-        return $date;
-    }
-
-    public function getCompletedAt()
-    {
-        $time = Carbon::parse($this->completed_at);
-
-        return $time->timestamp > 0 ? date('d-m-Y', $time->timestamp) : '';
-    }
-
-    public function getCompletedAtFull()
-    {
-        $time = Carbon::parse($this->completed_at);
-
-        return $time->timestamp > 0 ? date('d.m.Y H:i', $time->timestamp) : '';
-    }
-
-    public function setCompletedAt()
+    /**
+     * Setting date of complete repair
+     */
+    private function completing()
     {
         $this->completed_at = Carbon::now();
     }
 
-    public function isIssued()
+    /**
+     *  Did repair is complete?
+     */
+    private function isComplete()
     {
-        return $this->status === self::STATUS_ISSUED;
+        return $this->current_status == self::STATUS_COMPLETE;
+    }
+
+    /**
+     * Setting date of issue
+     */
+    private function issuing()
+    {
+        $this->issued_at = Carbon::now();
+    }
+
+    /**
+     *  Did client receive product?
+     */
+    private function isIssued()
+    {
+        return $this->current_status == self::STATUS_ISSUED;
     }
 }

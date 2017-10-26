@@ -14,53 +14,67 @@ class AdminMenusSeeder extends Seeder
     {
         DB::table('admin_menus')->delete();
 
-        AdminMenu::create([
-	        'id' => 1,
-	        'img' => '#admin_repairing_service',
-            'title' => 'Ремонт',
-            'pos' => 1
-        ]);
+        AdminMenu::create(
+            [
+                'id'    => 1,
+                'img'   => '#admin_repairing_service',
+                'title' => 'Ремонт',
+                'pos'   => 1,
+            ]
+        );
 
-        AdminMenu::create([
-	        'id' => 2,
-	        'img' => '#admin_users',
-            'title' => 'Клиенты',
-            'pos' => 2
-        ]);
+        AdminMenu::create(
+            [
+                'id'    => 2,
+                'img'   => '#admin_users',
+                'title' => 'Клиенты',
+                'pos'   => 2,
+            ]
+        );
 
-        AdminMenu::create([
-	        'id' => 3,
-	        'img' => '#admin_catalog',
-            'title' => 'Каталог',
-            'pos' => 3
-        ]);
+        AdminMenu::create(
+            [
+                'id'    => 3,
+                'img'   => '#admin_catalog',
+                'title' => 'Каталог',
+                'pos'   => 3,
+            ]
+        );
 
-        AdminMenu::create([
-	        'id' => 4,
-	        'img' => '#admin_db',
-            'title' => 'База данных',
-            'pos' => 4
-        ]);
+        AdminMenu::create(
+            [
+                'id'    => 4,
+                'img'   => '#admin_db',
+                'title' => 'База данных',
+                'pos'   => 4,
+            ]
+        );
 
-        AdminMenu::create([
-	        'id' => 5,
-	        'img' => '#shopping_cart_e0e0e0',
-            'title' => 'Заказы',
-            'pos' => 5
-        ]);
+        AdminMenu::create(
+            [
+                'id'    => 5,
+                'img'   => '#shopping_cart_e0e0e0',
+                'title' => 'Заказы',
+                'pos'   => 5,
+            ]
+        );
 
-        AdminMenu::create([
-            'id' => 6,
-            'img' => '#admin_home_e0e0e0',
-            'title' => 'Главная',
-            'pos' => 0
-        ]);
+        AdminMenu::create(
+            [
+                'id'    => 6,
+                'img'   => '#admin_home_e0e0e0',
+                'title' => 'Главная',
+                'pos'   => 0,
+            ]
+        );
 
-        AdminMenu::create([
-            'id' => 7,
-            'img' => '#admin_delivery_e0e0e0',
-            'title' => 'Привоз',
-            'pos' => 6
-        ]);
+        AdminMenu::create(
+            [
+                'id'    => 7,
+                'img'   => '#admin_delivery_e0e0e0',
+                'title' => 'Привоз',
+                'pos'   => 6,
+            ]
+        );
     }
 }

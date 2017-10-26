@@ -12,6 +12,7 @@ use App\Classes\Table\TableRow;
 use App\Collections\TableCellsCollection;
 use App\Collections\TablePopupItemCollection;
 use App\Collections\TableRowsCollection;
+use App\Interfaces\ExcelDocument;
 use App\Models\Admin;
 use App\Models\Client;
 use App\Models\Repair;
@@ -92,13 +93,13 @@ class RepairRepository
             $tableCell->setClass(TableCell::CLASS_CHECKER);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableLinkCell($repair->receipt_number);
+            $tableCell = new TableLinkCell($repair->receipt_number, TableLinkCell::TARGET_SELF);
             $tableCell->setLinkHref($repair->link);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TablePopupCell($repair->getFullName());
+            $tableCell = new TablePopupCell($repair->full_name);
             $tablePopupItems = new TablePopupItemCollection();
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_BOX, $repair->getFullName());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_BOX, $repair->full_name);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_SET, $repair->set);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
@@ -148,13 +149,13 @@ class RepairRepository
             $tableCell = new TableCell($repair->getClient()->mobile_phone_native);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($repair->getCompletedAt());
+            $tableCell = new TableCell($repair->issued_at);
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TablePopupCell('Действия');
             $tablePopupItems = new TablePopupItemCollection();
             $tablePopupItem = new TablePopupLinkItem(TablePopupItem::TYPE_EDIT, 'Изменить');
-            $tablePopupItem->setLinkHref(route('repairs.edit', ['id' => $repair->getId()]));
+            $tablePopupItem->setLinkHref(route('admin.repairs.edit', ['id' => $repair->getId()]));
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupLinkItem(TablePopupItem::TYPE_XLS, 'Квитанция');
             $tablePopupItem->setLinkHref(route('admin.repairs.print_doc', ['id' => $repair->id]));
@@ -216,5 +217,21 @@ class RepairRepository
         }
 
         return $statistics;
+    }
+
+    public static function printReceipt(Repair $repair)
+    {
+        $fileInfo = array(
+            'file_name' => 'Квитанция о приеме в ремонт № ' . $repair->receipt_number . ' от ' . $repair->created_at_native,
+            'list_name' => 'Квитанция о приеме в ремонт',
+        );
+        $orgInfo = array(
+            'org_name' => 'ЧТУП "ЭниКомп"',
+            'org_address' => 'г. Лепель, ул. Ленинская, д. 9, каб. 1',
+            'org_phone' => '8-02132-4-62-62',
+        );
+
+        $excel = new ExcelDocument();
+        $excel->create($fileInfo, $orgInfo, $repair);
     }
 }

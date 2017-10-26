@@ -160,7 +160,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'O3',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getCreatedForPrintDate());
+                                $cell->setValue($currentRepair->created_at_native);
                                 $cell->setAlignment('center');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setBorder(
