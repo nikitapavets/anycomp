@@ -19,8 +19,8 @@ use App\Collections\WidgetCollection;
 use App\Models\Admin;
 use App\Models\Client;
 use App\Models\Database\ReceptionPlace;
+use App\Models\Employee;
 use App\Models\Worker;
-use App\Repositories\AdminRepository;
 use App\Repositories\ClientRepository;
 use App\Repositories\RepairRepository;
 use App\Services\ElasticSearchService;
@@ -34,7 +34,6 @@ use App\Models\Database\Brand;
 use App\Models\Database\Organization;
 use App\Models\Database\City;
 use App\Interfaces\ExcelDocument;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class RepairController extends Controller
@@ -198,7 +197,7 @@ class RepairController extends Controller
             $repair->setCategory($request->category_id, $request->category_new);
             $repair->setBrand($request->brand_id, $request->brand_new);
             $repair->setReceptionPlace($request->reception_place_id);
-            $repair->setWorker($request->worker_id);
+            $repair->employee()->associate(Employee::find($request->employee_id));
             $repair->save();
         });
 
@@ -212,6 +211,11 @@ class RepairController extends Controller
         $block = [];
         $block['title'] = 'Техника';
         $block['repair'] = $repair;
+
+        $widget = new WidgetSelect('Отремонтировал', 'worker_id');
+        $widget->setValue($repair->worker);
+        $widget->setSelectItems(Worker::all());
+        $block['worker'] = $widget->toArray();
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
@@ -269,7 +273,7 @@ class RepairController extends Controller
             $repair->setCategory($request->category_id, $request->category_new);
             $repair->setBrand($request->brand_id, $request->brand_new);
             $repair->setReceptionPlace($request->reception_place_id);
-            $repair->setWorker($request->worker_id);
+            $repair->employee()->associate(Employee::find($request->employee_id));
             $repair->save();
         });
 
@@ -319,7 +323,7 @@ class RepairController extends Controller
         $widget = new WidgetSelect('Организация', 'organization_id', false);
         $widget->setValue($repair->getClient() ? $repair->getClient()->getOrganization() : false);
         $widget->setSelectItems(Organization::getAll());
-        $widget->setAllowAddName('client_organization_new');
+        $widget->setAllowAddName('organization_new');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Мобильный телефон', 'mobile_phone', false);
@@ -340,7 +344,7 @@ class RepairController extends Controller
         $widget = new WidgetSelect('Населённый пункт', 'city_id', false);
         $widget->setValue($repair->getClient() ? $repair->getClient()->getCity() : false);
         $widget->setSelectItems(City::getAll());
-        $widget->setAllowAddName('client_city_new');
+        $widget->setAllowAddName('city_new');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Улица', 'address_street', false);
@@ -363,13 +367,13 @@ class RepairController extends Controller
         $widget = new WidgetSelect('Категория', 'category_id', true);
         $widget->setValue($repair ? $repair->getCategory() : false);
         $widget->setSelectItems(Category::getAll());
-        $widget->setAllowAddName('product_category_new');
+        $widget->setAllowAddName('category_new');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetSelect('Бренд', 'brand_id', true);
         $widget->setValue($repair ? $repair->getBrand() : false);
         $widget->setSelectItems(Brand::getAll());
-        $widget->setAllowAddName('product_brand_new');
+        $widget->setAllowAddName('brand_new');
         $widgetCollection->pushWidget($widget);
 
         $widget = new WidgetInput('Название', 'title', false);
@@ -405,21 +409,14 @@ class RepairController extends Controller
         $widget->setSelectItems(ReceptionPlace::getAll());
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetSelect('Принял в ремонт', 'worker_id', true);
-        $widget->setValue($repair ? $repair->getWorker() : false);
-        $widget->setSelectItems(AdminRepository::getRepairAdmins());
+        $widget = new WidgetSelect('Принял в ремонт', 'employee_id', true);
+        $widget->setValue($repair ? $repair->employee : false);
+        $widget->setSelectItems(Employee::all());
         $widgetCollection->pushWidget($widget);
 
         $widgets[] = $widgetCollection->toArray();
 
         return $widgets;
-    }
-
-    public function updateStatus(Request $request)
-    {
-        RepairRepository::updateRepairStatus(RepairRepository::getRepairById($request->selectItemId), $request->status);
-
-        return redirect()->route('admin.repair.list');
     }
 
     public function printDoc(Request $request)

@@ -19,7 +19,7 @@ use App\Models\Admin;
 use App\Models\AdminMenu;
 use App\Classes\Page\FormPage;
 use App\Models\Delivery;
-use App\Repositories\AdminRepository;
+use App\Models\Employee;
 use App\Repositories\DeliveryRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests\DeliveryRequest;
@@ -116,9 +116,9 @@ class DeliveriesController extends Controller
         $widget->setValue($delivery->getCreatedAtForInput());
         $widgetCollection->pushWidget($widget);
 
-        $widget = new WidgetSelect('Оформлял привоз', 'worker_id', true);
+        $widget = new WidgetSelect('Оформлял привоз', 'employee_id', true);
         $widget->setValue($delivery ? $delivery->getWorker() : false);
-        $widget->setSelectItems(AdminRepository::getRepairAdmins());
+        $widget->setSelectItems(Employee::all());
         $widgetCollection->pushWidget($widget);
 
         $widgets[] = $widgetCollection->toArray();

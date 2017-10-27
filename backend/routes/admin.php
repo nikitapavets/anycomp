@@ -92,6 +92,9 @@ Route::group(
 
 Route::group(['as' => 'admin.'], function() {
 
+    Route::get('logout', 'RepairController@logout')
+        ->name('logout');
+
     Route::group(['prefix' => 'repairs', 'as' => 'repairs.'], function () {
         Route::get('choose_client', 'RepairController@chooseClient')
             ->name('choose_client');

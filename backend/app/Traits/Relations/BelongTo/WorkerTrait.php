@@ -28,6 +28,6 @@ trait WorkerTrait
      */
     public function worker()
     {
-        return $this->belongsTo('App\Models\Admin', 'worker_id');
+        return $this->belongsTo('App\Models\Admin', 'employee_id');
     }
 }

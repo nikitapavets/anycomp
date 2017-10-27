@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Repair;
+use App\Models\Worker;
 use App\Repositories\RepairRepository;
 use Illuminate\Http\Request;
 
@@ -25,5 +27,18 @@ class RepairController extends Controller
         $repair->save();
 
         return response()->json($request->statusId);
+    }
+
+    public function setWorker(Request $request, Repair $repair)
+    {
+        $worker = Worker::find($request->worker_id);
+        if($worker) {
+            $repair->worker()->associate($worker);
+        } else {
+            $repair->worker_id = Worker::NO_SELECTED_ID;
+        }
+        $repair->save();
+
+        return response()->json($worker);
     }
 }

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Repositories\RepairRepository;
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Models\Repair;
+use App\Repositories\RepairRepository;
 
 class StatisticsController extends Controller
 {
     public function repairs()
     {
-        $statistics = RepairRepository::repairToStatistics(RepairRepository::getRepairs());
-        return response()->json($statistics);
+        $statistics = RepairRepository::repairToStatistics(Repair::all());
+
+        return response()->success($statistics);
     }
 }

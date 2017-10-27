@@ -25,7 +25,7 @@ class DeliveryRequest extends Request
     {
         return [
             'created_at' => 'required|date',
-            'worker_id' => 'required|numeric|min:1',
+            'employee_id' => 'required|numeric|min:1',
         ];
     }
 }

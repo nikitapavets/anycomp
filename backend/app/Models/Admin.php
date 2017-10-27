@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\GetSet\CreatedAtTrait;
 use App\Traits\GetSet\IdTrait;
 use App\Traits\GetSet\UpdatedAtTrait;
+use App\Traits\Relations\BelongTo\RepairTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Admin extends Model
@@ -14,20 +15,95 @@ class Admin extends Model
     use UpdatedAtTrait;
 
     const IMG_SRC = "/images/users/no-avatar.png";
+    const IMG_SIZE_SMALL = 128;
     const CREATOR_LOGIN = 'n.pavets';
 
     const SKILL_ADMIN = 'creator';
+    const SKILL_ADMIN_NATIVE = 'Администратор';
     const SKILL_DIRECTOR = 'director';
+    const SKILL_DIRECTOR_NATIVE = 'Директор';
     const SKILL_WORKER = 'worker';
+    const SKILL_WORKER_NATIVE = 'Инженер';
     const SKILL_MANAGER = 'manager';
+    const SKILL_MANAGER_NATIVE = 'Менеджер';
+
+    protected $guarded = [
+        'login',
+        'password',
+        'email',
+        'created_at',
+        'updated_at',
+        'skill',
+    ];
+
+    protected $fillable = [
+        'first_name',
+        'second_name',
+        'father_name',
+        'img',
+        'phone',
+    ];
+
+    protected $hidden = [
+        'password',
+        'img'
+    ];
 
     protected $appends = [
         'sf_name',
+        'full_name',
+        'short_name',
+        'skill_native',
+        'img_small',
+        'img_big',
     ];
+
+    public function getImgBigAttribute()
+    {
+        return $this->getImg();
+    }
+
+    public function getImgSmallAttribute()
+    {
+        return $this->getImg(self::IMG_SIZE_SMALL);
+    }
 
     public function getSfNameAttribute()
     {
         return $this->second_name . ' ' . $this->first_name;
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->second_name . ' ' . $this->first_name . ' ' . $this->father_name;
+    }
+
+    public function getShortNameAttribute()
+    {
+        $second_name = $this->second_name;
+        $initials = mb_substr($this->first_name, 0, 1) . ". " . mb_substr($this->father_name, 0, 1) . ".";
+        $shortName = $second_name . ' ' . $initials;
+
+        return $shortName;
+    }
+
+    public function getRepairsAcceptedAttribute()
+    {
+        $second_name = $this->second_name;
+        $initials = mb_substr($this->first_name, 0, 1) . ". " . mb_substr($this->father_name, 0, 1) . ".";
+        $shortName = $second_name . ' ' . $initials;
+
+        return $shortName;
+    }
+
+    public function getSkillNativeAttribute()
+    {
+        switch ($this->skill) {
+            case self::SKILL_ADMIN: return self::SKILL_ADMIN_NATIVE;
+            case self::SKILL_DIRECTOR: return self::SKILL_DIRECTOR_NATIVE;
+            case self::SKILL_WORKER: return self::SKILL_WORKER_NATIVE;
+            case self::SKILL_MANAGER: return self::SKILL_MANAGER_NATIVE;
+        }
     }
 
     /**
@@ -55,30 +131,6 @@ class Admin extends Model
         return $admin;
     }
 
-    public function getName()
-    {
-        return $this->getSFName();
-    }
-
-    public function getSFName()
-    {
-        return $this->second_name . ' ' . $this->first_name;
-    }
-
-    public function getFullName()
-    {
-        return $this->second_name . ' ' . $this->first_name . ' ' . $this->father_name;
-    }
-
-    public function getShortName()
-    {
-        $second_name = $this->second_name;
-        $initials = mb_substr($this->first_name, 0, 1) . ". " . mb_substr($this->father_name, 0, 1) . ".";
-        $shortName = $second_name . ' ' . $initials;
-
-        return $shortName;
-    }
-
     public function getImg($image_size = '')
     {
         if(!$this->img) {
@@ -94,23 +146,8 @@ class Admin extends Model
         }
     }
 
-    public function getSkill()
+    public function getName()
     {
-        $skill = '';
-        switch ($this->skill) {
-            case self::SKILL_ADMIN:
-                $skill = 'Администратор';
-                break;
-            case self::SKILL_DIRECTOR:
-                $skill = 'Директор';
-                break;
-            case self::SKILL_WORKER:
-                $skill = 'Инженер';
-                break;
-            case self::SKILL_MANAGER:
-                $skill = 'Менеджер';
-                break;
-        }
-        return $skill;
+        return $this->sf_name;
     }
 }

@@ -11,7 +11,6 @@ use App\Traits\Relations\BelongTo\BrandTrait;
 use App\Traits\Relations\BelongTo\CategoryTrait;
 use App\Traits\Relations\BelongTo\ClientTrait;
 use App\Traits\Relations\BelongTo\ReceptionPlaceTrait;
-use App\Traits\Relations\BelongTo\WorkerTrait;
 use App\Traits\Relations\BelongToMany\SparesTrait;
 use App\Traits\Relations\HasMany\RepairDescriptionsTrait;
 
@@ -23,7 +22,6 @@ class Repair extends SearchableModel
     use AdminTrait;
     use BrandTrait;
     use CategoryTrait;
-    use WorkerTrait;
     use ReceptionPlaceTrait;
     use IdTrait;
     use CreatedAtTrait;
@@ -56,7 +54,7 @@ class Repair extends SearchableModel
         'admin_id',
         'brand_id',
         'category_id',
-        'worker_id',
+        'employee_id',
         'reception_place_id',
         'token',
         'receipt_number',
@@ -80,7 +78,7 @@ class Repair extends SearchableModel
         'admin_id',
         'brand_id',
         'category_id',
-        'worker_id',
+        'employee_id',
         'reception_place_id',
     ];
 
@@ -89,6 +87,7 @@ class Repair extends SearchableModel
         'brand',
         'reception_place',
         'client',
+        'employee',
         'worker',
         'repairDescriptions',
         'spares',
@@ -107,6 +106,16 @@ class Repair extends SearchableModel
         'completed_at',
         'issued_at'
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    public function worker()
+    {
+        return $this->belongsTo(Worker::class, 'worker_id');
+    }
 
     /** ********* Accessors & Mutators ********* */
 

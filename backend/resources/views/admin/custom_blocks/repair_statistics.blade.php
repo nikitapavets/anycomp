@@ -5,8 +5,8 @@
         </div>
     </div>
     <div class="widget-row">
-        <div class="block-repair-chart">
-            <canvas id="repairChart" height="50"></canvas>
+        <div class="block-repair-chart loading">
+            <canvas id="repairsChart" class="repair-charts"></canvas>
         </div>
     </div>
 </div>

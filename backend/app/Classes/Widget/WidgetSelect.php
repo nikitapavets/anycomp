@@ -134,4 +134,17 @@ class WidgetSelect extends Widget
     {
         $this->_is_allow_add = (bool)$isAllowAdd;
     }
+
+    public function toArray()
+    {
+        return array_merge(parent::toArray(),
+            [
+                'select_gag' => $this->getSelectGag(),
+                'select_gag_selected' => $this->getSelectGagSelected(),
+                'select_items' => $this->getSelectItems(),
+                'add_new' => $this->isAllowAdd(),
+                'add_new_name' => $this->getAllowAddName(),
+            ]
+        );
+    }
 }

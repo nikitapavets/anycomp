@@ -19,7 +19,6 @@ Route::group(
 );
 
 Route::get('/login', ['as' => 'admin.login', 'uses' => 'AdminController@login']);
-Route::get('/logout', ['as' => 'admin.logout', 'uses' => 'AdminController@logout']);
 Route::post('/check', ['as' => 'admin.check', 'uses' => 'AdminController@check']);
 
 /**

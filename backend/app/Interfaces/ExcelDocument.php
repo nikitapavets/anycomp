@@ -530,7 +530,7 @@ class ExcelDocument implements Document
                         $sheet->cell(
                             'I23',
                             function ($cell) use ($currentRepair) {
-                                $cell->setValue($currentRepair->getWorker()->getShortName());
+                                $cell->setValue($currentRepair->employee->sf_name);
                                 $cell->setAlignment('center');
                                 $cell->setFontFamily('Verdana');
                                 $cell->setBorder(

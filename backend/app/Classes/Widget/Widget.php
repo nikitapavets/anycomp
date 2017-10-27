@@ -116,4 +116,16 @@ class Widget
     {
         $this->class = $class;
     }
+
+    public function toArray()
+    {
+        return [
+          'label' => $this->getLabel(),
+          'item' => $this->getType(),
+          'name' => $this->getName(),
+          'class' => $this->getClass(),
+          'required' => $this->isRequired(),
+          'value' => $this->getValue(),
+        ];
+    }
 }

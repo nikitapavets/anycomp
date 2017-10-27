@@ -5,14 +5,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class Worker extends Admin
+class Employee extends Admin
 {
-    const NO_SELECTED_ID = 1;
-
     protected $table = "admins";
 
     protected $appends = [
-        'completed_repairs_count'
+      'repairs_count'
     ];
 
     protected static function boot()
@@ -20,20 +18,20 @@ class Worker extends Admin
         parent::boot();
 
         static::addGlobalScope('worker', function (Builder $builder) {
-            $builder->where('skill', '=',Admin::SKILL_WORKER);
+            $builder->whereIn('skill', [Admin::SKILL_WORKER, Admin::SKILL_MANAGER, Admin::SKILL_DIRECTOR]);
         });
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function completed_repairs()
+    public function repairs()
     {
-        return $this->hasMany(Repair::class, 'worker_id');
+        return $this->hasMany(Repair::class, 'employee_id');
     }
 
-    public function getCompletedRepairsCountAttribute()
+    public function getRepairsCountAttribute()
     {
-        return $this->completed_repairs()->count();
+        return $this->repairs()->count();
     }
 }

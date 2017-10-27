@@ -2,7 +2,7 @@
 
 @section('block_content')
 
-    <div class="repairInfo">
+    <div class="repairInfo" id="repairPage" data-repair-id="{{$block['repair']['id']}}">
 
         <div class="generalInfo">
             <div class="generalInfo__block">
@@ -85,7 +85,16 @@
             </div>
             <div class="infoField">
                 <div class="infoField__title">Принял в ремонт</div>
-                <div class="infoField__value">{{$block['repair']['worker']['sf_name']}}</div>
+                <div class="infoField__value">{{$block['repair']['employee']['sf_name']}}</div>
+            </div>
+            <div class="infoField">
+                <div class="infoField__title">Отремонтировал</div>
+                <div class="infoField__value">
+                    <div id="editWorkerHandle">
+                        @php $widget = $block['worker'] @endphp
+                        @include('admin.widgets.select')
+                    </div>
+                </div>
             </div>
         </div>
 

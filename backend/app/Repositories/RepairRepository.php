@@ -93,7 +93,7 @@ class RepairRepository
             $tableCell->setClass(TableCell::CLASS_CHECKER);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableLinkCell($repair->receipt_number, TableLinkCell::TARGET_SELF);
+            $tableCell = new TableLinkCell($repair->receipt_number, TableLinkCell::TYPE_LINK,TableLinkCell::TARGET_SELF);
             $tableCell->setLinkHref($repair->link);
             $tableCells->pushTableCell($tableCell);
 
@@ -115,7 +115,7 @@ class RepairRepository
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_PLACE, $repair->getReceptionPlace()->getName());
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
-            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_WORKER, $repair->getWorker()->getSFName());
+            $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_WORKER, $repair->employee->sf_name);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
             $tablePopupItem = new TablePopupItem(TablePopupItem::TYPE_CODE, $repair->token);
             $tablePopupItems->pushTablePopupItem($tablePopupItem);
@@ -170,21 +170,6 @@ class RepairRepository
         return $tableRows;
     }
 
-    /**
-     * @param Repair $repair
-     * @param $newStatus
-     */
-    public static function updateRepairStatus($repair, $newStatus)
-    {
-        if ($repair instanceof Repair) {
-            $repair->update(['current_status' => $newStatus]);
-            if ($newStatus == Repair::STATUS_ISSUED) {
-                $repair->setCompletedAt();
-            }
-            $repair->save();
-        }
-    }
-
     public static function makeReceiptNumber()
     {
         $lastRepair = RepairRepository::getLastRepair();
@@ -206,17 +191,18 @@ class RepairRepository
     public static function repairToStatistics($repairs)
     {
         $statistics = [];
+        $result = [];
 
         foreach ($repairs as $repair) {
             $statistics[$repair->getCreatedAtYear()][$repair->getCreatedAtMonth()][$repair->getCreatedAtDay()][] = 1;
         }
         foreach ($statistics as $keyYear => $year) {
             foreach ($year as $keyMonth => $month) {
-                $statistics[$keyYear][$keyMonth] = count($month);
+                $result[$keyYear][] = ['x' => $keyMonth, 'y' => count($month)];
             }
         }
 
-        return $statistics;
+        return $result;
     }
 
     public static function printReceipt(Repair $repair)

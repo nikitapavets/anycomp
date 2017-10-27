@@ -16,7 +16,7 @@ class TableLinkCell extends TableCell
     private $_link_target;
     private $_link_class;
 
-    function __construct($value, $target = self::TARGET_BLANK, $type = self::TYPE_LINK)
+    function __construct($value, $type = self::TYPE_LINK, $target = self::TARGET_BLANK)
     {
         parent::__construct($value, $type);
 

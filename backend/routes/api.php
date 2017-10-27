@@ -21,8 +21,18 @@ Route::post('users/auth', ['uses' => 'UserController@post']);
 Route::post('order/client', ['uses' => 'OrderController@client']);
 Route::post('order/products', ['uses' => 'OrderController@products']);
 
-Route::post('repairs/update-status', 'RepairController@updateStatus');
-Route::resource('repairs', 'RepairController');
+Route::group(['as' => 'api.'], function() {
+
+    Route::post('repairs/update-status', 'RepairController@updateStatus')
+        ->name('repairs.update-status');
+    Route::post('repairs/{repair}/set-worker', 'RepairController@setWorker')
+        ->name('repairs.set-worker');
+
+    Route::resource('repairs', 'RepairController');
+
+});
+
+
 
 Route::get('statistics/repairs', ['uses' => 'StatisticsController@repairs']);
 
@@ -32,3 +42,5 @@ Route::get('spares/search', 'SpareController@search');
 
 Route::delete('spares/bind-to-repair', 'SpareController@unbindFromRepair');
 Route::post('spares/bind-to-repair', 'SpareController@bindToRepair');
+
+

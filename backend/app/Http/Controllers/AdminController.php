@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Classes\Page\Page;
 use App\Models\AdminMenu;
-use App\Repositories\AdminRepository;
-use App\Repositories\ClientRepository;
+use App\Models\Employee;
+use App\Models\Worker;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 
@@ -14,10 +14,12 @@ class AdminController extends Controller {
     public function index() {
         $blocks = [];
         $blocks['repair_statistic']['title'] = 'Статистика по ремонту';
-        $blocks['repair_statistic']['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
 
         $blocks['users']['title'] = 'Сотрудники';
-        $blocks['users']['people'] = AdminRepository::adminsToArray(AdminRepository::getAdmins());
+        $blocks['users']['people'] = Employee::all();
+
+        $blocks['workers']['title'] = 'Инженеры';
+        $blocks['workers']['people'] = Worker::all();
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
