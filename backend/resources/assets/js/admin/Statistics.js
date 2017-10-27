@@ -1,12 +1,11 @@
 import Chart from 'chart.js';
-import { months, requests } from '../config';
+import {months, requests} from '../config';
 
 export default class Statistics {
   repairs(container) {
-    fetch(requests.repairs)
-    .then(response => response.json())
-    .then(repairs => {
-      this.makeChart(container, 'Колличество ремонтов за 2017 г.', repairs[2017]);
+    fetch(requests.repairs).then(response => response.json()).then(repairs => {
+      this.makeChart(container, 'Колличество ремонтов за 2017 г.',
+          repairs[2017]);
       container.parentNode.classList.remove('loading');
     });
   }
@@ -22,6 +21,16 @@ export default class Statistics {
           },
         ],
         labels: months.slice(0, data.length),
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            }],
+        },
       },
     });
   }

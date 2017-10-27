@@ -71,7 +71,7 @@
         <script src="/scripts/libs.min.js?v.2.25"></script>
         <script src="/scripts/libs/ajax_upload.js"></script>
         <script src="/scripts/admin.min.js?v.2.25"></script>
-        <script src="/scripts/administrator.min.js?v.2.35"></script>
+        <script src="/scripts/administrator.min.js?v.2.55"></script>
         <script>
 
             $(document).ready(function(){
