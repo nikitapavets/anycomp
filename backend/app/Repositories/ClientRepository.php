@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Classes\Table\TableCell;
+use App\Classes\Table\TableLinkCell;
 use App\Classes\Table\TableRow;
 use App\Collections\TableCellsCollection;
 use App\Collections\TableRowsCollection;
@@ -77,7 +78,8 @@ class ClientRepository
             $tableCell = new TableCell($client->repairs_count);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($client->last_repair->receipt_number);
+            $tableCell = new TableLinkCell($client->last_repair->receipt_number);
+            $tableCell->setLinkHref(route('admin.repairs.show', ['id' => $client->last_repair->id]));
             $tableCells->pushTableCell($tableCell);
 
             $tableRow = new TableRow($tableCells);
