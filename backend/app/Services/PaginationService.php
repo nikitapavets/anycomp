@@ -4,13 +4,16 @@ namespace App\Services;
 
 
 use App\Models\Repair;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PaginationService extends LengthAwarePaginator
 {
-    public function __construct($elasticsearchResult, $appends = [], $options = [])
+    const DEFAULT_PAGE_SIZE = 15;
+
+    public function __construct(Model $model, $elasticsearchResult, $appends = [], $options = [])
     {
-        $data = Repair::whereIn('id', collect($elasticsearchResult['data'])->pluck('id'))->get();
+        $data = $model::whereIn('id', collect($elasticsearchResult['data'])->pluck('id'))->get();
 
         parent::__construct(
             $data,

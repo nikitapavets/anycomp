@@ -40,6 +40,7 @@ class ElasticsearchRepairObserver
             'index' => $repair->getSearchIndex(),
             'type' => $repair->getSearchType(),
             'id' => $repair->id,
+            'body' => []
         ]);
     }
 }

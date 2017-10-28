@@ -9,6 +9,7 @@ use App\Traits\Relations\BelongTo\CityTrait;
 use App\Traits\Relations\BelongTo\CityTypeTrait;
 use App\Traits\Relations\BelongTo\OrganizationTrait;
 use App\Traits\Relations\HasMany\RepairsTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 
 class Client extends SearchableModel
@@ -73,6 +74,17 @@ class Client extends SearchableModel
         'address',
         'link',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('orderBySecondName', function (Builder $builder) {
+            $builder->orderBy('second_name');
+        });
+    }
+
+    /** ********* Accessors & Mutators ********* */
 
     public function getMobilePhoneNativeAttribute()
     {
@@ -152,6 +164,8 @@ class Client extends SearchableModel
         $stringTransformator = new StringTransformator();
         $this->attributes['home_phone'] = $stringTransformator->clearPhone($value);
     }
+
+    /** ********* Getters & Setters ********* */
 
     public function getShortName()
     {

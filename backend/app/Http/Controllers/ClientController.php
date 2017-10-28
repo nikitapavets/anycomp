@@ -5,18 +5,32 @@ namespace App\Http\Controllers;
 use App\Classes\Page\TablePage;
 use App\Classes\Table\Table;
 use App\Classes\Table\TableField;
+use App\Classes\Table\TablePagination;
 use App\Classes\Table\TableTab;
 use App\Collections\TableActionCollection;
 use App\Collections\TableFieldCollection;
 use App\Collections\TableTabCollection;
+use App\Models\Client;
 use App\Repositories\ClientRepository;
 use App\Models\Admin;
 use App\Models\AdminMenu;
+use App\Services\ElasticSearchService;
+use App\Services\PaginationService;
+use Illuminate\Http\Request;
+
 
 class ClientController extends Controller
 {
-    public function clientsRepair()
+    public function index(Request $request)
     {
+        $tab = $request->tab ?? 0;
+        $pageSize = $request->size ?? PaginationService::DEFAULT_PAGE_SIZE;
+        $searchRequest = [
+            'search' => $request->search ?? '',
+            'page' => $request->page ?? 1,
+            'size' => $pageSize,
+        ];
+
         $table = new Table('Список клиентов');
 
         // Table fields
@@ -34,16 +48,16 @@ class ClientController extends Controller
         $tableField = new TableField('Организация');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Мобильный телефон');
+        $tableField = new TableField('Номер телефона', '115px');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Дополнительный телефон');
+        $tableField = new TableField('Доп. телефон', '115px');
         $tableFields->pushTableField($tableField);
 
         $tableField = new TableField('Адрес');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Добавлен');
+        $tableField = new TableField('Добавлен','100px');
         $tableFields->pushTableField($tableField);
 
         $table->setTableFields($tableFields);
@@ -53,6 +67,17 @@ class ClientController extends Controller
 
         $tableTab = new TableTab('Вcе', TableTab::STATUS_ACTIVE);
         $tableTab->setRows(ClientRepository::clientsToRows(ClientRepository::getClients()));
+        if($searchRequest['search']) {
+            $elasticsearchService = new ElasticSearchService(new Client);
+            $clients = new PaginationService(new Client, $elasticsearchService->search($searchRequest), $searchRequest);
+            $clients->setPath($request->getBasePath());
+        } else {
+            $clients = Client::paginate($pageSize);
+        }
+        $clients->appends(['tab' => $tab]);
+        $tableTab->setRows(ClientRepository::clientsToRows($clients));
+        $tableTapPagination = new TablePagination($clients);
+        $tableTab->setPagination($tableTapPagination);
         $tableTabs->pushTableTab($tableTab);
 
         $table->setTableTabs($tableTabs);

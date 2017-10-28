@@ -39,25 +39,6 @@ class ClientRepository
     }
 
     /**
-     * @param string $stringIds
-     * @param string $delimiter
-     */
-    public static function removeClients($stringIds, $delimiter = ',')
-    {
-        $arrayIds = explode($delimiter, $stringIds);
-        Client::destroy($arrayIds);
-    }
-
-    /**
-     * @param int $id
-     * @return Client
-     */
-    public static function getClientById($id)
-    {
-        return Client::find($id);
-    }
-
-    /**
      * @param Client[] $clients
      * @return TableRowsCollection
      */
@@ -75,19 +56,19 @@ class ClientRepository
             $tableCell = new TableCell($index++);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($client->getFullName());
+            $tableCell = new TableCell($client->full_name);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($client->getOrganization()->getName());
+            $tableCell = new TableCell($client->organization->name);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($client->getMobilePhoneOnNativeFormat());
+            $tableCell = new TableCell($client->mobile_phone_native);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($client->getHomePhoneOnNativeFormat());
+            $tableCell = new TableCell($client->home_phone_native);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($client->getAddress());
+            $tableCell = new TableCell($client->address);
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TableCell($client->getCreatedAt());

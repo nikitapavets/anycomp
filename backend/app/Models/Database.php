@@ -8,17 +8,15 @@ class Database extends Model
 {
     const NO_SELECTED = 1;
 
-    protected $guarded
-        = [
-            'id',
-            'created_at',
-            'updated_at',
-        ];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 
-    protected $fillable
-        = [
-            'name',
-        ];
+    protected $fillable= [
+        'name',
+    ];
 
     public function getNameAttribute($name)
     {
@@ -138,6 +136,6 @@ class Database extends Model
     public function isSelected()
     {
 
-        return $this->getId() != self::NO_SELECTED;
+        return $this->id != self::NO_SELECTED;
     }
 }

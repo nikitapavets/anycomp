@@ -22,7 +22,6 @@ use App\Models\Database\Location;
 use App\Models\Database\ReceptionPlace;
 use App\Models\Employee;
 use App\Models\Worker;
-use App\Repositories\ClientRepository;
 use App\Repositories\RepairRepository;
 use App\Services\ElasticSearchService;
 use App\Services\PaginationService;
@@ -83,7 +82,7 @@ class RepairController extends Controller
 
         $tableTab = new TableTab('В ремонте', $tab == Repair::STATUS_REPAIR ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
         if($search['search']) {
-            $repairs = new PaginationService($elasticsearchRepairService->search($search), $search);
+            $repairs = new PaginationService(new Repair, $elasticsearchRepairService->search($search), $search);
             $repairs->setPath($request->getBasePath());
         } else {
             $repairs = RepairRepository::getRepairsByStatus($search['current_status']);
@@ -429,27 +428,7 @@ class RepairController extends Controller
 
     public function printDoc(Request $request)
     {
-        RepairRepository::printReceipt(Repair::find($request->id));
-    }
-
-    public function statistics(Request $request)
-    {
-        $block = [];
-        $block['title'] = 'Статистика';
-        $block['clients'] = ClientRepository::clientsToArray(ClientRepository::getClients());
-
-        $userAdmin = Admin::getAuthAdmin();
-        $menu = AdminMenu::getAdminMenu();
-        $page = new TablePage('Статистика');
-
-        return view($page->getViewName(),
-            [
-                'admin' => $userAdmin,
-                'adminMenu' => $menu,
-                'page' => $page,
-                'block' => $block
-            ]
-        );
+        RepairRepository::printReceipt(Repair::findOrFail($request->id));
     }
 
     public function statisticsPrint()

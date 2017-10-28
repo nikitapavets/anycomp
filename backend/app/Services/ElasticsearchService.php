@@ -26,10 +26,11 @@ class ElasticSearchService
     }
 
     /**
-     * @param string $query
+     * @param array $query
+     *
      * @return array
      */
-    public function search($query = '')
+    public function search($query = [])
     {
         $items = $this->searchOnElasticsearch($query);
         return $this->buildCollection($items);
