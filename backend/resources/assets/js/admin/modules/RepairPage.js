@@ -11,6 +11,7 @@ export default class RepairPage extends Elements {
 
   addEventListeners() {
     this.onChangeWorkerHandle();
+    this.onChangeLocationHandle();
   }
 
   onChangeWorkerHandle() {
@@ -18,7 +19,16 @@ export default class RepairPage extends Elements {
     select.addEventListener('change', _ => {
       Api.post(`/api/repairs/${this.repair.id}/set-worker`, {
         worker_id: select.value,
-      }).then(r => console.log(r.message));
+      });
+    }, false);
+  }
+
+  onChangeLocationHandle() {
+    const select = document.querySelector('#editLocationHandle select');
+    select.addEventListener('change', _ => {
+      Api.post(`/api/repairs/${this.repair.id}/set-location`, {
+        location_id: select.value,
+      });
     }, false);
   }
 }

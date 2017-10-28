@@ -88,10 +88,19 @@
                 <div class="infoField__value">{{$block['repair']['employee']['sf_name']}}</div>
             </div>
             <div class="infoField">
-                <div class="infoField__title">Отремонтировал</div>
+                @php $widget = $block['worker'] @endphp
+                <div class="infoField__title">{{ $widget['label'] }}</div>
                 <div class="infoField__value">
                     <div id="editWorkerHandle">
-                        @php $widget = $block['worker'] @endphp
+                        @include('admin.widgets.select')
+                    </div>
+                </div>
+            </div>
+            <div class="infoField">
+                @php $widget = $block['location'] @endphp
+                <div class="infoField__title">{{ $widget['label'] }}</div>
+                <div class="infoField__value">
+                    <div id="editLocationHandle">
                         @include('admin.widgets.select')
                     </div>
                 </div>

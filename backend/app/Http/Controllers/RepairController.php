@@ -18,6 +18,7 @@ use App\Collections\TableTabCollection;
 use App\Collections\WidgetCollection;
 use App\Models\Admin;
 use App\Models\Client;
+use App\Models\Database\Location;
 use App\Models\Database\ReceptionPlace;
 use App\Models\Employee;
 use App\Models\Worker;
@@ -196,7 +197,8 @@ class RepairController extends Controller
             $repair->setAdmin(Admin::getAuthAdmin());
             $repair->setCategory($request->category_id, $request->category_new);
             $repair->setBrand($request->brand_id, $request->brand_new);
-            $repair->setReceptionPlace($request->reception_place_id);
+            $repair->reception_place()->associate(ReceptionPlace::findOrFail($request->reception_place_id));
+            $repair->location()->associate(ReceptionPlace::findOrFail($request->reception_place_id));
             $repair->employee()->associate(Employee::find($request->employee_id));
             $repair->save();
         });
@@ -216,6 +218,11 @@ class RepairController extends Controller
         $widget->setValue($repair->worker);
         $widget->setSelectItems(Worker::all());
         $block['worker'] = $widget->toArray();
+
+        $widget = new WidgetSelect('Местонахождение', 'location_id');
+        $widget->setValue($repair->location);
+        $widget->setSelectItems(Location::all());
+        $block['location'] = $widget->toArray();
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
@@ -272,7 +279,8 @@ class RepairController extends Controller
             $repair->setAdmin(Admin::getAuthAdmin());
             $repair->setCategory($request->category_id, $request->category_new);
             $repair->setBrand($request->brand_id, $request->brand_new);
-            $repair->setReceptionPlace($request->reception_place_id);
+            $repair->reception_place()->associate(ReceptionPlace::findOrFail($request->reception_place_id));
+            $repair->location()->associate(ReceptionPlace::findOrFail($request->reception_place_id));
             $repair->employee()->associate(Employee::find($request->employee_id));
             $repair->save();
         });

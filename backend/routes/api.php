@@ -27,6 +27,8 @@ Route::group(['as' => 'api.'], function() {
         ->name('repairs.update-status');
     Route::post('repairs/{repair}/set-worker', 'RepairController@setWorker')
         ->name('repairs.set-worker');
+    Route::post('repairs/{repair}/set-location', 'RepairController@setLocation')
+        ->name('repairs.set-location');
 
     Route::resource('repairs', 'RepairController');
 

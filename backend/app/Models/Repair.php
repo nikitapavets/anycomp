@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Database\ReceptionPlace;
 use App\Services\ElasticSearchService;
 use App\Services\StringTransformator;
 use App\Traits\GetSet\CreatedAtTrait;
@@ -91,6 +92,7 @@ class Repair extends SearchableModel
         'worker',
         'repairDescriptions',
         'spares',
+        'location',
     ];
 
     protected $appends = [
@@ -107,6 +109,8 @@ class Repair extends SearchableModel
         'issued_at'
     ];
 
+    /** ********* Relations ********* */
+
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id');
@@ -115,6 +119,16 @@ class Repair extends SearchableModel
     public function worker()
     {
         return $this->belongsTo(Worker::class, 'worker_id');
+    }
+
+    public function reception_place()
+    {
+        return $this->belongsTo(ReceptionPlace::class, 'reception_place_id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(ReceptionPlace::class, 'location_id');
     }
 
     /** ********* Accessors & Mutators ********* */

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Database\Location;
 use App\Models\Repair;
 use App\Models\Worker;
 use App\Repositories\RepairRepository;
@@ -40,5 +41,14 @@ class RepairController extends Controller
         $repair->save();
 
         return response()->json($worker);
+    }
+
+    public function setLocation(Request $request, Repair $repair)
+    {
+        $location = Location::findOrFail($request->location_id);
+        $repair->location()->associate($location);
+        $repair->save();
+
+        return response()->json($location);
     }
 }

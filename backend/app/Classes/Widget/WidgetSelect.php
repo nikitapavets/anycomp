@@ -92,11 +92,13 @@ class WidgetSelect extends Widget
     {
         $selectItems = [];
         foreach ($collection as $item) {
-            $selectItems[] = array(
-                'id' => $item->getId(),
-                'value' => $item->getName(),
-                'selected' => $item->getId() == $this->getValue() ? 'selected' : '',
-            );
+            if($item->id != Database::NO_SELECTED) {
+                $selectItems[] = array(
+                    'id' => $item->getId(),
+                    'value' => $item->getName(),
+                    'selected' => $item->getId() == $this->getValue() ? 'selected' : '',
+                );
+            }
         }
 
         return $selectItems;
