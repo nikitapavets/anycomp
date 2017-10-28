@@ -10,6 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class PaginationService extends LengthAwarePaginator
 {
     const DEFAULT_PAGE_SIZE = 15;
+    const DEFAULT_PAGE_NUMBER = 1;
 
     public function __construct(Model $model, $elasticsearchResult, $appends = [], $options = [])
     {

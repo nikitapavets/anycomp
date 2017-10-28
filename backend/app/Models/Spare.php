@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Interfaces\GeneralMobel;
+use App\Interfaces\GeneralModel;
 use App\Repositories\SpareRepository;
 use App\Traits\GetSet\ConfigTrait;
 use App\Traits\GetSet\CreatedAtTrait;
@@ -17,7 +17,7 @@ use App\Traits\Relations\BelongTo\DeliveryTrait;
 use App\Traits\Relations\BelongTo\OrganizationTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Spare extends Model implements GeneralMobel
+class Spare extends Model implements GeneralModel
 {
     use IdTrait;
     use CreatedAtTrait;

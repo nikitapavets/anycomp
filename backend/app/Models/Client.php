@@ -8,7 +8,6 @@ use App\Traits\GetSet\IdTrait;
 use App\Traits\Relations\BelongTo\CityTrait;
 use App\Traits\Relations\BelongTo\CityTypeTrait;
 use App\Traits\Relations\BelongTo\OrganizationTrait;
-use App\Traits\Relations\HasMany\RepairsTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,7 +18,6 @@ class Client extends SearchableModel
     use IdTrait;
     use CityTrait;
     use CreatedAtTrait;
-    use RepairsTrait;
 
     const CLIENT_UNKNOWN = 'Неизвестный';
     const RANG_NO_REGISTERED = '1';
@@ -73,6 +71,8 @@ class Client extends SearchableModel
         'home_phone_native',
         'address',
         'link',
+        'repairs_count',
+        'last_repair',
     ];
 
     protected static function boot()
@@ -82,6 +82,13 @@ class Client extends SearchableModel
         static::addGlobalScope('orderBySecondName', function (Builder $builder) {
             $builder->orderBy('second_name');
         });
+    }
+
+    /** ********* Relations ********* */
+
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
     }
 
     /** ********* Accessors & Mutators ********* */
@@ -151,6 +158,16 @@ class Client extends SearchableModel
     public function getLinkAttribute()
     {
         return route('admin.clients.show', ['id' => $this->id]);
+    }
+
+    public function getRepairsCountAttribute()
+    {
+        return $this->repairs()->count();
+    }
+
+    public function getLastRepairAttribute()
+    {
+        return $this->repairs()->latest()->first();
     }
 
     public function setMobilePhoneAttribute($value)

@@ -25,6 +25,7 @@ use App\Models\Worker;
 use App\Repositories\RepairRepository;
 use App\Services\ElasticSearchService;
 use App\Services\PaginationService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Repair;
 use App\Models\Database\CityType;
@@ -57,7 +58,7 @@ class RepairController extends Controller
         $tableField = new TableField('', '50px', TableField::SORT_TYPE_NO_SORTABLE, TableField::CLASS_CHECKER);
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('№', '80px');
+        $tableField = new TableField('№', '80px', TableField::SORT_TYPE_SORTABLE);
         $tableFields->pushTableField($tableField);
 
         $tableField = new TableField('Техника');
@@ -66,10 +67,10 @@ class RepairController extends Controller
         $tableField = new TableField('Клиент');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Номер телефона', '115px');
+        $tableField = new TableField('Номер телефона', '115px', TableField::SORT_TYPE_NO_SORTABLE);
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Выдан', '75px', TableField::SORT_TYPE_SORTABLE);
+        $tableField = new TableField('Выдан', '75px');
         $tableFields->pushTableField($tableField);
 
         $tableField = new TableField('', '115px', TableField::SORT_TYPE_NO_SORTABLE);
@@ -435,7 +436,7 @@ class RepairController extends Controller
     {
         $excel = new ExcelDocument();
         $excel->repairStatistics(
-            'Статистика',
+            'Статистика услуги ремонта на ' . date('d.m.Y', Carbon::now()->timestamp),
             [
                 'В ремонте',
                 'На выдаче',

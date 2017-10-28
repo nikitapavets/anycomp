@@ -1114,7 +1114,7 @@ class ExcelDocument implements Document
                                 $sheet->cell(
                                     'C'.($iRepair + 2),
                                     function ($cell) use ($repair) {
-                                        $cell->setValue($repair->getDefect());
+                                        $cell->setValue($repair->defect);
                                     }
                                 );
 

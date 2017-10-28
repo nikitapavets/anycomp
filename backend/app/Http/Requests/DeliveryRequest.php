@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-
 class DeliveryRequest extends Request
 {
     /**
@@ -24,8 +22,8 @@ class DeliveryRequest extends Request
     public function rules()
     {
         return [
-            'created_at' => 'required|date',
-            'employee_id' => 'required|numeric|min:1',
+            'delivered_at' => 'required|date|before:now',
+            'employee_id' => 'exists:admins,id',
         ];
     }
 }

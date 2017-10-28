@@ -48,7 +48,7 @@ class AdminSubMenuSeeder extends Seeder
             [
                 'admin_menu_id' => 1,
                 'title'         => 'Статистика',
-                'link'          => '/admin/repair/statistics',
+                'link'          => '/admin/repairs/statistics/print',
                 'system_name'   => 'admin.repair.statistics',
                 'pos'           => 4,
             ]
@@ -58,8 +58,8 @@ class AdminSubMenuSeeder extends Seeder
             [
                 'admin_menu_id' => 2,
                 'title'         => 'Ремонт',
-                'link'          => '/admin/clients/repair',
-                'system_name'   => 'admin.clients.repair',
+                'link'          => '/admin/clients',
+                'system_name'   => 'admin.clients',
                 'pos'           => 1,
             ]
         );

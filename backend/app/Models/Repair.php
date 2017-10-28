@@ -56,6 +56,7 @@ class Repair extends SearchableModel
         'brand_id',
         'category_id',
         'employee_id',
+        'worker_id',
         'reception_place_id',
         'token',
         'receipt_number',
@@ -80,6 +81,7 @@ class Repair extends SearchableModel
         'brand_id',
         'category_id',
         'employee_id',
+        'worker_id',
         'reception_place_id',
     ];
 

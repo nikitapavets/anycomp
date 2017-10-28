@@ -40,12 +40,15 @@ class ClientRepository
 
     /**
      * @param Client[] $clients
+     * @param $pageSize
+     * @param $pageNumber
+     *
      * @return TableRowsCollection
      */
-    public static function clientsToRows($clients)
+    public static function clientsToRows($clients, $pageSize, $pageNumber)
     {
         $tableRows = new TableRowsCollection();
-        $index = 1;
+        $index = $pageSize * ($pageNumber - 1);
         foreach ($clients as $client) {
             $tableCells = new TableCellsCollection();
 
@@ -53,7 +56,7 @@ class ClientRepository
             $tableCell->setClass(TableCell::CLASS_CHECKER);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($index++);
+            $tableCell = new TableCell(++$index);
             $tableCells->pushTableCell($tableCell);
 
             $tableCell = new TableCell($client->full_name);
@@ -71,7 +74,10 @@ class ClientRepository
             $tableCell = new TableCell($client->address);
             $tableCells->pushTableCell($tableCell);
 
-            $tableCell = new TableCell($client->getCreatedAt());
+            $tableCell = new TableCell($client->repairs_count);
+            $tableCells->pushTableCell($tableCell);
+
+            $tableCell = new TableCell($client->last_repair->receipt_number);
             $tableCells->pushTableCell($tableCell);
 
             $tableRow = new TableRow($tableCells);

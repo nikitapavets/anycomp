@@ -104,14 +104,16 @@ Route::group(['as' => 'admin.'], function() {
             ->name('delete');
         Route::post('update_status', 'RepairController@updateStatus')
             ->name('update_status');
-        Route::get('statistics', 'RepairController@statistics')
-            ->name('statistics');
         Route::get('statistics/print', 'RepairController@statisticsPrint')
             ->name('statistics.print');
     });
 
+    Route::post('deliveries/delete', 'DeliveriesController@delete')
+        ->name('deliveries.delete');
+
     Route::resource('repairs', 'RepairController');
     Route::resource('clients', 'ClientController');
+    Route::resource('deliveries', 'DeliveriesController');
 
 });
 
@@ -181,9 +183,6 @@ Route::group(
         );
     }
 );
-
-Route::resource('deliveries', 'DeliveriesController');
-Route::post('deliveries/delete', 'DeliveriesController@destroy');
 
 Route::resource('spares', 'SpareController');
 Route::post('spares/delete', 'SpareController@destroy');

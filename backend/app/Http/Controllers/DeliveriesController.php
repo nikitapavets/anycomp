@@ -21,6 +21,8 @@ use App\Classes\Page\FormPage;
 use App\Models\Delivery;
 use App\Models\Employee;
 use App\Repositories\DeliveryRepository;
+use App\Services\ElasticSearchService;
+use App\Services\PaginationService;
 use Illuminate\Http\Request;
 use App\Http\Requests\DeliveryRequest;
 
@@ -30,6 +32,15 @@ class DeliveriesController extends Controller
 {
     public function index(Request $request)
     {
+        $tab = $request->tab ?? 0;
+        $pageSize = $request->size ?? PaginationService::DEFAULT_PAGE_SIZE;
+        $pageNumber = $request->page ?? PaginationService::DEFAULT_PAGE_NUMBER;
+        $searchRequest = [
+            'search' => $request->search ?? '',
+            'page' => $pageNumber,
+            'size' => $pageSize,
+        ];
+
         $table = new Table('Список техники в ремонте');
 
         $tableFields = new TableFieldCollection();
@@ -43,7 +54,7 @@ class DeliveriesController extends Controller
         $tableField = new TableField('Оформлял привоз');
         $tableFields->pushTableField($tableField);
 
-        $tableField = new TableField('Колличество деталей');
+        $tableField = new TableField('Колличество деталей', '175px');
         $tableFields->pushTableField($tableField);
 
         $tableField = new TableField('', '115px', TableField::SORT_TYPE_NO_SORTABLE);
@@ -54,9 +65,16 @@ class DeliveriesController extends Controller
         // Table tabs
         $tableTabs = new TableTabCollection();
 
-        $tableTab = new TableTab('Все', !$request->input('tab') ? TableTab::STATUS_ACTIVE : TableTab::STATUS_INACTIVE);
-        $deliveries = DeliveryRepository::get(15);
-        $tableTab->setRows(DeliveryRepository::toTableRows($deliveries));
+        $tableTab = new TableTab('Все', TableTab::STATUS_ACTIVE);
+        if($searchRequest['search']) {
+//            $elasticsearchService = new ElasticSearchService(new Delivery);
+//            $deliveries = new PaginationService(new Delivery, $elasticsearchService->search($searchRequest), $searchRequest);
+//            $deliveries->setPath($request->getBasePath());
+        } else {
+            $deliveries = Delivery::paginate($pageSize);
+        }
+        $deliveries->appends(['tab' => $tab]);
+        $tableTab->setRows(DeliveryRepository::toTableRows($deliveries, $pageSize, $pageNumber));
         $tableTapPagination = new TablePagination($deliveries);
         $tableTab->setPagination($tableTapPagination);
         $tableTabs->pushTableTab($tableTab);
@@ -69,14 +87,14 @@ class DeliveriesController extends Controller
         $tableAction = new TableAction(
             TableAction::TYPE_DELETE,
             TableAction::FORM_INLINE,
-            sprintf('%s/delete', DeliveryRepository::getLink())
+            route('admin.deliveries.delete')
         );
         $tableActions->pushTableAction($tableAction);
 
         $tableAction = new TableAction(
             TableAction::TYPE_CREATE,
             TableAction::FORM_EXTERNAL,
-            sprintf('%s/create', DeliveryRepository::getLink())
+            route('admin.deliveries.create')
         );
         $tableActions->pushTableAction($tableAction);
 
@@ -96,42 +114,20 @@ class DeliveriesController extends Controller
         );
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        /**
-         * @var Delivery $delivery
-         */
-        $delivery = Delivery::firstOrNew(['id' => $request->id ?? 0]);
+        $delivery = new Delivery();
 
-        $widgets = [];
+        $widgets = $this->generateView($delivery);
 
-        $widgetCollection = new WidgetCollection('Информация о привозе');
-
-        $widget = new WidgetInput('', 'id');
-        $widget->setValue($delivery->getId());
-        $widget->setValueType('hidden');
-        $widgetCollection->pushWidget($widget);
-
-        $widget = new WidgetDatePicker('Дата привоза', 'created_at', true);
-        $widget->setValue($delivery->getCreatedAtForInput());
-        $widgetCollection->pushWidget($widget);
-
-        $widget = new WidgetSelect('Оформлял привоз', 'employee_id', true);
-        $widget->setValue($delivery ? $delivery->getWorker() : false);
-        $widget->setSelectItems(Employee::all());
-        $widgetCollection->pushWidget($widget);
-
-        $widgets[] = $widgetCollection->toArray();
-
-        $form = [
+        $form = array(
             'widgets' => $widgets,
-            'url' => sprintf('%s/%s', DeliveryRepository::getLink(), $request->id ? $request->id : ''),
-            'method' => $request->id ? 'put' : 'post'
-        ];
+            'url' => route('admin.deliveries.store'),
+        );
 
         $userAdmin = Admin::getAuthAdmin();
         $menu = AdminMenu::getAdminMenu();
-        $page = new FormPage('Привоз деталей');
+        $page = new FormPage('Оформление привоза');
 
         return view($page->getViewName(),
             [
@@ -143,30 +139,81 @@ class DeliveriesController extends Controller
         );
     }
 
-    public function store(DeliveryRequest $request)
+    public function store(Request $request)
     {
-        Delivery::create($request->all());
+        $delivery = new Delivery($request->all());
+        $delivery->employee()->associate(Employee::findOrFail($request->employee_id));
+        $delivery->save();
 
-        return redirect()->action('DeliveriesController@index');
+        return redirect()->route('admin.deliveries.index');
     }
 
     public function edit($id)
     {
-        return redirect()->action('DeliveriesController@create', ['id' => $id]);
+        $delivery = Delivery::find($id);
+
+        $widgets = $this->generateView($delivery);
+
+        $form = array(
+            'widgets' => $widgets,
+            'method' => 'put',
+            'url' => route('admin.deliveries.update', ['id' => $delivery->id]),
+        );
+
+        $userAdmin = Admin::getAuthAdmin();
+        $menu = AdminMenu::getAdminMenu();
+        $page = new FormPage('Оформление привоза');
+
+        return view($page->getViewName(),
+            [
+                'admin' => $userAdmin,
+                'adminMenu' => $menu,
+                'page' => $page,
+                'form' => $form,
+            ]
+        );
     }
 
-    public function update(DeliveryRequest $request)
+    public function update(DeliveryRequest $request, $id)
     {
-        Delivery::where('id', '=', $request->id)
-            ->update($request->except(['_method', '_token']));
+        $delivery = Delivery::findOrFail($id);
+        $delivery->fill($request->all());
+        $delivery->employee()->associate(Employee::findOrFail($request->employee_id));
+        $delivery->save();
 
-        return redirect()->action('DeliveriesController@index');
+        return redirect()->route('admin.deliveries.index');
     }
 
-    public function destroy(Request $request)
+    public function delete(Request $request)
     {
-        DeliveryRepository::destroy($request->deleteItems);
+        $repairIds = explode(',', $request->deleteItems);
+        Delivery::destroy($repairIds);
 
-        return redirect()->action('DeliveriesController@index');
+        return redirect()->route('admin.deliveries.index');
+    }
+
+    private function generateView(Delivery $delivery)
+    {
+        $widgets = [];
+
+        $widgetCollection = new WidgetCollection('Информация о привозе');
+
+        $widget = new WidgetInput('', 'id');
+        $widget->setValue($delivery->id);
+        $widget->setValueType('hidden');
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetDatePicker('Дата привоза', 'delivered_at', true);
+        $widget->setValue($delivery->delivered_at_timestamp);
+        $widgetCollection->pushWidget($widget);
+
+        $widget = new WidgetSelect('Оформлял привоз', 'employee_id', true);
+        $widget->setValue($delivery->employee);
+        $widget->setSelectItems(Employee::all());
+        $widgetCollection->pushWidget($widget);
+
+        $widgets[] = $widgetCollection->toArray();
+
+        return $widgets;
     }
 }

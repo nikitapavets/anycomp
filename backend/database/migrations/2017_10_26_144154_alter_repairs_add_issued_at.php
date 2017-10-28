@@ -29,7 +29,7 @@ class AlterRepairsAddIssuedAt extends Migration
     public function down()
     {
         Schema::table('repairs', function (Blueprint $table) {
-            $table->timestamp('completed_at');
+            $table->dropColumn('completed_at');
         });
         Schema::table('repairs', function (Blueprint $table) {
             $table->renameColumn('issued_at', 'completed_at');
