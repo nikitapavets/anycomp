@@ -20,7 +20,7 @@ class Worker extends Admin
         parent::boot();
 
         static::addGlobalScope('worker', function (Builder $builder) {
-            $builder->where('skill', '=',Admin::SKILL_WORKER);
+            $builder->whereIn('skill', [Admin::SKILL_WORKER, Admin::SKILL_DIRECTOR]);
         });
     }
 
