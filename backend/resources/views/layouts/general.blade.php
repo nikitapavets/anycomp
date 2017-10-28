@@ -37,7 +37,7 @@
         <!-- Load Fonts CSS End -->
 
         <!-- Load Custom CSS Start -->
-        <link rel="stylesheet" href="/styles/admin.min.css?ver=1.12">
+        <link rel="stylesheet" href="/styles/admin.min.css?ver=1.15">
         <!-- Load Custom CSS End -->
 
         <div style='height: 0; width: 0; position: absolute; visibility: hidden'>
