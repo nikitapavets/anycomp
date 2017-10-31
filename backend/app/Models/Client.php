@@ -72,7 +72,6 @@ class Client extends SearchableModel
         'address',
         'link',
         'repairs_count',
-        'last_repair',
     ];
 
     protected static function boot()
